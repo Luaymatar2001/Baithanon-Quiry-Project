@@ -207,7 +207,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
         return [
             Button::add('edit')
                 ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
-                ->dispatch('edit', ['rowId' => $row->id]),
+                ->route('headhousehold.edit', ['headhousehold' => $row->id]),
 
             Button::add('delete')
                 ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')

@@ -60,18 +60,14 @@
                 </div>
             </div>
         </nav>
-
+        <div class="border-b bg-white border-gray-300 pl-6 py-2 shadow-sm text-xl font-bold">
+            @yield('page-title')
+            <span class="block text-xs font-normal text-gray-400 mt-2">
+                @yield('breadcrumb')
+            </span>
+        </div>
         <!-- Page Content -->
-        <main class="flex-1 p-6 pt-20 bg-[#f3f3f9]">
-            <div class="border-b bg-white border-gray-300 pl-6 py-2 shadow-sm text-xl font-bold">
-                @yield('page-title')
-                <span class="block text-xs font-normal text-gray-400 mt-2">
-                    @yield('breadcrumb')
-                </span>
-            </div>
-
-
-
+        <main class="flex-1 p-6  bg-[#f3f3f9]">
             @yield('content')
 
         </main>
