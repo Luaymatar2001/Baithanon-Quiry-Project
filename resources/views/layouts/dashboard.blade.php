@@ -67,7 +67,7 @@
             </span>
         </div>
         <!-- Page Content -->
-        <main class="flex-1 p-6  bg-[#f3f3f9]">
+        <main class="flex-1 p-6 bg-[#f3f3f9]">
             @yield('content')
 
         </main>

@@ -39,59 +39,60 @@ class HouseholdForm extends Component
 
     public function mount($householdId = null)
     {
-        $this->householdId = null;
+        $this->householdId = $householdId;
+
         $this->cities = city::all();
         $this->governorates = governorates::all();
         $this->locations = location::all();
 
-        if ($householdId) {
-            $household = household::findOrFail($householdId);
-            $this->householdId = $household->id;
-            $this->PersonId = $household->PersonId;
-            $this->FName = $household->FName;
-            $this->SName = $household->SName;
-            $this->TName = $household->TName;
-            $this->LName = $household->LName;
-            $this->BirthDate = $household->BirthDate;
-            $this->Gender = $household->Gender;
-            $this->Phone_Number = $household->Phone_Number;
-            $this->num_Family_Members = $household->num_Family_Members;
-            $this->legal_confirmation = $household->legal_confirmation;
-            $this->status = $household->status;
-            $this->cityId = $household->cityId;
-            $this->location_id = $household->location_id;
-            $this->governorate_id = $household->governorate_id;
-            $this->Date_partner_martyrdom = $household->Date_partner_martyrdom;
-            $this->health_Status = $household->health_Status;
-            $this->Sources_income = $household->Sources_income;
-            $this->address = $household->address;
-            $this->Notes = $household->Notes;
-
-            $this->loadLocations();
+        if ($this->householdId) {
+            $household = household::findOrFail($this->householdId);
+            $this->fillFromModel($household);
         }
+    }
+
+    protected function fillFromModel(household $household)
+    {
+        $this->PersonId = $household->PersonId;
+        $this->FName = $household->FName;
+        $this->SName = $household->SName;
+        $this->TName = $household->TName;
+        $this->LName = $household->LName;
+        $this->BirthDate = $household->BirthDate;
+        $this->Gender = $household->Gender;
+        $this->Phone_Number = $household->Phone_Number;
+        $this->num_Family_Members = $household->num_Family_Members;
+        $this->legal_confirmation = $household->legal_confirmation;
+        $this->status = $household->status;
+        $this->cityId = $household->cityId;
+        $this->location_id = $household->location_id;
+        $this->governorate_id = $household->governorate_id;
+        $this->Date_partner_martyrdom = $household->Date_partner_martyrdom;
+        $this->health_Status = $household->health_Status;
+        $this->Sources_income = $household->Sources_income;
+        $this->address = $household->address;
+        $this->Notes = $household->Notes;
     }
 
     public function updatedGovernorateId()
     {
         $this->loadLocations();
-        $this->location_id = null;
+        // $this->location_id = null;
     }
 
     public function updatedCityId()
     {
         $this->loadLocations();
-        $this->location_id = null;
+        // $this->location_id = null;
     }
 
     private function loadLocations()
     {
         if (!$this->cityId) {
             $this->locations = [];
-            $this->governorate_id = null;
             return;
         }
 
-        // جلب المدينة
         $city = City::find($this->cityId);
 
         if (!$city) {
@@ -99,12 +100,12 @@ class HouseholdForm extends Component
             return;
         }
 
-        // تعيين المحافظة من المدينة
-        $this->governorate_id = $city->governorate_id;
+        // لا تمسح القيم
+        $this->governorate_id = $city->governorateId;
 
-        // جلب المواقع (حسب city فقط)
         $this->locations = Location::where('city_id', $this->cityId)->get();
     }
+
 
 
     public function save()
@@ -134,7 +135,6 @@ class HouseholdForm extends Component
             'address' => 'nullable|string|max:255',
             'Notes' => 'nullable|string',
         ]);
-
 
 
         if ($this->householdId) {

@@ -13,13 +13,13 @@
 @endsection
 
 @section('content')
-<div class="mb-4">
+{{-- <div class="mb-4">
    <a href="{{ route('headhousehold.create') }}"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      إضافة جديد
-   </a>
+class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+إضافة جديد
+</a>
 </div>
-<div class="relative z-0">
+<div class="relative z-0"> --}}
    <livewire:head-households-table />
 </div>
 

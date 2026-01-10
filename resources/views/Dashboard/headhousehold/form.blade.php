@@ -15,5 +15,5 @@
 @section('content')
 
 
-@livewire('household-form');
+@livewire('household-form' ,['householdId'=>$id ?? null]);
 @endsection

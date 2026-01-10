@@ -199,6 +199,11 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;">
                  <i class="fa-solid fa-file-import"></i>
                  </div>'),
+            Button::add('add')
+                ->slot('
+        <a href="' . route('headhousehold.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+            <i class="fa-solid fa-plus"></i> 
+        </a>'),
         ];
     }
 

@@ -44,8 +44,9 @@ class HeadHouseController extends Controller
      */
     public function edit(string $id)
     {
-        $household = \App\Models\household::findOrFail($id);
-        return view('Dashboard.headhousehold.form', compact('household'));
+
+        // $household = \App\Models\household::findOrFail($id);
+        return view('Dashboard.headhousehold.form', ['id' => $id]);
     }
 
     /**
