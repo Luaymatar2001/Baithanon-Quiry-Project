@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\city;
 use App\Models\governorates;
+use App\Models\head_children;
 use App\Models\household;
 use App\Models\location;
 use Carbon\Carbon;
@@ -12,13 +13,14 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class HouseholdsImport implements ToModel, WithHeadingRow
+class ChildrensImport implements ToModel, WithHeadingRow
 {
 
     public function model(array $row)
     {
-       
-        return household::updateOrCreate(
+        // \dd($row);
+
+        return head_children::updateOrCreate(
             [
                 'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
                 'FName' => $row['alasm_alaol'] ?? null,
@@ -27,18 +29,8 @@ class HouseholdsImport implements ToModel, WithHeadingRow
                 'LName' => $row['allkb'] ?? null,
                 'BirthDate' => $this->parseDate($row['tarykh_almylad'] ?? null),
                 'Gender' => $row['algns'] ?? null,
-                'Phone_Number' => $row['alhatf'] ?? null,
-                'legal_confirmation' => isset($row['takyd_kanony']) ? (int)$row['takyd_kanony'] : 0,
-                'num_Family_Members' => $row['aadd_afrad_alasr'] ?? null,
-                'status' => $row['alhal'] ?? null,
                 'health_Status' => $row['alhal_alshy'] ?? null,
-                'Sources_income' => $row['msadr_aldkhl'] ?? null,
-                'address' => $row['alaanoan'] ?? null,
-                'Notes' => $row['mlahthat'] ?? null,
-                'cityId' => city::where('name', 'like', '%' . trim($row['almdyn']) . '%')->value('id'),
-                'location_id' => location::where('name', 'like', '%' . trim($row['almokaa']) . '%')->value('id'),
-                'governorate_id' => governorates::where('name', 'like', '%' . trim($row['almhafth']) . '%')->value('id'),
-                'Date_partner_martyrdom' => $this->parseDate($row['tarykh_astshhad_alzogalshryk'] ?? null),
+                'relationship' => $row['alaalak'] ?? null
             ]
         );
     }
@@ -69,21 +61,11 @@ class HouseholdsImport implements ToModel, WithHeadingRow
             '*.الاسم الأول' => ['required', 'regex:/^[\p{L}\s]+$/u'],
             '*.اسم الأب' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
             '*.اسم الجد' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
-            '*.اللقب' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
             '*.تاريخ الميلاد' => ['nullable', 'date'],
             '*.الجنس' => ['nullable', 'string'],
-            '*.الهاتف' => ['nullable', 'string'],
-            '*.تأكيد قانوني' => ['nullable', 'string'],
-            '*.عدد أفراد الأسرة' => ['nullable', 'numeric'],
-            '*.الحالة' => ['nullable', 'string'],
+            '*.العلاقة' => ['nullable', 'string'],
             '*.الحالة الصحية' => ['nullable', 'string'],
-            '*.مصادر الدخل' => ['nullable', 'string'],
-            '*.العنوان' => ['nullable', 'string'],
-            '*.ملاحظات' => ['nullable', 'string'],
-            '*.تاريخ استشهاد الزوج/الشريك' => ['nullable', 'date'],
-            '*.المدينة' => ['nullable', 'string'],
-            '*.الموقع' => ['nullable', 'string'],
-            '*.المحافظة' => ['nullable', 'string'],
+
         ];
     }
 }

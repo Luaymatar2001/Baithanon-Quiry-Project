@@ -1,20 +1,17 @@
 @extends('layouts.dashboard')
 
-@section('title', 'إضافة رب الأسرة')
+@section('title', 'إضافة أطفال')
 
 @section('page-title')
-إضافة رب الأسرة
+إضافة أطفال
 @endsection
 
 @section('breadcrumb')
 <a href="#">الرئيسية</a> &raquo;
-<a href="#">رب الأسرة</a> &raquo;
+<a href="#">الأطفال</a> &raquo;
 إضافة
 @endsection
 
 @section('content')
-
-   <livewire:head-households-table />
-</div>
-
+@livewire('children-form' , ['childrenId'=> $id ?? null]);
 @endsection

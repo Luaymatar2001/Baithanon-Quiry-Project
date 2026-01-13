@@ -33,6 +33,7 @@ class household extends Model
         'address',
         'Notes',
     ];
+    protected $guarded = [];
     public function city()
     {
         return $this->belongsTo(city::class, 'cityId', 'id');

@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class HeadHouseController extends Controller
+class ChildrenController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('Dashboard.headhousehold.index');
+        return view('Dashboard.children.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class HeadHouseController extends Controller
      */
     public function create()
     {
-        return view('Dashboard.headhousehold.form');
+        return view('Dashboard.children.form');
     }
 
     /**
@@ -46,7 +46,7 @@ class HeadHouseController extends Controller
     {
 
         // $household = \App\Models\household::findOrFail($id);
-        return view('Dashboard.headhousehold.form', ['id' => $id]);
+        return view('Dashboard.children.form', ['id' => $id]);
     }
 
     /**
@@ -54,7 +54,7 @@ class HeadHouseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+        //
     }
 
     /**

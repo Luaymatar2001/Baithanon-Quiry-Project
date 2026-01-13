@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\household;
+// use App\Models\household; 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Livewire\WithFileUploads;
@@ -18,12 +18,13 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-use App\Imports\HouseholdsImport;
+use App\Imports\ChildrensImport;
+use App\Models\head_children;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
 // use PowerComponents\LivewirePowerGrid\Editable;
 
-final class HeadHouseholdsTable extends PowerGridComponent
+final class ChildrenTable extends PowerGridComponent
 {
     use WithExport, WithFileUploads;
     public $excelFile;
@@ -58,22 +59,13 @@ final class HeadHouseholdsTable extends PowerGridComponent
             [$field => 'nullable|string|max:255']
         )->validate();
 
-        household::where('id', $id)->update([$field => $value]);
+        head_children::where('id', $id)->update([$field => $value]);
     }
 
 
     public function datasource(): Builder
     {
-        return household::query()
-            ->leftJoin('city', 'heads_households.cityId', '=', 'city.id')
-            ->leftJoin('locations', 'heads_households.location_id', '=', 'locations.id')
-            ->leftJoin('governorates', 'heads_households.governorate_id', '=', 'governorates.id')
-            ->select([
-                'heads_households.*',
-                'city.name as city_name',
-                'locations.name as location_name',
-                'governorates.name as governorate_name',
-            ]);
+        return head_children::query();
     }
 
     public function fields(): PowerGridFields
@@ -86,9 +78,10 @@ final class HeadHouseholdsTable extends PowerGridComponent
             ->add('TName')
             ->add('LName')
             ->add('BirthDate')
-            ->add('Phone_Number')
-            ->add('legal_confirmation')
-            ->add('num_Family_Members');
+            ->add('Gender')
+            ->add('relationship')
+            ->add('householdId')
+            ->add('updated_at');
     }
 
     public function columns(): array
@@ -126,54 +119,14 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Column::make('الجنس', 'Gender')
                 ->sortable(),
 
-            Column::make('الهاتف', 'Phone_Number')
-                ->searchable()->editOnClick(),
-
-            Column::make('تأكيد قانوني', 'legal_confirmation')
-                ->toggleable()->editOnClick(),
-
-            Column::make('عدد أفراد الأسرة', 'num_Family_Members')
-                ->sortable()->editOnClick(),
-
-            Column::make('الحالة', 'status')
-                ->sortable()
-                ->searchable(),
+            Column::make('العلاقة', 'relationship')
+                ->sortable(),
 
             Column::make('الحالة الصحية', 'health_Status')
                 ->searchable(),
 
-            Column::make('مصادر الدخل', 'Sources_income')
+            Column::make('أخر تحديث', 'updated_at')
                 ->searchable(),
-
-            Column::make('العنوان', 'address'),
-
-            // Column::make('ملاحظات', 'Notes'),
-
-            // Column::make('تاريخ الإنشاء', 'created_at'),
-
-            // Column::make('تاريخ التعديل', 'updated_at'),
-
-            Column::make('المدينة', 'city_name')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('الموقع', 'location_name')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('المحافظة', 'governorate_name')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('تاريخ استشهاد الزوج/الشريك', 'Date_partner_martyrdom')
-                ->sortable(),
-
-
-            // Column::make('تاريخ الإنشاء', 'created_at')
-            //     ->sortable()
-            //     ->searchable(),
-            // Column::make('Created at', 'created_at_formatted', 'created_at')
-            //     ->searchable(),
 
             Column::action('Action')
 
@@ -195,8 +148,6 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),
-            Filter::inputText('status'),
-            Filter::inputText('num_Family_Members'),
             Filter::inputText('health_Status'),
 
         ];
@@ -219,7 +170,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ->dispatch('confirmBulkDelete', []),
             Button::add('add')
                 ->slot('
-                <a href="' . route('headhousehold.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+                <a href="' . route('children.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
                     <i class="fa-solid fa-plus"></i> 
                 </a>'),
             Button::add('import')
@@ -231,15 +182,15 @@ final class HeadHouseholdsTable extends PowerGridComponent
                     wire:model="excelFile"
                     accept=".xlsx,.xls,.csv"
                     class="hidden"></label>'),
-            ];
-        }
+        ];
+    }
 
-    public function actions(household $row): array
+    public function actions(head_children $row): array
     {
         return [
             Button::add('edit')
                 ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
-                ->route('headhousehold.edit', ['headhousehold' => $row->id]),
+                ->route('children.edit', ['child' => $row->id]),
 
             Button::add('delete')
                 ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')
@@ -259,7 +210,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
     }
 
 
-    public function actionRules(household $row): array
+    public function actionRules(head_children $row): array
     {
         return [
             // Hide button edit for ID 1
@@ -272,7 +223,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
     #[\Livewire\Attributes\On('deleteRow')]
     public function deleteRow($rowId): void
     {
-        household::findOrFail($rowId)->delete();
+        head_children::findOrFail($rowId)->delete();
 
         $this->dispatch('pg:eventRefresh-default');
     }
@@ -295,7 +246,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
     #[\Livewire\Attributes\On('bulkDelete')]
     public function bulkDelete(): void
     {
-        household::whereIn('id', $this->checkboxValues)->delete();
+        head_children::whereIn('id', $this->checkboxValues)->delete();
         $this->reset('checkboxValues');
         $this->dispatch('pg:eventRefresh-default');
     }
@@ -308,7 +259,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
         ]);
 
         try {
-            Excel::import(new HouseholdsImport, $this->excelFile);
+            Excel::import(new ChildrensImport, $this->excelFile);
 
             $this->js("alert('تم استيراد الملف بنجاح')");
         } catch (ValidationException $e) {

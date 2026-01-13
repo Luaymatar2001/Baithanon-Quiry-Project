@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Dashboard\ChildrenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\HeadHouseController as DashboardHeadHouseController;
 use App\Http\Controllers\UserController;
@@ -22,10 +23,10 @@ Route::prefix('admin')->as('admin.')->middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', function () {
-    auth()->logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/admin/login');
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/admin/login');
     })->name('admin.logout');
 
     Volt::route('verify-email', 'pages.auth.verify-email')
@@ -38,13 +39,15 @@ Route::middleware('auth')->group(function () {
     Volt::route('confirm-password', 'pages.auth.confirm-password')
         ->name('password.confirm');
 
-        
+    Route::resource('dashboard/children', ChildrenController::class);
+
     Route::resource('dashboard/headhousehold', DashboardHeadHouseController::class);
-    
+
+
+
     Route::delete('/users/bulk-delete', [UserController::class, 'bulkDelete'])
-            ->name('users.bulkDelete');
+        ->name('users.bulkDelete');
     Route::put('/users/{user}/password', [UserController::class, 'updatePassword']);
 
     Route::resource('users', UserController::class);
-
 });

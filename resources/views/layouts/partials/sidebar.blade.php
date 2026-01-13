@@ -56,6 +56,22 @@
                 </ul>
             </li>
 
+            <li x-data="{ open:false }">
+                <button @click="open = !open" class="flex items-center w-full px-2 py-2 rounded hover:bg-gray-700 hover:text-white">
+                    <span class="flex-1 text-right">جداول الأبناء</span>
+                    <svg class="h-4 w-4 transition-transform" :class="open && 'rotate-180'" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            
+                <ul x-show="open" x-collapse class="mt-2 mr-3 border-r border-gray-700 space-y-1 text-xs">
+                    <li>
+                        <a href="{{ route('children.index') }}" class="block px-3 py-1 rounded hover:bg-gray-700">عرض
+                            البيانات</a>
+                    </li>
+                </ul>
+            </li>
               <div class="border-b border-gray-700 my-4 text-xs text-gray-500">  المستخدمين</div>
              <li>
                 <a href="{{ route('users.index') }}"
