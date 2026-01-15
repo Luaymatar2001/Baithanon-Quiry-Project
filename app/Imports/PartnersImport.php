@@ -2,34 +2,24 @@
 
 namespace App\Imports;
 
-use App\Models\city;
-use App\Models\governorates;
-use App\Models\head_children;
-use App\Models\household;
-use App\Models\location;
+use App\Models\partner;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-use Maatwebsite\Excel\Concerns\WithValidation;
-
-class ChildrensImport implements ToModel, WithHeadingRow
+class PartnersImport implements ToModel, WithHeadingRow
 {
-
     public function model(array $row)
     {
         // \dd($row);
-
-        return head_children::updateOrCreate(
+        return partner::updateOrCreate(
             [
                 'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
                 'FName' => $row['alasm_alaol'] ?? null,
                 'SName' => $row['asm_alab'] ?? null,
                 'TName' => $row['asm_algd'] ?? null,
                 'LName' => $row['allkb'] ?? null,
-                'BirthDate' => $this->parseDate($row['tarykh_almylad'] ?? null),
-                'Gender' => $row['algns'] ?? null,
+                'birthdate' => $this->parseDate($row['tarykh_almylad'] ?? null),
                 'health_Status' => $row['alhal_alshy'] ?? null,
                 'relationship' => $row['alaalak'] ?? null
             ]
@@ -63,11 +53,8 @@ class ChildrensImport implements ToModel, WithHeadingRow
             '*.اسم الأب' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
             '*.اسم الجد' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
             '*.تاريخ الميلاد' => ['nullable', 'date'],
-            '*.الجنس' => ['nullable', 'string'],
             '*.العلاقة' => ['nullable', 'string'],
             '*.الحالة الصحية' => ['nullable', 'string'],
-
         ];
     }
 }
- // \dd($row);

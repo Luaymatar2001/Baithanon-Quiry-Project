@@ -18,13 +18,12 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-use App\Imports\ChildrensImport;
-use App\Models\head_children;
+use App\Models\governorates;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
 // use PowerComponents\LivewirePowerGrid\Editable;
 
-final class ChildrenTable extends PowerGridComponent
+final class GovernorateTable extends PowerGridComponent
 {
     use WithExport, WithFileUploads;
     public $excelFile;
@@ -59,28 +58,20 @@ final class ChildrenTable extends PowerGridComponent
             [$field => 'nullable|string|max:255']
         )->validate();
 
-        head_children::where('id', $id)->update([$field => $value]);
+        governorates::where('id', $id)->update([$field => $value]);
     }
 
 
     public function datasource(): Builder
     {
-        return head_children::query();
+        return governorates::query();
     }
 
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('PersonId')
-            ->add('FName')
-            ->add('SName')
-            ->add('TName')
-            ->add('LName')
-            ->add('BirthDate')
-            ->add('Gender')
-            ->add('relationship')
-            ->add('householdId')
+            ->add('name')
             ->add('updated_at');
     }
 
@@ -90,43 +81,11 @@ final class ChildrenTable extends PowerGridComponent
             Column::make('ID', 'id')
                 ->sortable()
                 ->searchable(),
-
-            Column::make('هوية الشخص', 'PersonId')
+            Column::make('الإسم', 'name')
                 ->sortable()
-                ->searchable()
-                ->editOnClick(),
-
-            Column::make('الاسم الأول', 'FName')
-                ->sortable()
-                ->searchable()
-                ->editOnClick(),
-
-            Column::make('اسم الأب', 'SName')
-                ->sortable()
-                ->searchable()->editOnClick(),
-
-            Column::make('اسم الجد', 'TName')
-                ->sortable()
-                ->searchable()->editOnClick(),
-
-            Column::make('اللقب', 'LName')
-                ->sortable()
-                ->searchable()->editOnClick(),
-
-            Column::make('تاريخ الميلاد', 'BirthDate')
-                ->sortable()->editOnClick(),
-
-            Column::make('الجنس', 'Gender')
-                ->sortable(),
-
-            Column::make('العلاقة', 'relationship')
-                ->sortable(),
-
-            Column::make('الحالة الصحية', 'health_Status')
                 ->searchable(),
 
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
-
 
             Column::action('Action')
 
@@ -138,18 +97,7 @@ final class ChildrenTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('FName'),
-            Filter::inputText('LName'),
-            Filter::inputText('PersonId'),
-            Filter::select('Gender')
-                ->dataSource([
-                    ['id' => 'ذكر', 'name' => 'ذكر'],
-                    ['id' => 'أنثى', 'name' => 'أنثى'],
-                ])
-                ->optionLabel('name')
-                ->optionValue('id'),
-            Filter::inputText('health_Status'),
-
+            Filter::inputText('name'),
         ];
     }
 
@@ -170,27 +118,18 @@ final class ChildrenTable extends PowerGridComponent
                 ->dispatch('confirmBulkDelete', []),
             Button::add('add')
                 ->slot('
-                <a href="' . route('children.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+                <a href="' . route('governorate.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
                     <i class="fa-solid fa-plus"></i> 
                 </a>'),
-            Button::add('import')
-                ->slot('
-            <label class="cursor-pointer bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
-                <i class="fa-solid fa-file-import"></i>
-                <input 
-                    type="file"
-                    wire:model="excelFile"
-                    accept=".xlsx,.xls,.csv"
-                    class="hidden"></label>'),
         ];
     }
 
-    public function actions(head_children $row): array
+    public function actions(governorates $row): array
     {
         return [
             Button::add('edit')
                 ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
-                ->route('children.edit', ['child' => $row->id]),
+                ->route('governorate.edit', ['governorate' => $row->id]),
 
             Button::add('delete')
                 ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')
@@ -210,7 +149,7 @@ final class ChildrenTable extends PowerGridComponent
     }
 
 
-    public function actionRules(head_children $row): array
+    public function actionRules(governorates $row): array
     {
         return [
             // Hide button edit for ID 1
@@ -223,7 +162,7 @@ final class ChildrenTable extends PowerGridComponent
     #[\Livewire\Attributes\On('deleteRow')]
     public function deleteRow($rowId): void
     {
-        head_children::findOrFail($rowId)->delete();
+        governorates::findOrFail($rowId)->delete();
 
         $this->dispatch('pg:eventRefresh-default');
     }
@@ -246,34 +185,8 @@ final class ChildrenTable extends PowerGridComponent
     #[\Livewire\Attributes\On('bulkDelete')]
     public function bulkDelete(): void
     {
-        head_children::whereIn('id', $this->checkboxValues)->delete();
+        governorates::whereIn('id', $this->checkboxValues)->delete();
         $this->reset('checkboxValues');
-        $this->dispatch('pg:eventRefresh-default');
-    }
-
-    public function updatedExcelFile()
-    {
-
-        $this->validate([
-            'excelFile' => 'required|mimes:xlsx,xls,csv|max:10240',
-        ]);
-
-        try {
-            Excel::import(new ChildrensImport, $this->excelFile);
-
-            $this->js("alert('تم استيراد الملف بنجاح')");
-        } catch (ValidationException $e) {
-            $failures = $e->failures();
-            $messages = [];
-
-            foreach ($failures as $failure) {
-                $messages[] = "صف {$failure->row()}: " . implode(', ', $failure->errors());
-            }
-
-            $this->js("alert('حدثت أخطاء في الملف:\n" . implode("\n", $messages) . "')");
-        }
-
-        $this->reset('excelFile');
         $this->dispatch('pg:eventRefresh-default');
     }
 }

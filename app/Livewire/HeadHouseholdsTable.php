@@ -168,6 +168,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Column::make('تاريخ استشهاد الزوج/الشريك', 'Date_partner_martyrdom')
                 ->sortable(),
 
+            Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
             // Column::make('تاريخ الإنشاء', 'created_at')
             //     ->sortable()
@@ -231,8 +232,8 @@ final class HeadHouseholdsTable extends PowerGridComponent
                     wire:model="excelFile"
                     accept=".xlsx,.xls,.csv"
                     class="hidden"></label>'),
-            ];
-        }
+        ];
+    }
 
     public function actions(household $row): array
     {

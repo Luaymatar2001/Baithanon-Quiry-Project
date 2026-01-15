@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 // use App\Models\household; 
+
+use App\Imports\PartnersImport;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Livewire\WithFileUploads;
@@ -18,13 +20,13 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-use App\Imports\ChildrensImport;
-use App\Models\head_children;
+// use App\Imports\ChildrensImport;
+use App\Models\partner;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
 // use PowerComponents\LivewirePowerGrid\Editable;
 
-final class ChildrenTable extends PowerGridComponent
+final class PartnersTable extends PowerGridComponent
 {
     use WithExport, WithFileUploads;
     public $excelFile;
@@ -59,13 +61,13 @@ final class ChildrenTable extends PowerGridComponent
             [$field => 'nullable|string|max:255']
         )->validate();
 
-        head_children::where('id', $id)->update([$field => $value]);
+        partner::where('id', $id)->update([$field => $value]);
     }
 
 
     public function datasource(): Builder
     {
-        return head_children::query();
+        return partner::query();
     }
 
     public function fields(): PowerGridFields
@@ -78,7 +80,6 @@ final class ChildrenTable extends PowerGridComponent
             ->add('TName')
             ->add('LName')
             ->add('BirthDate')
-            ->add('Gender')
             ->add('relationship')
             ->add('householdId')
             ->add('updated_at');
@@ -113,11 +114,8 @@ final class ChildrenTable extends PowerGridComponent
                 ->sortable()
                 ->searchable()->editOnClick(),
 
-            Column::make('تاريخ الميلاد', 'BirthDate')
+            Column::make('تاريخ الميلاد', 'birthdate')
                 ->sortable()->editOnClick(),
-
-            Column::make('الجنس', 'Gender')
-                ->sortable(),
 
             Column::make('العلاقة', 'relationship')
                 ->sortable(),
@@ -126,7 +124,6 @@ final class ChildrenTable extends PowerGridComponent
                 ->searchable(),
 
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
-
 
             Column::action('Action')
 
@@ -141,10 +138,10 @@ final class ChildrenTable extends PowerGridComponent
             Filter::inputText('FName'),
             Filter::inputText('LName'),
             Filter::inputText('PersonId'),
-            Filter::select('Gender')
+            Filter::select('relationship')
                 ->dataSource([
-                    ['id' => 'ذكر', 'name' => 'ذكر'],
-                    ['id' => 'أنثى', 'name' => 'أنثى'],
+                    ['id' => 'زوج', 'name' => 'زوج'],
+                    ['id' => 'زوجة', 'name' => 'زوجة'],
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),
@@ -170,7 +167,7 @@ final class ChildrenTable extends PowerGridComponent
                 ->dispatch('confirmBulkDelete', []),
             Button::add('add')
                 ->slot('
-                <a href="' . route('children.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+                <a href="' . route('partner.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
                     <i class="fa-solid fa-plus"></i> 
                 </a>'),
             Button::add('import')
@@ -185,12 +182,12 @@ final class ChildrenTable extends PowerGridComponent
         ];
     }
 
-    public function actions(head_children $row): array
+    public function actions(partner $row): array
     {
         return [
             Button::add('edit')
                 ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
-                ->route('children.edit', ['child' => $row->id]),
+                ->route('partner.edit', ['partner' => $row->id]),
 
             Button::add('delete')
                 ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')
@@ -210,7 +207,7 @@ final class ChildrenTable extends PowerGridComponent
     }
 
 
-    public function actionRules(head_children $row): array
+    public function actionRules(partner $row): array
     {
         return [
             // Hide button edit for ID 1
@@ -223,7 +220,7 @@ final class ChildrenTable extends PowerGridComponent
     #[\Livewire\Attributes\On('deleteRow')]
     public function deleteRow($rowId): void
     {
-        head_children::findOrFail($rowId)->delete();
+        partner::findOrFail($rowId)->delete();
 
         $this->dispatch('pg:eventRefresh-default');
     }
@@ -246,7 +243,7 @@ final class ChildrenTable extends PowerGridComponent
     #[\Livewire\Attributes\On('bulkDelete')]
     public function bulkDelete(): void
     {
-        head_children::whereIn('id', $this->checkboxValues)->delete();
+        partner::whereIn('id', $this->checkboxValues)->delete();
         $this->reset('checkboxValues');
         $this->dispatch('pg:eventRefresh-default');
     }
@@ -259,7 +256,7 @@ final class ChildrenTable extends PowerGridComponent
         ]);
 
         try {
-            Excel::import(new ChildrensImport, $this->excelFile);
+            Excel::import(new PartnersImport, $this->excelFile);
 
             $this->js("alert('تم استيراد الملف بنجاح')");
         } catch (ValidationException $e) {

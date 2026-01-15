@@ -10,8 +10,10 @@ class city extends Model
     use HasFactory;
 
     protected $table = 'city';
+
     protected $fillable = [
         'name',
+        'governorateId'
     ];
 
     // Define relationship to Location

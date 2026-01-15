@@ -1,7 +1,7 @@
 <div class="container mx-auto p-6">
     <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
         <h2 class="text-2xl font-bold mb-6">
-            {{ $childrenId ? 'Edit Children' : 'Create Children' }}
+            {{ $partnerId ? 'Edit Partner' : 'Create Partner' }}
         </h2>
 
         @if (session()->has('message'))
@@ -21,7 +21,6 @@
                 <div>
                     <label class="block text-sm font-medium mb-1">إسم الأب</label>
                     <input type="text" wire:model="SName" class="w-full border rounded px-3 py-2">
-                    @error('SName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
@@ -29,7 +28,6 @@
                 <div>
                     <label class="block text-sm font-medium mb-1"> إسم الجد</label>
                     <input type="text" wire:model="TName" class="w-full border rounded px-3 py-2">
-                    @error('TName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">الأسم الأخير *</label>
@@ -46,35 +44,23 @@
                         required>
                     @error('PersonId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
-            </div>
 
-            <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-1">تاريخ الميلاد</label>
-                    <input type="date" wire:model="BirthDate" name="BirthDate" class="w-full border rounded px-3 py-2">
-                    @error('BirthDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <input type="date" wire:model="birthdate" name="birthdate" class="w-full border rounded px-3 py-2">
+                    @error('birthdate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">الجنس *</label>
-                    <select wire:model="Gender" name="Gender" class="w-full border rounded px-3 py-2" required>
-                        <option value="">أختر الجنس</option>
-                        <option value="ذكر">ذكر</option>
-                        <option value="أنثى">أنثى</option>
-                    </select>
-                    @error('Gender') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
             </div>
+
             <!-- Family & Health -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-1">العلاقة</label>
                     <select wire:model.defer="relationship" class="w-full border rounded px-3 py-2">
                         <option value="" selected>اختر العلاقة</option>
-                        <option value="ابن">ابن</option>
-                        <option value="ابنة">ابنة</option>
+                        <option value="زوج">زوج</option>
+                        <option value="زوجة">زوجة</option>
                     </select>
-                    @error('relationship') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">الحالة الصحية</label>
@@ -89,16 +75,15 @@
                         <option value="إعاقة بصرية">إعاقة بصرية</option>
                         <option value="حالات حرجة">حالات حرجة</option>
                     </select>
-                    @error('health_Status') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
             <!-- Buttons -->
             <div class="flex gap-4 mt-8">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
-                    {{ $childrenId ? 'Update' : 'Create' }}
+                    {{ $partnerId ? 'Update' : 'Create' }}
                 </button>
-                <a href="{{ route('children.index') }}"
+                <a href="{{ route('partner.index') }}"
                     class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
                     Cancel
                 </a>
