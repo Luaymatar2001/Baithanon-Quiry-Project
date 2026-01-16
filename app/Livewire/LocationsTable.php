@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-// use App\Models\household; 
+use Livewire\Component;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Livewire\WithFileUploads;
@@ -19,11 +19,12 @@ use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 use App\Models\city;
+use App\Models\location;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
 // use PowerComponents\LivewirePowerGrid\Editable;
 
-final class CityTable extends PowerGridComponent
+class LocationsTable extends PowerGridComponent
 {
     use WithExport, WithFileUploads;
     public $excelFile;
@@ -48,6 +49,7 @@ final class CityTable extends PowerGridComponent
                 ->showRecordCount(),
         ];
     }
+
     public function onUpdatedEditable(
         mixed $id,
         string $field,
@@ -58,19 +60,20 @@ final class CityTable extends PowerGridComponent
             [$field => 'nullable|string|max:255']
         )->validate();
 
-        city::where('id', $id)->update([$field => $value]);
+        location::where('id', $id)->update([$field => $value]);
     }
-
 
     public function datasource(): Builder
     {
-        return city::query()
-            ->leftJoin('governorates', 'city.governorateId', '=', 'governorates.id')
+        return location::query()
+            ->leftJoin('city', 'locations.city_id', '=', 'city.id')
             ->select(
-                'city.id',
-                'city.name',
-                'governorates.name as governorate_name'
-            )->orderBy('city.governorateId', 'desc');
+                'locations.id',
+                'locations.name',
+                'city.name as city_name',
+                'locations.name as location_name',
+                'locations.updated_at'
+            )->orderBy('locations.city_id', 'desc');
     }
 
     public function fields(): PowerGridFields
@@ -78,10 +81,9 @@ final class CityTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('name')
-            ->add('governorateId')
-            ->add('governorate_name')
-            ->add('city.name')
-            ->add('governorates.name')
+            ->add('city_id')
+            ->add('location_name')
+            ->add('city_name')
             ->add('updated_at');
     }
 
@@ -91,10 +93,13 @@ final class CityTable extends PowerGridComponent
             Column::make('ID', 'id')
                 ->sortable()
                 ->searchable(),
-            Column::make('الإسم', 'name')
+            Column::make('الإسم', 'location_name', 'locations.name')
                 ->sortable()
                 ->searchable(),
-            Column::make('المحافظة', 'governorate_name', 'governorates.name')
+
+
+
+            Column::make('المدينة', 'city_name', 'city.name')
                 ->searchable()
                 ->sortable(),
 
@@ -112,7 +117,8 @@ final class CityTable extends PowerGridComponent
     {
         return [
             Filter::inputText('name'),
-            Filter::inputText('governorates.name'),
+            Filter::inputText('city.name'),
+            Filter::inputText('locations.name')
             // Filter::datePicker('updated_at'),
         ];
     }
@@ -134,18 +140,18 @@ final class CityTable extends PowerGridComponent
                 ->dispatch('confirmBulkDelete', []),
             Button::add('add')
                 ->slot('
-                <a href="' . route('city.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+                <a href="' . route('location.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
                     <i class="fa-solid fa-plus"></i> 
                 </a>'),
         ];
     }
 
-    public function actions(city $row): array
+    public function actions(location $row): array
     {
         return [
             Button::add('edit')
                 ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
-                ->route('city.edit', ['city' => $row->id]),
+                ->route('location.edit', ['location' => $row->id]),
 
             Button::add('delete')
                 ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')
@@ -165,7 +171,7 @@ final class CityTable extends PowerGridComponent
     }
 
 
-    public function actionRules(city $row): array
+    public function actionRules(location $row): array
     {
         return [
             // Hide button edit for ID 1
@@ -178,7 +184,7 @@ final class CityTable extends PowerGridComponent
     #[\Livewire\Attributes\On('deleteRow')]
     public function deleteRow($rowId): void
     {
-        city::findOrFail($rowId)->delete();
+        location::findOrFail($rowId)->delete();
 
         $this->dispatch('pg:eventRefresh-default');
     }
@@ -201,7 +207,7 @@ final class CityTable extends PowerGridComponent
     #[\Livewire\Attributes\On('bulkDelete')]
     public function bulkDelete(): void
     {
-        city::whereIn('id', $this->checkboxValues)->delete();
+        location::whereIn('id', $this->checkboxValues)->delete();
         $this->reset('checkboxValues');
         $this->dispatch('pg:eventRefresh-default');
     }

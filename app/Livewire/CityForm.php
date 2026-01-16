@@ -37,6 +37,8 @@ class cityForm extends Component
 
     public function save()
     {
+        // $this->resetErrorBag();
+
         $validatedData = $this->validate([
             'name' => 'required|string|max:255',
             'governorateId' => 'required|exists:governorates,id',

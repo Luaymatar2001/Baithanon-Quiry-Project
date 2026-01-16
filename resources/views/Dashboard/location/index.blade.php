@@ -1,19 +1,17 @@
 @extends('layouts.dashboard')
 
-@section('title', 'إضافة الأزواج')
+@section('title', 'إضافة المعالم')
 
 @section('page-title')
-إضافة الأزواج
+إضافة المعالم
 @endsection
 
 @section('breadcrumb')
 <a href="#">الرئيسية</a> &raquo;
-<a href="#">الأزواج</a> &raquo;
+<a href="#">المعالم</a> &raquo;
 إضافة
 @endsection
 
 @section('content')
-<livewire:governorate-table/>
-
-
+<livewire:locations-table />
 @endsection

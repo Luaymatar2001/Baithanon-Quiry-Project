@@ -1,7 +1,7 @@
 <div class="container mx-auto p-6">
     <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
         <h2 class="text-2xl font-bold mb-6">
-            {{ $cityId ? 'Edit City' : 'Create City' }}
+            {{ $locationId ? 'Edit City' : 'Create City' }}
         </h2>
 
         @if (session()->has('message'))
@@ -14,20 +14,20 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1"> إسم المدينة</label>
+                    <label class="block text-sm font-medium mb-1"> إسم المعلم أو المنطقة</label>
                     <input type="text" wire:model="name" class="w-full border rounded px-3 py-2">
                     @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-1">المحافظة</label>
-                    <select wire:model="governorateId" class="w-full border rounded px-3 py-2">
+                    <label class="block text-sm font-medium mb-1">المدينة</label>
+                    <select wire:model="city_id" class="w-full border rounded px-3 py-2">
                         <option value="">
-                            اختر المحافظة
+                            اختر المدينة
                         </option>
-                        @foreach ($AllGovernorate as $id=>$name )
+                        @foreach ($AllCity as $id=>$name )
                         <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
-                        @error('governorateId')
+                        @error('city_id')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
 
@@ -39,9 +39,10 @@
             <!-- Buttons -->
             <div class="flex gap-4 mt-8">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
-                    {{ $cityId ? 'Update' : 'Create' }}
+                    {{ $locationId ? 'Update' : 'Create' }}
                 </button>
-                <a href="{{ route('city.index') }}" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
+                <a href="{{ route('location.index') }}"
+                    class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
                     Cancel
                 </a>
             </div>

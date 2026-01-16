@@ -103,7 +103,7 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('partner.index') }}" class="block px-3 py-1 rounded hover:bg-gray-700">عرض
+                        <a href="{{ route('location.index') }}" class="block px-3 py-1 rounded hover:bg-gray-700">عرض
                             بيانات المناطق والمعالم</a>
                     </li>
                 </ul>
