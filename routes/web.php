@@ -29,13 +29,13 @@ Route::get('/', function () {
 Route::middleware(['verification'])->group(function () {
     Route::get('/details', function () {
         $cities = city::select('id', 'name')->get();
-        
+
         $householdId = session('household_verified');
         if (!$householdId) {
             abort(403, 'Unauthorized');
         }
         $household = \App\Models\household::with('location')->find($householdId);
-        return view('details')->with('cities', $cities )->with('household', $household);
+        return view('details')->with('cities', $cities)->with('household', $household);
     })->name('details');
     Route::patch('/submit-details', [HouseholdController::class, 'updateDetails'])->name('submit-details');
     // Delete 
@@ -49,12 +49,11 @@ Route::middleware(['verification'])->group(function () {
         session()->flush();
         return redirect('/');
     })->name('logout');
-        
-    });
+});
 
 Route::view('/welcome', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -62,6 +61,6 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-  
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';

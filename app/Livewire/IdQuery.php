@@ -118,7 +118,10 @@ class IdQuery extends Component
         }
 
         $this->resetValidation();
-        session(['household_verified' => $this->houseHold->id , 'household_name' => $this->houseHold->FName ]);
+        session(['household_verified' => $this->houseHold->id, 'household_name' => $this->houseHold->FName]);
+
+        cache()->increment('homepage_visits' , 1);
+
         return redirect()->to('/details');
     }
 

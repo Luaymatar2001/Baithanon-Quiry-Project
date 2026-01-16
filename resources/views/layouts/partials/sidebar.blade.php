@@ -22,7 +22,8 @@
     <nav class="h-[calc(100vh-64px)] overflow-y-auto px-4 py-4">
         <ul class="space-y-2 text-sm">
             <li>
-                <a href="#" class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700 hover:text-white">
+                <a href="{{route('dashboard')}}"
+                    class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700 hover:text-white">
                     لوحة التحكم
                 </a>
             </li>
@@ -108,13 +109,19 @@
                     </li>
                 </ul>
             </li>
+            @auth
+            @if(auth()->user()->role === 'supervisor')
+
             <div class="border-b border-gray-700 my-4 text-xs text-gray-500"> المستخدمين</div>
+
             <li>
                 <a href="{{ route('users.index') }}"
                     class="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-700 hover:text-white">
                     إدارة بيانات المستخدمين
                 </a>
             </li>
+            @endif
+            @endauth
         </ul>
     </nav>
 </aside>
