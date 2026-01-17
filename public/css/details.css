@@ -675,7 +675,7 @@ th.min-w-50px {
     background: linear-gradient(135deg, #00c6ff, #0072ff);
     color: white;
     padding: 12px 25px;
-    margin-top: 50px;
+    margin-top: 10px;
     margin-bottom: 10px;
     border: none;
     border-radius: 100px;
@@ -1022,13 +1022,14 @@ textarea {
 /* Switch */
 .legal-switch input[type="checkbox"] {
     appearance: none;
-    width: 44px;
+    width: 33px;
     height: 24px;
     background: #CBD5E1;
     border-radius: 20px;
     position: relative;
     transition: all 0.3s ease;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .legal-switch input[type="checkbox"]::before {
@@ -1048,7 +1049,7 @@ textarea {
 }
 
 .legal-switch input[type="checkbox"]:checked::before {
-    transform: translateX(20px);
+    transform: translateX(10px);
 }
 
 .legal-switch.error {
@@ -1058,6 +1059,31 @@ textarea {
 
 .legal-switch.error label {
     color: #7F1D1D;
+}
+
+/* Mobile responsive */
+@media (max-width: 576px) {
+    .legal-switch {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px 14px;
+    }
+
+    .legal-switch label {
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .legal-switch input[type="checkbox"] {
+        width: 30px;
+        height: 22px;
+    }
+
+    .legal-switch input[type="checkbox"]::before {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .btn-disabled {

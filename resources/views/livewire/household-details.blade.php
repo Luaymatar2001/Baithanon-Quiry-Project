@@ -171,8 +171,7 @@
     <div class="Container_HouseHold bg-white shadow-lg rounded-xl p-6 mb-2" style="margin-top: 20px;">
         <div class="title_div" >
             <h2 class="text-2xl font-bold"> معلومات أفراد الأسرة </h2>
-
-             <button class="open-btn-add"><i class="fa-regular fa-pen-to-square"></i> أضف فرد </button>
+                <button class="open-btn-add"><i class="fa-regular fa-pen-to-square"></i> أضف فرد </button>
         </div>
 
 
