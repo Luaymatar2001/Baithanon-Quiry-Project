@@ -36,7 +36,7 @@ class HouseholdController extends Controller
                 'health_status' => 'nullable|string|max:255|in:سليم,مريض,مصاب,متوفي,إعاقة سمعية,إعاقة جسدية,إعاقة عقلية,إعاقة بصرية,حالات حرجة',
                 'Sources_income' => 'nullable|string|max:255|in:عاطل,موظف حكومي,موظف خاص,موظف عقود,موظف وكالة',
                 'location_id' => 'nullable|integer|exists:locations,id',
-                'governorate_id'=>'nullable|integer|exists:governorates,id',
+                'governorate_id' => 'nullable|integer|exists:governorates,id',
                 'Date_partner_martyrdom' => 'nullable|Date'
             ],
             [
@@ -63,10 +63,10 @@ class HouseholdController extends Controller
 
                 // تاريخ استشهاد الشريك
                 'Date_partner_martyrdom.date' => 'صيغة تاريخ استشهاد الشريك غير صحيحة',
-                'locations.exists'=>'موقعك غير موجود لدينا',
-                'locations.integer'=>'أرجوا الأختيار بالطريقة الصحيحة',
-                'governorate_id.exists' =>'محافظتك غير موجود لدينا',
-                'governorate_id.integer'=>'أرجوا الأختيار بالطريقة الصحيحة',
+                'locations.exists' => 'موقعك غير موجود لدينا',
+                'locations.integer' => 'أرجوا الأختيار بالطريقة الصحيحة',
+                'governorate_id.exists' => 'محافظتك غير موجود لدينا',
+                'governorate_id.integer' => 'أرجوا الأختيار بالطريقة الصحيحة',
             ]
 
         );
@@ -79,7 +79,7 @@ class HouseholdController extends Controller
 
         $validatedData = $validator->validated();
 
-    //    dd($validatedData);
+        //    dd($validatedData);
         $household->update([
             'status' => $validatedData['status'] ?? null,
             'health_Status' => $validatedData['health_status'] ?? null,
@@ -87,7 +87,7 @@ class HouseholdController extends Controller
             'address' => $validatedData['address'] ?? null,
             'cityId' => $validatedData['city_id'] ?? null,
             'location_id' => $validatedData['location_id'] ?? null,
-            'governorate_id' => $validatedData['governorate_id'] ?? null,   
+            'governorate_id' => $validatedData['governorate_id'] ?? null,
             'Date_partner_martyrdom' => $validatedData['Date_partner_martyrdom'] ?? null
         ]);
 
@@ -101,10 +101,7 @@ class HouseholdController extends Controller
     {
         //
     }
-    public function create()
-    {
-       
-    }
+    public function create() {}
     public function store(Request $request) {}
     public function show($id)
     {
@@ -126,9 +123,9 @@ class HouseholdController extends Controller
         }
 
         $householdId = household::findOrFail($householdId);
-         if (!$householdId->legal_confirmation) {
+        if (!$householdId->legal_confirmation) {
             abort(403, 'Unauthorized - Legal confirmation required');
-         }
+        }
 
         // Validation
         $validator = Validator::make($request->all(), [
@@ -173,21 +170,22 @@ class HouseholdController extends Controller
             'BirthDate.date'     => 'صيغة تاريخ الميلاد غير صحيحة',
             'BirthDate.before'  => 'تاريخ الميلاد يجب أن يكون قبل اليوم',
         ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator, 'popup_member')
+                ->withInput();
+        }
+
         $validated = $validator->validated();
 
         $personId = $validated['PersonId'] ?? null;
-            $exists =
-                household::where('PersonId', $personId)->exists()
-                || partner::where('PersonId', $personId)->exists()
-                || head_children::where('PersonId', $personId)->exists();
+        $exists =
+            household::where('PersonId', $personId)->exists()
+            || partner::where('PersonId', $personId)->exists()
+            || head_children::where('PersonId', $personId)->exists();
 
-            if ($exists) {
-                return redirect()->back()->with('IdExistedMessage', 'رقم الهوية مسجل مسبقًا، يرجى التحقق من البيانات أو التواصل مع الدعم الفني. *0567275232*');
-            }
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator, 'popup_add_member')
-                ->withInput();
+        if ($exists) {
+            return redirect()->back()->with('IdExistedMessage', 'رقم الهوية مسجل مسبقًا، يرجى التحقق من البيانات أو التواصل مع الدعم الفني. *0567275232*');
         }
 
         if (in_array($validated['relation'], ['زوج', 'ابن'])) {
@@ -258,6 +256,12 @@ class HouseholdController extends Controller
             'health_status.required' => 'يرجى اختيار الحالة الصحية',
             'BirthDate.before' => 'تاريخ الميلاد يجب أن يكون قبل اليوم',
         ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator, 'popup_member')
+                ->withInput();
+        }
 
         $data =  $validator->validated();
 
@@ -480,8 +484,8 @@ class HouseholdController extends Controller
 
     public function destroy(Request $request, $id)
     {
-         $id = Crypt::decrypt($id);
-    
+        $id = Crypt::decrypt($id);
+
         if ($request->type === 'partner') {
             partner::findOrFail($id)->delete();
         } elseif ($request->type === 'child') {

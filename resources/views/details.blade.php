@@ -51,7 +51,7 @@
     </script>
     @endif
     <!-- IdExistedMessage -->
-     @if(session('IdExistedMessage'))
+    @if(session('IdExistedMessage'))
     <script>
         Swal.fire({
         icon: 'error',
@@ -65,7 +65,7 @@
 
     <div id="popup-overlay" class="overlay1">
         <div class="popup1">
-        <div class="close-btn"> <span><i class="fa-solid fa-x"></i> </div>
+            <div class="close-btn"> <span><i class="fa-solid fa-x"></i> </div>
 
             <h2>أضف بياناتك <i class="fa-solid fa-feather-pointed"></i></h2>
 
@@ -80,7 +80,8 @@
                         <select name="status" required>
                             @foreach(['متزوج','مطلق','مطلقة','أرمل','أرملة','أرملة بعد حرب 2023','أعزب تعدى ال 40 عام']
                             as $status)
-                            <option value="{{ $status }}" {{ old('status', $household->status ?? '') == $status ? 'selected' : '' }}>
+                            <option value="{{ $status }}"
+                                {{ old('status', $household->status ?? '') == $status ? 'selected' : '' }}>
                                 {{ $status }}
                             </option>
                             @endforeach
@@ -174,16 +175,16 @@
                     </div>
                 </div>
 
-                
 
-@livewire('location-selector', [
-    'governorateMessage' => $errors->getBag('popup_update_houseHold')->first('governorate_id'),
-    'citiesMessage' => $errors->getBag('popup_update_houseHold')->first('city'),
-    'locationsMessage' => $errors->getBag('popup_update_houseHold')->first('locations'),
-    'selectedGovernorate' => old('governorate_id', $household->governorate_id ?? null),
-    'selectedCity' => old('city', $household->city ?? null),
-    'selectedLocation' => old('locations', $household->locations ?? null)
-])                {{-- العنوان --}}
+
+                @livewire('location-selector', [
+                'governorateMessage' => $errors->getBag('popup_update_houseHold')->first('governorate_id'),
+                'citiesMessage' => $errors->getBag('popup_update_houseHold')->first('city'),
+                'locationsMessage' => $errors->getBag('popup_update_houseHold')->first('locations'),
+                'selectedGovernorate' => old('governorate_id', $household->governorate_id ?? null),
+                'selectedCity' => old('city', $household->city ?? null),
+                'selectedLocation' => old('locations', $household->locations ?? null)
+                ]) {{-- العنوان --}}
                 <div class="field">
                     <label class="field-label">العنوان بالكامل</label>
                     <div class="custom-input">
@@ -204,22 +205,21 @@
                     </div>
                 </div>
 
-            <button
-                type="submit"
-                class="submitBtn submit-btn {{ $household->legal_confirmation ? '' : 'btn-disabled' }}"
-                {{ $household->legal_confirmation ? '' : 'disabled' }}>
-                إرسال
-            </button>
+                <button type="submit"
+                    class="submitBtn submit-btn {{ $household->legal_confirmation ? '' : 'btn-disabled' }}"
+                    {{ $household->legal_confirmation ? '' : 'disabled' }}>
+                    إرسال
+                </button>
 
-            @if (!$household->legal_confirmation)
-            <p class="legalMessage" style="color:red; font-size:15px; margin-top:8px;">
-                يرجى تأكيد المسؤولية القانونية أعلاه لتمكين زر الإرسال.
-            </p>
-            @endif
+                @if (!$household->legal_confirmation)
+                <p class="legalMessage" style="color:red; font-size:15px; margin-top:8px;">
+                    يرجى تأكيد المسؤولية القانونية أعلاه لتمكين زر الإرسال.
+                </p>
+                @endif
             </form>
 
         </div>
-    </div> 
+    </div>
     @if ($errors->popup_update_houseHold->any())
     <script>
         document.getElementById('popup-overlay').style.display = 'flex';
@@ -228,8 +228,8 @@
 
     <div id="popup-overlay2" class="overlay2">
         <div class="popup2">
-        <div class="close-btn"> <span><i class="fa-solid fa-x"></i> </div>
-         <h2>أضف بياناتك<i class="fa-solid fa-feather-pointed"></i>
+            <div class="close-btn"> <span><i class="fa-solid fa-x"></i> </div>
+            <h2>أضف بياناتك<i class="fa-solid fa-feather-pointed"></i>
             </h2>
             {{-- update --}}
             <form id="popup-form2" action="{{ route('addRowMember') }}" method="POST">
@@ -254,19 +254,19 @@
                         </div>
 
                         <div style="display:flex;">
-                            @error('FName', 'popup_add_member')
+                            @error('FName', 'popup_member')
                             <small class="error-msg">{{ $message }}</small>
                             @enderror
 
-                            @error('SName', 'popup_add_member')
+                            @error('SName', 'popup_member')
                             <small class="error-msg">{{ $message }}</small>
                             @enderror
 
-                            @error('TName', 'popup_add_member')
+                            @error('TName', 'popup_member')
                             <small class="error-msg">{{ $message }}</small>
                             @enderror
 
-                            @error('LName', 'popup_add_member')
+                            @error('LName', 'popup_member')
                             <small class="error-msg">{{ $message }}</small>
                             @enderror
                         </div>
@@ -280,7 +280,7 @@
                     <div class="custom-input">
                         <input type="number" name="PersonId" value="{{ old('PersonId', $member->PersonId ?? '') }}"
                             maxlength="9" required>
-                        @error('PersonId', 'popup_add_member')
+                        @error('PersonId', 'popup_member')
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
                         <script>
@@ -306,13 +306,13 @@
 
                     <div class="custom-select">
                         <select name="relation" required>
-                       @php
+                            @php
                             $allowedStatuses = ['أرملة', 'أرملة بعد حرب 2023', 'مطلقة'];
-                        @endphp
+                            @endphp
 
-                        @if($household && !in_array($household->status, $allowedStatuses))
+                            @if($household && !in_array($household->status, $allowedStatuses))
                             <option value="زوجة">زوجة</option>
-                        @endif
+                            @endif
 
 
                             <option value="ابن">ابن</option>
@@ -320,11 +320,11 @@
                         </select>
 
 
-                        @error('relation', 'popup_add_member')
+                        @error('relation', 'popup_member')
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
 
-                        
+
                         <svg class="select-arrow" width="14" height="9" viewBox="0 0 14 9" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -357,7 +357,7 @@
                             <option value="حالات حرجة">حالات حرجة
                             </option>
                         </select>
-                        @error('health_status', 'popup_add_member')
+                        @error('health_status', 'popup_member')
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
 
@@ -372,40 +372,39 @@
                     <div class="custom-input">
                         <input type="date" name="BirthDate" value="{{ old('BirthDate', $member->BirthDate ?? '') }}"
                             required>
-                        @error('BirthDate', 'popup_add_member')
+                        @error('BirthDate', 'popup_member')
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
 
-            <button
-                type="submit"
-                class="submitBtn submit-btn {{ $household->legal_confirmation ? '' : 'btn-disabled' }}"
-                {{ $household->legal_confirmation ? '' : 'disabled' }}>
-                إرسال
-            </button>
+                <button type="submit"
+                    class="submitBtn submit-btn {{ $household->legal_confirmation ? '' : 'btn-disabled' }}"
+                    {{ $household->legal_confirmation ? '' : 'disabled' }}>
+                    إرسال
+                </button>
 
-            @if (!$household->legal_confirmation)
-            <p class="legalMessage" style="color:red; font-size:15px; margin-top:8px;">
-                يرجى تأكيد المسؤولية القانونية أعلاه لتمكين زر الإرسال.
-            </p>
-            @endif
-
-
-
-
+                @if (!$household->legal_confirmation)
+                <p class="legalMessage" style="color:red; font-size:15px; margin-top:8px;">
+                    يرجى تأكيد المسؤولية القانونية أعلاه لتمكين زر الإرسال.
+                </p>
+                @endif
 
             </form>
-
         </div>
     </div>
+    @if ($errors->popup_member->any())
+    <script>
+        document.getElementById('popup-overlay2').style.display = 'flex';
+    </script>
+    @endif
 
 
 
 </body>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
     const checkbox = document.getElementById('legalConfirm');
     const buttons  = document.querySelectorAll('.submitBtn');
