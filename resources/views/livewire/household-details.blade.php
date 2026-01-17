@@ -1,26 +1,27 @@
 <div class="container">
-     <div class="Container_Head" >
+    <div class="Container_Head">
 
-        <div class="title_div" >
+        <div class="title_div">
             <h3 style="margin-bottom: 20px;">
-                 تحديث بيانات أسر وأهالي بيت حانون وأضافة بيانات الأبناء والأزواج
+                تحديث بيانات أسر وأهالي بيت حانون وأضافة بيانات الأبناء والأزواج
                 <i class="fa-solid fa-feather-pointed" style="font-size:23px;"></i>
-                </h3>        
-         
+            </h3>
+
         </div>
-</div>
+    </div>
 
- <div class="legal-switch">
-    <input type="checkbox" id="legalConfirm" wire:model.live="legalConfirm" {{ $household->legal_confirmation? 'checked' : '' }} />
-    <label for="legalConfirm" style="font-weight: 500; font-size: 16px;">
-        أُقِرّ وأتحمّل كامل المسؤولية القانونية عن أي خطأ في البيانات التي قمت بإدخالها،
-        وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك.
-    </label>
-            <span style="color:red; font-weight: 900; font-size: 20px;">*</span>
+    <div class="legal-switch">
+        <input type="checkbox" id="legalConfirm" wire:model.live="legalConfirm"
+            {{ $household->legal_confirmation? 'checked' : '' }} />
+        <label for="legalConfirm" style="font-weight: 500; font-size: 16px;">
+            أُقِرّ وأتحمّل كامل المسؤولية القانونية عن أي خطأ في البيانات التي قمت بإدخالها،
+            وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك.
+        </label>
+        <span style="color:red; font-weight: 900; font-size: 20px;">*</span>
 
-</div>
+    </div>
     <div class="Container_HouseHold bg-white ">
-        <div class="title_div" >
+        <div class="title_div">
             <h3 class=""> معلومات رب الأسرة :</h3>
 
             <button class="open-btn"><i class="fa-regular fa-pen-to-square"></i> تحديث البيانات</button>
@@ -84,7 +85,7 @@
                     <span class="font-medium ">{{ $household->Gender }}</span>
                 </div>
             </div>
-                    <div class="Grid-cell">
+            <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold "> الحالة الإجتماعية : </span>
                     <span class="font-medium ">
@@ -104,12 +105,12 @@
             </div>
             @endif
         </div>
-     
-        
+
+
 
         <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
-    
-             <div class="Grid-cell">
+
+            <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> المحافظة : </span>
 
@@ -123,7 +124,7 @@
                 </div>
             </div>
 
-             <div class="Grid-cell">
+            <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> المدينة: </span>
 
@@ -138,7 +139,7 @@
             </div>
 
 
-             <div class="Grid-cell">
+            <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> المنطقة: </span>
 
@@ -169,9 +170,9 @@
 
     {{-- Dev 2 --}}
     <div class="Container_HouseHold bg-white shadow-lg rounded-xl p-6 mb-2" style="margin-top: 20px;">
-        <div class="title_div" >
+        <div class="title_div">
             <h2 class="text-2xl font-bold"> معلومات أفراد الأسرة </h2>
-                <button class="open-btn-add"><i class="fa-regular fa-pen-to-square"></i> أضف فرد </button>
+            <button class="open-btn-add"><i class="fa-regular fa-pen-to-square"></i> أضف فرد </button>
         </div>
 
 
@@ -295,21 +296,24 @@
                     </div>
                     <!--end::Table-->
                 </div>
-                <small>عدد أفراد الأسرة المضافين <span class='numMember'>{{ $household->partner->count() +$household->children->count() + 1 }} <span>/{{$household->num_Family_Members}}</small>
+                <small>عدد أفراد الأسرة المضافين <span
+                        class='numMember'>{{ $household->partner->count() +$household->children->count() + 1 }}
+                        <span>/{{$household->num_Family_Members}}</small>
                 <!--end::Tap pane-->
             </div>
         </div>
         <!--end::Body-->
-        
+
     </div>
 
-     <div style="text-align: center;">
+    <div style="text-align: center;">
         <!-- hidden-smooth -->
-    <button class="SaveEditBtn {{ !$household->legal_confirmation ? 'hidden-smooth' : '' }} " id="SaveEditBtn" style="width: 250px; font-size:20px;">
-        <i class="fa-regular fa-floppy-disk"></i> حفظ كل التعديلات
-    </button>
-</div>
-   
+        <button class="SaveEditBtn {{ !$household->legal_confirmation ? 'hidden-smooth' : '' }} " id="SaveEditBtn"
+            style="width: 250px; font-size:20px;">
+            <i class="fa-regular fa-floppy-disk"></i> حفظ كل التعديلات
+        </button>
+    </div>
+
 
 </div>
 
@@ -317,9 +321,33 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
  const SaveEditBtn = document.querySelector('.SaveEditBtn');
+const addBtn = document.querySelector('.open-btn-add');
+const maxMembers = {{ $household->num_Family_Members }};
 
- 
+// دالة لحساب عدد أفراد الأسرة الحاليين من الجدول مباشرة
+function getCurrentMembers() {
+return document.querySelectorAll('tbody tr').length + 1;
+// +1 لرب الأسرة نفسه
+}
+
+// دالة لتفعيل/إخفاء زر إضافة الفرد
+function toggleAddButton() {
+const currentMembers = getCurrentMembers();
+
+if (currentMembers >= maxMembers) {
+addBtn.classList.add('hidden-smooth');
+} else {
+addBtn.classList.remove('hidden-smooth');
+}
+}
+
+// تشغيل أول مرة عند تحميل الصفحة
+toggleAddButton();
+
     SaveEditBtn.addEventListener('click', function (e) {
+        // مراقبة أي إضافة عضو عبر Livewire أو DOM
+            const observer = new MutationObserver(toggleAddButton);
+            observer.observe(document.querySelector('tbody'), { childList: true, subtree: true });
         const originalCount = {{$household->num_Family_Members ?? 0 }};
         const currentCount = {{ $household->partner->count() + $household->children->count() + 1 }};
         if (originalCount > currentCount) {
@@ -330,6 +358,7 @@
             );
             return;
         }
+        
         e.preventDefault(); 
 
         Swal.fire(
@@ -342,6 +371,9 @@
         const btn = e.target.closest('.delete-member');
         if (!btn) return;
 
+        // مراقبة أي إضافة عضو عبر Livewire أو DOM
+            const observer = new MutationObserver(toggleAddButton);
+            observer.observe(document.querySelector('tbody'), { childList: true, subtree: true });
         e.preventDefault();
 
         const memberId = btn.dataset.id;
@@ -385,6 +417,9 @@
                             'تم حذف السجل بنجاح',
                             'success'
                         );
+                       // مراقبة أي إضافة عضو عبر Livewire أو DOM
+                        const observer = new MutationObserver(toggleAddButton);
+                        observer.observe(document.querySelector('tbody'), { childList: true, subtree: true });
                     } else {
                         Swal.fire(
                             'خطأ',

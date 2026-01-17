@@ -158,7 +158,7 @@
                             @foreach(['سليم','مريض','مصاب','متوفي','إعاقة سمعية','إعاقة جسدية','إعاقة عقلية','إعاقة
                             بصرية','حالات حرجة'] as $health)
                             <option value="{{ $health }}"
-                                {{ old('health_status', $household->health_status ?? '') == $health ? 'selected' : '' }}>
+                                {{ old('health_status', $household->health_Status ?? '') == $health ? 'selected' : '' }}>
                                 {{ $health }}
                             </option>
                             @endforeach
@@ -175,16 +175,16 @@
                     </div>
                 </div>
 
-
-
                 @livewire('location-selector', [
                 'governorateMessage' => $errors->getBag('popup_update_houseHold')->first('governorate_id'),
                 'citiesMessage' => $errors->getBag('popup_update_houseHold')->first('city'),
                 'locationsMessage' => $errors->getBag('popup_update_houseHold')->first('locations'),
-                'selectedGovernorate' => old('governorate_id', $household->governorate_id ?? null),
-                'selectedCity' => old('city', $household->city ?? null),
-                'selectedLocation' => old('locations', $household->locations ?? null)
-                ]) {{-- العنوان --}}
+
+                // قيم الاختيار الحالية
+                'selectedGovernorate' => $household->governorate_id ?? null,
+                'selectedCity' => $household->city?->id ?? null,
+                'selectedLocation' => $household->location?->id ?? null
+                ])
                 <div class="field">
                     <label class="field-label">العنوان بالكامل</label>
                     <div class="custom-input">
@@ -336,28 +336,26 @@
                 <div class="field">
                     <label class="field-label">
                         الحالة الصحية <span class="requiredStar">*
-
                     </label>
 
+
                     <div class="custom-select">
-
-
-                        <select name="health_status" required>
-                            <option value="سليم" selected>سليم</option>
+                        <select name="health_status" id="health_status2" required>
+                            <option value="سليم">سليم</option>
                             <option value="مريض">مريض</option>
                             <option value="مصاب">مصاب</option>
-                            <option value="إعاقة سمعية">إعاقة سمعية
-                            </option>
-                            <option value="إعاقة جسدية">إعاقة جسدية
-                            </option>
-                            <option value="إعاقة عقلية">إعاقة عقلية
-                            </option>
-                            <option value="إعاقة بصرية">إعاقة بصرية
-                            </option>
-                            <option value="حالات حرجة">حالات حرجة
-                            </option>
+                            <option value="حالات حرجة">حالات حرجة</option>
+                            <option value="إعاقة جسدية">إعاقة جسدية</option>
+                            <option value="إعاقة سمعية">إعاقة سمعية</option>
+                            <option value="إعاقة عقلية">إعاقة عقلية</option>
+                            <option value="إعاقة بصرية">إعاقة بصرية</option>
+                            <option value="إعاقة بصرية">إعاقة بصرية</option>
                         </select>
+
                         @error('health_status', 'popup_member')
+                        <small class="error-msg">{{ $message }}</small>
+                        @enderror
+                        @error('health_Status', 'popup_member')
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
 
@@ -368,7 +366,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="field-label">الإسم بالكامل <span class="requiredStar">*</span></label>
+                    <label class="field-label">تاريخ الميلاد <span class="requiredStar">*</span></label>
                     <div class="custom-input">
                         <input type="date" name="BirthDate" value="{{ old('BirthDate', $member->BirthDate ?? '') }}"
                             required>
@@ -513,6 +511,7 @@ function bindEditButtons() {
 
 
     const relationSelect = document.querySelector('[name="relation"]');
+// const healthSelect = document.querySelector('[name="health_status"]');
 
     // تعيين العلاقة بناءً على member object
     const relationType = member.relationship|| '';
@@ -521,15 +520,23 @@ function bindEditButtons() {
   if (relationType === 'زوج' || relationType === 'زوجة') {
     
        memberTypeInput.value = 'partner';
+       console.log('health_Status =', JSON.stringify(member.health_Status));
+    document.querySelector('[id="health_status2"]').value = member.health_Status?.trim() || '';
+    document.querySelector('[name="BirthDate"]').value = member.birthdate || '';
+    console.log(member.health_Status);
+    
   } else {
-        console.log(relationType);
+        // console.log(relationType);
         memberTypeInput.value = 'child';
-  }
+        console.log('health_Status =', JSON.stringify(member.health_Status));
+            document.querySelector('[id="health_status2"]').value = member.health_Status?.trim() || '';
+            document.querySelector('[name="BirthDate"]').value = member.BirthDate || '';
+  console.log(member.health_Status);
+        }
 
-const healthSelect = document.querySelector('[name="health_status"]');
-healthSelect.value = member.health_Status || '';
 
-document.querySelector('[name="BirthDate"]').value = member.BirthDate || '';
+
+
 
 // action + method
 form.action = "{{ route('updateRowMember') }}";
