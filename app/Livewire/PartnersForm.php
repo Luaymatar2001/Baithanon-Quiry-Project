@@ -18,6 +18,7 @@ class partnersForm extends Component
     public $birthdate;
     public $health_Status;
     public $relationship;
+    public $householdId;
 
     public function mount($partnerId = null)
     {
@@ -39,6 +40,7 @@ class partnersForm extends Component
         $this->birthdate = $partner->birthdate;
         $this->relationship = $partner->relationship;
         $this->health_Status = $partner->health_Status;
+        $this->householdId = $partner->householdId;
     }
 
 
@@ -49,6 +51,7 @@ class partnersForm extends Component
 
             'PersonId' => [
                 'required',
+                'digits:9',
                 Rule::unique('partners', 'PersonId')->ignore($this->partnerId),
             ],
             'FName' => 'required|string|max:255',
@@ -58,6 +61,8 @@ class partnersForm extends Component
             'birthdate' => 'nullable|date',
             'health_Status' => 'nullable|string|max:255',
             'relationship' => 'nullable|string',
+            'householdId' => 'required|digits:9|exists:heads_households,PersonId',
+
         ]);
 
 

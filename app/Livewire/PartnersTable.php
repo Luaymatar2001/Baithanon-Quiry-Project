@@ -102,6 +102,8 @@ final class PartnersTable extends PowerGridComponent
                 ->searchable()
                 ->editOnClick(),
 
+
+
             Column::make('اسم الأب', 'SName')
                 ->sortable()
                 ->searchable()->editOnClick(),
@@ -123,6 +125,11 @@ final class PartnersTable extends PowerGridComponent
             Column::make('الحالة الصحية', 'health_Status')
                 ->searchable(),
 
+            Column::make('هوية رب الأسرة', 'householdId')
+                ->sortable()
+                ->searchable()
+                ->editOnClick(),
+                
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
             Column::action('Action')
@@ -146,6 +153,7 @@ final class PartnersTable extends PowerGridComponent
                 ->optionLabel('name')
                 ->optionValue('id'),
             Filter::inputText('health_Status'),
+            Filter::inputText('householdId'),
 
         ];
     }

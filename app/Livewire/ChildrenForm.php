@@ -22,6 +22,7 @@ class childrenForm extends Component
     public $Gender;
     public $health_Status;
     public $relationship;
+    public $householdId;
 
     public function mount($childrenId = null)
     {
@@ -42,6 +43,7 @@ class childrenForm extends Component
         $this->LName = $children->LName;
         $this->BirthDate = $children->BirthDate;
         $this->Gender = $children->Gender;
+        $this->householdId = $children->householdId;
         $this->relationship = $children->relationship;
         $this->health_Status = $children->health_Status;
     }
@@ -54,7 +56,9 @@ class childrenForm extends Component
 
             'PersonId' => [
                 'required',
+                'numeric',
                 Rule::unique('heads_children', 'PersonId')->ignore($this->childrenId),
+                'digits:9',
             ],
             'FName' => 'required|string|max:255',
             'SName' => 'nullable|string|max:255',
@@ -62,6 +66,7 @@ class childrenForm extends Component
             'LName' => 'required|string|max:255',
             'BirthDate' => 'nullable|date',
             'Gender' => 'required|in:ذكر,أنثى',
+            'householdId' => 'required|digits:9|exists:heads_households,PersonId',
             'health_Status' => 'nullable|string|max:255',
             'relationship' => 'nullable|string',
         ]);

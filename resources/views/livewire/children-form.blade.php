@@ -46,14 +46,23 @@
                         required>
                     @error('PersonId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
-            </div>
 
-            <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-1">تاريخ الميلاد</label>
                     <input type="date" wire:model="BirthDate" name="BirthDate" class="w-full border rounded px-3 py-2">
                     @error('BirthDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">رقم هوية رب الأسرة</label>
+                    <input type="text" wire:model="householdId" name="householdId"
+                        class="w-full border rounded px-3 py-2">
+                    @error('householdId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+                
                 <div>
                     <label class="block text-sm font-medium mb-1">الجنس *</label>
                     <select wire:model="Gender" name="Gender" class="w-full border rounded px-3 py-2" required>

@@ -11,7 +11,6 @@ class PartnersImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        // \dd($row);
         return partner::updateOrCreate(
             [
                 'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
@@ -21,6 +20,7 @@ class PartnersImport implements ToModel, WithHeadingRow
                 'LName' => $row['allkb'] ?? null,
                 'birthdate' => $this->parseDate($row['tarykh_almylad'] ?? null),
                 'health_Status' => $row['alhal_alshy'] ?? null,
+                'householdId' => $row['hoy_rb_alasr'] ?? null,
                 'relationship' => $row['alaalak'] ?? null
             ]
         );
@@ -54,6 +54,7 @@ class PartnersImport implements ToModel, WithHeadingRow
             '*.اسم الجد' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
             '*.تاريخ الميلاد' => ['nullable', 'date'],
             '*.العلاقة' => ['nullable', 'string'],
+            '*.هوية رب الأسرة' => ['required', 'numeric', 'exists:heads_households,PersonId'],
             '*.الحالة الصحية' => ['nullable', 'string'],
         ];
     }

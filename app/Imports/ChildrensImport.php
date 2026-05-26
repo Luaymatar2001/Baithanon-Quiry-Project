@@ -19,7 +19,6 @@ class ChildrensImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        // \dd($row);
 
         return head_children::updateOrCreate(
             [
@@ -31,6 +30,7 @@ class ChildrensImport implements ToModel, WithHeadingRow
                 'BirthDate' => $this->parseDate($row['tarykh_almylad'] ?? null),
                 'Gender' => $row['algns'] ?? null,
                 'health_Status' => $row['alhal_alshy'] ?? null,
+                'householdId' => $row['hoy_rb_alasr'] ?? null,
                 'relationship' => $row['alaalak'] ?? null
             ]
         );
@@ -64,6 +64,7 @@ class ChildrensImport implements ToModel, WithHeadingRow
             '*.اسم الجد' => ['nullable', 'regex:/^[\p{L}\s]+$/u'],
             '*.تاريخ الميلاد' => ['nullable', 'date'],
             '*.الجنس' => ['nullable', 'string'],
+            '*.هوية رب الأسرة' => ['required', 'numeric', 'exists:heads_households,PersonId'],
             '*.العلاقة' => ['nullable', 'string'],
             '*.الحالة الصحية' => ['nullable', 'string'],
 

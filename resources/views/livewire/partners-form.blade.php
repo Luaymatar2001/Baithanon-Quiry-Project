@@ -76,6 +76,12 @@
                         <option value="حالات حرجة">حالات حرجة</option>
                     </select>
                 </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">رقم هوية رب الأسرة</label>
+                    <input type="text" wire:model="householdId" name="householdId"
+                        class="w-full border rounded px-3 py-2">
+                    @error('householdId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
             </div>
 
             <!-- Buttons -->

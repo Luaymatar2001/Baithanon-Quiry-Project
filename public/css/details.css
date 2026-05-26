@@ -1032,6 +1032,16 @@ textarea {
     flex-shrink: 0;
 }
 
+.navbar-welcome {
+    font-size: 14px;
+    color: #0f172a;
+    padding: 14px;
+    border-radius: 10px;
+    background: #e8f3fa;
+    /* border: 1px solid #bae6fd; */
+    font-weight: 600;
+}
+
 .legal-switch input[type="checkbox"]::before {
     content: "";
     position: absolute;
@@ -1091,6 +1101,7 @@ textarea {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
 .hidden-smooth {
     opacity: 0;
     visibility: hidden;

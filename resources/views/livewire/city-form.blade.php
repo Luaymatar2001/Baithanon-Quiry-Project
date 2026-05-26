@@ -20,7 +20,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">المحافظة</label>
-                    <select wire:model="governorateId" class="w-full border rounded px-3 py-2">
+                    <select wire:model="governorateId" class="w-full border rounded px-3 py-2" required>
                         <option value="">
                             اختر المحافظة
                         </option>
@@ -30,7 +30,6 @@
                         @error('governorateId')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
-
                     </select>
                 </div>
             </div>

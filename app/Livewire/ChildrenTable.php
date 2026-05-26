@@ -124,6 +124,11 @@ final class ChildrenTable extends PowerGridComponent
 
             Column::make('الحالة الصحية', 'health_Status')
                 ->searchable(),
+                
+            Column::make('هوية رب الأسرة', 'householdId')
+                ->sortable()
+                ->searchable()
+                ->editOnClick(),
 
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
@@ -149,6 +154,7 @@ final class ChildrenTable extends PowerGridComponent
                 ->optionLabel('name')
                 ->optionValue('id'),
             Filter::inputText('health_Status'),
+            Filter::inputText('householdId')
 
         ];
     }

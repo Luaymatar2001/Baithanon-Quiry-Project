@@ -2,7 +2,7 @@
     <div class="field">
         <label class="field-label">المحافظة</label>
         <div class="custom-select">
-            <select wire:model.live="governorate_id" name="governorate_id">
+            <select wire:model.live="governorate_id" name="governorate_id" required>
                 <option value="">اختر المحافظة</option>
                 @foreach($governorates as $gov)
                 <option value="{{ $gov->id }}">{{ $gov->name }}</option>
@@ -26,7 +26,7 @@
     <div class="field">
         <label class="field-label">المنطقة</label>
         <div class="custom-select">
-            <select wire:model.live="location_id" name="location_id">
+            <select wire:model.live="location_id" name="location_id" required>
                 <option value="">اختر المنطقة</option>
                 @foreach($locations as $location)
                 <option value="{{ $location->id }}">{{ $location->name }}</option>
