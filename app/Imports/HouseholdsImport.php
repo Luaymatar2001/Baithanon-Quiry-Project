@@ -17,7 +17,10 @@ class HouseholdsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-       
+        $cities = City::pluck('id', 'name');
+        $locations = Location::pluck('id', 'name');
+        $governorates = Governorates::pluck('id', 'name');
+
         return household::updateOrCreate(
             [
                 'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
@@ -35,9 +38,17 @@ class HouseholdsImport implements ToModel, WithHeadingRow
                 'Sources_income' => $row['msadr_aldkhl'] ?? null,
                 'address' => $row['alaanoan'] ?? null,
                 'Notes' => $row['mlahthat'] ?? null,
-                'cityId' => city::where('name', 'like', '%' . trim($row['almdyn']) . '%')->value('id'),
-                'location_id' => location::where('name', 'like', '%' . trim($row['almokaa']) . '%')->value('id'),
-                'governorate_id' => governorates::where('name', 'like', '%' . trim($row['almhafth']) . '%')->value('id'),
+                'cityId' => !empty(trim($row['almdyn'] ?? ''))
+                    ? ($cities[trim($row['almdyn'])] ?? null)
+                    : null,
+
+                'location_id' => !empty(trim($row['almokaa'] ?? ''))
+                    ? ($locations[trim($row['almokaa'])] ?? null)
+                    : null,
+
+                'governorate_id' => !empty(trim($row['almhafth'] ?? ''))
+                    ? ($governorates[trim($row['almhafth'])] ?? null)
+                    : null,
                 'Date_partner_martyrdom' => $this->parseDate($row['tarykh_astshhad_alzogalshryk'] ?? null),
             ]
         );

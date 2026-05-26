@@ -97,7 +97,26 @@
                         @enderror
                     </div>
                 </div>
+                {{-- تحديث رقم الهاتف --}}
+                <div class="field">
+                    <label class="field-label">رقم الهاتف</label>
+                    <div class="custom-input">
+                        <input type="number" id="Phone_Number" name="Phone_Number" placeholder="رقم الهاتف"
+                            value="{{ old('Phone_Number', $household->Phone_Number ?? '') }}">
+                        <script>
+                            const input = document.getElementById('Phone_Number');
+                                        input.addEventListener('input', function() {
+                                            if(this.value.length > 10) {
+                                                this.value = this.value.slice(0, 10);
+                                            }
+                                        });
+                        </script>
 
+                        @error('Phone_Number', 'popup_update_houseHold')
+                        <small class="error-msg">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
                 {{-- تاريخ الاستشهاد --}}
                 <div class="field" id="martyr-date-field"
                     style="display:{{ old('status', $household->status ?? '') == 'أرملة بعد حرب 2023' ? 'block' : 'none' }};">
@@ -284,16 +303,16 @@
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
                         <script>
-                            const form = document.getElementById('main-form');
-                        const input = document.getElementById('Id');
-                        
-                        // منع إدخال أكثر من 9 أرقام
-                        input.addEventListener('input', function () {
-                        this.value = this.value.replace(/\D/g, ''); // أرقام فقط
-                        if (this.value.length > 9) {
-                        this.value = this.value.slice(0, 9);
-                        }
-                        });
+                            // منع إدخال أكثر من 9 أرقام (لا تكرر متغيرات عامة مثل input)
+                            const idInput = document.getElementById('Id');
+                            if (idInput) {
+                                idInput.addEventListener('input', function () {
+                                    this.value = this.value.replace(/\D/g, ''); // أرقام فقط
+                                    if (this.value.length > 9) {
+                                        this.value = this.value.slice(0, 9);
+                                    }
+                                });
+                            }
                         </script>
 
                     </div>
@@ -305,7 +324,8 @@
                     </label>
 
                     <div class="custom-select">
-                        <select name="relation" required>
+                        <select name="relation"  required @php $retVal=($household->relation) ? disabled : "" ;
+                            @endphp>
                             @php
                             $allowedStatuses = ['أرملة', 'أرملة بعد حرب 2023', 'مطلقة'];
                             @endphp
