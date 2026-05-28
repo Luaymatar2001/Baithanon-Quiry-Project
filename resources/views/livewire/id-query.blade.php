@@ -1,31 +1,74 @@
 <div class="form-card combined-card">
     <!-- القسم الأول -->
     <div class="card1">
-        <div class="card-section card-header card_color" >
-        <h2 class="main-title" ><i class="fa-duotone fa-solid fa-user-check"></i> بوابة تسجيل بيانات مواطني
-            مدينة بيت حانون :</h2>
-            </div>
+        <div class="card-section card-header card_color">
+            <h2 class="main-title"><i class="fa-duotone fa-solid fa-user-check"></i> بوابة تسجيل بيانات مواطني
+                مدينة بيت حانون :</h2>
+        </div>
         <div class="card-section card-blue">
             <h2 class="title2"><i class="fa-duotone fa-solid fa-lock"></i> تسجيل الدخول </h2>
             <p> يهدف هذا النظام إلى تحديث وتسجيل بيانات مواطني مدينة بيت حانون – المحافظة الشمالية/قطاع غزة، وذلك لتمكين
                 الجهات المختصة
                 من تقديم المساعدات والخدمات المختلفة بالشراكة مع المؤسسات المحلية والدولية.
             </p>
-            <small>
+            {{-- <small>
                 تم تصميم هذه البوابة لتكون منصة موحدة تجمع البيانات الموثوقة، وتسهّل مشاركتها مع المؤسسات الشريكة بما
                 يضمن
                 سرعة الوصول
                 إلى المعلومات، وتحسين جودة الخدمات المقدمة للأهالي، وتعزيز فعالية برامج الدعم الإنساني والتنمية
                 المجتمعية.
-            </small>
+            </small> --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Box 1 -->
+                <div
+                    class="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[rgb(27,197,189)] hover:shadow-xl transition">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <h3 class="text-gray-500 text-sm">عدد العائلات</h3>
+                            <p class="text-3xl font-bold text-gray-800">1,245</p>
+                        </div>
+
+                        <div
+                            class="w-12 h-12 rounded-full bg-[rgb(27,197,189)] flex items-center justify-center text-white text-xl">
+                            👨‍👩‍👧
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Box 2 -->
+                <div
+                    class="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[rgb(27,197,189)] hover:shadow-xl transition">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <h3 class="text-gray-500 text-sm">عدد الأفراد</h3>
+                            <p class="text-3xl font-bold text-gray-800">5,870</p>
+                        </div>
+
+                        <div
+                            class="w-12 h-12 rounded-full bg-[rgb(27,197,189)] flex items-center justify-center text-white text-xl">
+                            📊
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
-        
+
         <!-- القسم الثاني -->
         {{-- مرحلة إدخال رقم الهوية --}}
         @if ($step == 1)
         <div class="card-section1 card-cadet">
             <div style="margin-bottom: 1rem; border-bottom: 2px solid #1BC5BD; padding-bottom: 0.5rem;">
-            <h2 class="main-title">الإستعلام عن رقم الهوية:</h2>
+                <h2 class="main-title">الإستعلام عن رقم الهوية:</h2>
             </div>
             <form wire:submit.prevent="submit">
                 <div class="form-group">
@@ -44,7 +87,7 @@
                     @enderror
                 </div>
                 <div class="form-actions">
-                    <button type="submit">أستعلام</button>
+                    <button type="submit">إستعلام</button>
                 </div>
             </form>
         </div>
@@ -68,7 +111,7 @@
         @if($step === 3)
         <div class="verify-container">
             <div style="margin-bottom: 1rem; border-bottom: 2px solid #1BC5BD; padding-bottom: 0.5rem;">
-            <h2 class="main-title">التحقق الإضافي:</h2>
+                <h2 class="main-title">التحقق الإضافي:</h2>
             </div>
             {{-- السؤال الديناميكي --}}
             <div class="verify-box">
@@ -93,7 +136,7 @@
                 });
             });
     </script>
-<div class="card-section" style="
+    <div class="card-section" style="
     border: 4px solid #1BC5BD;
     background-color: #F0FDFA;
     border-radius: 10px;
@@ -102,7 +145,7 @@
 box-shadow:
     0 8px 20px rgba(15, 118, 110, 0.18),
     0 2px 6px rgba(0, 0, 0, 0.06);">
-    <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #cc4343ff;
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #cc4343ff;
         padding-bottom: 0.5rem solid #1BC5BD;">
             <i class="fa-solid fa-id-card"></i>
             تعليمات مهمة
