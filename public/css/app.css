@@ -86,16 +86,16 @@
 .stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 25px;
     margin-top: 20px;
 }
 
 .stat-box {
     background: #fff;
     border-radius: 12px;
-    padding: 18px 20px;
+    padding: 10px 12px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
-    border-left: 5px solid rgb(27, 197, 189);
+    border-right: 5px solid rgb(27, 197, 189);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -103,8 +103,8 @@
 }
 
 .stat-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
 
 .stat-info h3 {
