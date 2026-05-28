@@ -13,8 +13,8 @@
     <div class="legal-switch">
         <input type="checkbox" id="legalConfirm" wire:model.live="legalConfirm"
             {{ $household->legal_confirmation? 'checked' : '' }} />
-        <p for="legalConfirm" class="labelOFLegalConfirm" style="font-weight: 500; font-size: 16px;"
-            wire:ignore>
+        <p for="legalConfirm" class="labelOFLegalConfirm" style="font-weight: 500; font-size: 16px;
+        {{ $household->legal_confirmation ? 'color:green;' : 'color:red;'}} " wire:ignore>
             أُقِرّ وأتحمّل كامل المسؤولية القانونية عن أي خطأ في البيانات التي قمت بإدخالها،
             وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك.
         </p>
