@@ -3,7 +3,7 @@
     <div class="card1">
         <div class="card-section card-header card_color">
             <h2 class="main-title"><i class="fa-duotone fa-solid fa-user-check"></i> بوابة تسجيل بيانات مواطني
-                مدينة بيت حانون :</h2>
+                مدينة بيت حانون : </h2>
         </div>
         <div class="card-section card-blue">
             <h2 class="title2"><i class="fa-duotone fa-solid fa-lock"></i> تسجيل الدخول </h2>
@@ -18,46 +18,21 @@
                 إلى المعلومات، وتحسين جودة الخدمات المقدمة للأهالي، وتعزيز فعالية برامج الدعم الإنساني والتنمية
                 المجتمعية.
             </small> --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                <!-- Box 1 -->
-                <div
-                    class="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[rgb(27,197,189)] hover:shadow-xl transition">
-
-                    <div class="flex items-center justify-between">
-
-                        <div>
-                            <h3 class="text-gray-500 text-sm">عدد العائلات</h3>
-                            <p class="text-3xl font-bold text-gray-800">1,245</p>
-                        </div>
-
-                        <div
-                            class="w-12 h-12 rounded-full bg-[rgb(27,197,189)] flex items-center justify-center text-white text-xl">
-                            👨‍👩‍👧
-                        </div>
-
+            <div class="stats-container">
+                <div class="stat-box" style="height:70px;">
+                    <div class=" stat-info">
+                        <h3>عدد الأسر المسجلة</h3>
+                        <p class="counter" data-target="{{$familiesCount}}">0</p>
                     </div>
-
+                    <div class="stat-icon"><i class="fa-solid fa-house-chimney-user"></i></div>
                 </div>
 
-                <!-- Box 2 -->
-                <div
-                    class="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[rgb(27,197,189)] hover:shadow-xl transition">
-
-                    <div class="flex items-center justify-between">
-
-                        <div>
-                            <h3 class="text-gray-500 text-sm">عدد الأفراد</h3>
-                            <p class="text-3xl font-bold text-gray-800">5,870</p>
-                        </div>
-
-                        <div
-                            class="w-12 h-12 rounded-full bg-[rgb(27,197,189)] flex items-center justify-center text-white text-xl">
-                            📊
-                        </div>
-
+                <div class="stat-box" style="height:70px;">
+                    <div class="stat-info">
+                        <h3>عدد الأفراد المسجلين لدينا </h3>
+                        <p class="counter" data-target="{{$partnersCount+$childrenCount+$familiesCount}}">0</p>
                     </div>
-
+                    <div class="stat-icon"><i class="fa-solid fa-people-group"></i></div>
                 </div>
 
             </div>
@@ -184,3 +159,44 @@ box-shadow:
 
     </div>
 </div>
+
+<script>
+    function startCounters() {
+        const counters = document.querySelectorAll(".counter");
+    
+        counters.forEach(counter => {
+            counter.innerText = "0";
+    
+            const target = +counter.getAttribute("data-target");
+            let current = 0;
+    
+            const increment = Math.ceil(target / 80);
+    
+            const update = () => {
+                current += increment;
+    
+                if (current < target) {
+                    counter.innerText = current.toLocaleString();
+                    requestAnimationFrame(update);
+                } else {
+                    counter.innerText = target.toLocaleString();
+                }
+            };
+    
+            update();
+        });
+    }
+    
+    // تشغيل أول مرة
+    document.addEventListener("DOMContentLoaded", () => {
+        startCounters();
+    });
+    
+    // مهم جداً مع Livewire (إعادة تحميل DOM)
+    document.addEventListener("livewire:navigated", () => {
+        startCounters();
+    });
+
+    counter.style.transform = "scale(1.2)";
+    setTimeout(() => counter.style.transform = "scale(1)", 200);
+</script>

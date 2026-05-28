@@ -2,8 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\head_children;
 use App\Models\household;
+use App\Models\partner;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+
 
 use function Laravel\Prompts\table;
 
@@ -18,6 +23,12 @@ class IdQuery extends Component
     public $answer;
     public $questionLabel;
     public $hint;
+
+    public $partnersCount;
+    public $familiesCount;
+    public $childrenCount;
+
+
     public function submit()
     {
         $this->validate([
@@ -120,9 +131,62 @@ class IdQuery extends Component
         $this->resetValidation();
         session(['household_verified' => $this->houseHold->id, 'household_name' => $this->houseHold->FName]);
 
-        cache()->increment('homepage_visits' , 1);
+        cache()->increment('homepage_visits', 1);
 
         return redirect()->to('/details');
+    }
+
+    private function getStats()
+    {
+
+        return Cache::remember('homepage_statistics', 21600, function () {
+
+            return [
+                'familiesCount' => DB::table('heads_households')->count(),
+                'partnersCount' => DB::table('partners')->count(),
+                'childrenCount' => DB::table('heads_children')->count(),
+            ];
+        });
+    }
+
+
+    public function mount()
+    {
+        $stats = $this->getStats();
+        $this->familiesCount = $stats['familiesCount'];
+        $this->partnersCount = $stats['partnersCount'];
+        $this->childrenCount = $stats['childrenCount'];
+    }
+
+
+    public function updated($propertyName)
+    {
+        $this->resetErrorBag($propertyName);
+    }
+
+    public function updatedId()
+    {
+        $this->resetErrorBag('id');
+    }
+
+    public function updatedMobileNum()
+    {
+        $this->resetErrorBag('mobileNum');
+    }
+
+    public function updatedAnswer()
+    {
+        $this->resetErrorBag('answer');
+    }
+
+    public function resetForm()
+    {
+        $this->reset(['id', 'mobileNum', 'answer']);
+        $this->step = 1;
+        $this->houseHold = null;
+        $this->questionType = null;
+        $this->questionLabel = null;
+        $this->hint = null;
     }
 
 
