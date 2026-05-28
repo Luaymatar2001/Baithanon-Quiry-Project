@@ -13,10 +13,11 @@
     <div class="legal-switch">
         <input type="checkbox" id="legalConfirm" wire:model.live="legalConfirm"
             {{ $household->legal_confirmation? 'checked' : '' }} />
-        <label for="legalConfirm" style="font-weight: 500; font-size: 16px;">
+        <p for="legalConfirm" class="labelOFLegalConfirm" style="font-weight: 500; font-size: 16px; color:red;"
+            wire:ignore>
             أُقِرّ وأتحمّل كامل المسؤولية القانونية عن أي خطأ في البيانات التي قمت بإدخالها،
             وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك.
-        </label>
+        </p>
         <span style="color:red; font-weight: 900; font-size: 20px;">*</span>
 
     </div>
@@ -449,5 +450,19 @@ toggleAddButton();
         });
     });
 
+});
+
+//legal confirmation toggle
+const legalSwitch = document.querySelector('.legal-switch input');
+const labelOFLegalConfirm = document.querySelector('.labelOFLegalConfirm'); 
+legalSwitch.addEventListener('change', function() {
+    if (this.checked) {
+        // labelOFLegalConfirm
+        labelOFLegalConfirm.style.color = 'green';
+     
+    } else {
+        labelOFLegalConfirm.style.color = 'red';
+
+    }
 });
 </script>
