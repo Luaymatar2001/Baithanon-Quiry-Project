@@ -110,6 +110,7 @@ class HouseholdForm extends Component
 
     public function save()
     {
+     
         $validatedData = $this->validate([
 
             'PersonId' => [
@@ -122,7 +123,7 @@ class HouseholdForm extends Component
             'LName' => 'required|string|max:255',
             'BirthDate' => 'nullable|date',
             'Gender' => 'required|in:ذكر,أنثى',
-            'Phone_Number' => 'nullable|string|max:20',
+            'Phone_Number' => 'nullable|numeric|max:10|regex:/^(059|056)\d{7}$/',
             'num_Family_Members' => 'nullable|integer|min:1',
             'legal_confirmation' => 'boolean',
             'status' => 'nullable|string|max:255',
@@ -137,7 +138,10 @@ class HouseholdForm extends Component
         ]);
 
 
+
+
         if ($this->householdId) {
+
             $household = household::findOrFail($this->householdId);
             $household->update($validatedData);
             session()->flash('message', 'Household updated successfully.');

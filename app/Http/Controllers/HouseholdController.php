@@ -17,6 +17,7 @@ class HouseholdController extends Controller
 
     public function updateDetails(Request $request)
     {
+        // dd("sdfsdf");
         $householdId = session('household_verified');
         if (!$householdId) {
             abort(403, 'Unauthorized');
@@ -36,6 +37,11 @@ class HouseholdController extends Controller
                 'health_status' => 'nullable|string|max:255|in:سليم,مريض,مصاب,متوفي,إعاقة سمعية,إعاقة جسدية,إعاقة عقلية,إعاقة بصرية,حالات حرجة',
                 'Sources_income' => 'nullable|string|max:255|in:عاطل,موظف حكومي,موظف خاص,موظف عقود,موظف وكالة',
                 'location_id' => 'nullable|integer|exists:locations,id',
+                'Phone_Number' => [
+                    'nullable',
+                    'digits:10',
+                    'regex:/^(059|056)\d{7}$/'
+                ],
                 'governorate_id' => 'nullable|integer|exists:governorates,id',
                 'Date_partner_martyrdom' => 'nullable|Date'
             ],
@@ -61,6 +67,12 @@ class HouseholdController extends Controller
                 'Sources_income.string' => 'مصدر الدخل يجب أن يكون نصًا',
                 'Sources_income.in'     => 'قيمة مصدر الدخل غير صحيحة',
 
+                // رقم الهاتف   
+                'Phone_Number.numeric' => 'رقم الهاتف يجب أن يكون أرقامًا فقط',
+                'Phone_Number.max'     => 'رقم الهاتف يجب ألا يتجاوز 10 أرقام',
+                'Phone_Number.regex'   => 'رقم الهاتف يجب أن يبدأ ب059 أو 056 ويتبعه 7 أرقام',
+
+
                 // تاريخ استشهاد الشريك
                 'Date_partner_martyrdom.date' => 'صيغة تاريخ استشهاد الشريك غير صحيحة',
                 'locations.exists' => 'موقعك غير موجود لدينا',
@@ -85,6 +97,7 @@ class HouseholdController extends Controller
             'health_Status' => $validatedData['health_status'] ?? null,
             'Sources_income' => $validatedData['Sources_income'] ?? null,
             'address' => $validatedData['address'] ?? null,
+            'Phone_Number' => $validatedData['Phone_Number'] ?? null,
             'cityId' => $validatedData['city_id'] ?? null,
             'location_id' => $validatedData['location_id'] ?? null,
             'governorate_id' => $validatedData['governorate_id'] ?? null,

@@ -75,7 +75,9 @@
 
                 {{-- الحالة الاجتماعية --}}
                 <div class="field">
-                    <label class="field-label">الحالة الإجتماعية </label>
+                    <p class="field-label">الحالة الإجتماعية
+                        <label style="color: red;">*</label>
+                    </p>
                     <div class="custom-select">
                         <select name="status" required>
                             @foreach(['متزوج','مطلق','مطلقة','أرمل','أرملة','أرملة بعد حرب 2023','أعزب تعدى ال 40 عام']
@@ -99,10 +101,10 @@
                 </div>
                 {{-- تحديث رقم الهاتف --}}
                 <div class="field">
-                    <label class="field-label">رقم الهاتف</label>
+                    <p class="field-label">رقم الهاتف <label style="color: red;">*</label></p>
                     <div class="custom-input">
                         <input type="number" id="Phone_Number" name="Phone_Number" placeholder="رقم الهاتف"
-                            value="{{ old('Phone_Number', $household->Phone_Number ?? '') }}">
+                            value="{{ old('Phone_Number', $household->Phone_Number ?? '') }}" required  >
                         <script>
                             const input = document.getElementById('Phone_Number');
                                         input.addEventListener('input', function() {
@@ -120,7 +122,7 @@
                 {{-- تاريخ الاستشهاد --}}
                 <div class="field" id="martyr-date-field"
                     style="display:{{ old('status', $household->status ?? '') == 'أرملة بعد حرب 2023' ? 'block' : 'none' }};">
-                    <label class="field-label">تاريخ الاستشهاد</label>
+                    <p class="field-label">تاريخ الاستشهاد <label style="color: red;">*</label></p>
                     <div class="custom-input">
                         <input type="date"
                             value="{{ old('Date_partner_martyrdom', $household->Date_partner_martyrdom ?? '') }}"
@@ -148,7 +150,7 @@
 
                 {{-- مصادر الدخل --}}
                 <div class="field">
-                    <label class="field-label">مصادر الدخل </label>
+                    <p class="field-label">مصادر الدخل <label style="color: red;">*</label></p>
                     <div class="custom-select">
                         <select name="Sources_income" required>
                             @foreach(['عاطل','موظف حكومي','موظف خاص','موظف عقود','موظف وكالة'] as $source)
@@ -171,7 +173,7 @@
 
                 {{-- الحالة الصحية --}}
                 <div class="field">
-                    <label class="field-label">الحالة الصحية</label>
+                    <p class="field-label">الحالة الصحية <label style="color: red;">*</label></p>
                     <div class="custom-select">
                         <select name="health_status">
                             @foreach(['سليم','مريض','مصاب','متوفي','إعاقة سمعية','إعاقة جسدية','إعاقة عقلية','إعاقة
@@ -205,10 +207,10 @@
                 'selectedLocation' => $household->location?->id ?? null
                 ])
                 <div class="field">
-                    <label class="field-label">العنوان بالكامل</label>
+                    <p class="field-label">العنوان بالكامل <label style="color: red;">*</label></p>
                     <div class="custom-input">
                         <input type="text" id="address" name="address" placeholder="العنوان"
-                            value="{{ old('address', $household->address ?? '') }}">
+                            value="{{ old('address', $household->address ?? '') }}" required>
                         <script>
                             const input = document.getElementById('address');
                         input.addEventListener('input', function() {
@@ -324,7 +326,7 @@
                     </label>
 
                     <div class="custom-select">
-                        <select name="relation"  required @php $retVal=($household->relation) ? disabled : "" ;
+                        <select name="relation" required @php $retVal=($household->relation) ? disabled : "" ;
                             @endphp>
                             @php
                             $allowedStatuses = ['أرملة', 'أرملة بعد حرب 2023', 'مطلقة'];

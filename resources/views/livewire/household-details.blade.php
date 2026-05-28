@@ -178,7 +178,6 @@
 
 
         <div class="card-body py-3">
-
             <div>
                 <!--begin::Tap pane-->
                 <div class="tab-pane fade show active" id="kt_table_widget_5_tab_1">
