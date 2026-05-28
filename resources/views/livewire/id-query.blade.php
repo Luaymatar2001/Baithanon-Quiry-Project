@@ -18,7 +18,7 @@
                 إلى المعلومات، وتحسين جودة الخدمات المقدمة للأهالي، وتعزيز فعالية برامج الدعم الإنساني والتنمية
                 المجتمعية.
             </small> --}}
-            <div class="stats-container">
+            <div class="stats-container" wire:ignore>
                 <div class="stat-box" style="height:70px;">
                     <div class=" stat-info">
                         <h3>عدد الأسر المسجلة</h3>
