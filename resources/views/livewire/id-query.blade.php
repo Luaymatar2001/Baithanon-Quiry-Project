@@ -19,20 +19,21 @@
                 المجتمعية.
             </small> --}}
             <div class="stats-container">
-                <div class="stat-box" style="height:70px;">
-                    <div class=" stat-info">
-                        <h3>عدد الأسر المسجلة</h3>
-                        <p class="counter" data-target="{{$familiesCount}}">0</p>
+
+                <div class="stat-box">
+                    <div class="stat-info">
+                        <h3>عدد العائلات</h3>
+                        <p>1,245</p>
                     </div>
-                    <div class="stat-icon"><i class="fa-solid fa-house-chimney-user"></i></div>
+                    <div class="stat-icon">👨‍👩‍👧</div>
                 </div>
 
-                <div class="stat-box" style="height:70px;">
+                <div class="stat-box">
                     <div class="stat-info">
-                        <h3>عدد الأفراد المسجلين لدينا </h3>
-                        <p class="counter" data-target="{{$partnersCount+$childrenCount+$familiesCount}}">0</p>
+                        <h3>عدد الأفراد</h3>
+                        <p>5,870</p>
                     </div>
-                    <div class="stat-icon"><i class="fa-solid fa-people-group"></i></div>
+                    <div class="stat-icon">📊</div>
                 </div>
 
             </div>
