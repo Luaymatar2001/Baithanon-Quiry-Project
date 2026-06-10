@@ -1504,105 +1504,12 @@ openBtnAdd.addEventListener('click', function(e) {
 }
 
 
-
-
-// فتح popup تعديل
-// function bindEditButtons() {
-
-//   document.querySelectorAll('.open-btn-edit').forEach(btn => {
-//   btn.addEventListener('click', function (e) {
-//     e.preventDefault();
-
-//     const form = document.getElementById('popup-form2'); // ✅ أول شيء
-//     const member = JSON.parse(btn.dataset.member);
-
-
-//     document.getElementById('member_id').value = member.id;
-  
-    
-//     document.querySelector('[name="FName"]').value = member.FName || '';
-//     document.querySelector('[name="SName"]').value = member.SName || '';
-//     document.querySelector('[name="TName"]').value = member.TName || '';
-//     document.querySelector('[name="LName"]').value = member.LName || '';
-//     document.querySelector('[name="PersonId"]').value = member.PersonId || '';
-// document.querySelector('[name="desc_health_status_member"]').value =
-//     member.desc_health_status;
-//     console.log(member);
-//     console.log(document.querySelector('[name="desc_health_status_member"]'));
-    
-
-
-//     const relationSelect = document.querySelector('[name="relation"]');
-//     // relationText = document.querySelector('[id="relationText"]');
-//     // const healthSelect = document.querySelector('[name="health_status"]');
-    
-//     // تعيين العلاقة بناءً على member object
-//     const relationType = (member.relationship || member.relation_title || '').trim();
-//     // relationText.value = relationType;
-//     if (relationSelect) {
-//         setTimeout(() => {
-//         relationSelect.value = relationType;
-
-//         // إذا لم تُحدد (fallback)
-//         if (relationSelect.value !== relationType) {
-//         console.log('Relation not found in options:', relationType);
-//         }
-//         }, 0);
-//     }
-//     const memberTypeInput = document.getElementById('member_type');
-    
-    
-//   if (relationType === 'زوج' || relationType === 'زوجة') {
-//        memberTypeInput.value = 'partner';
-//     // console.log('health_Status =', JSON.stringify(member.health_Status));
-//     document.querySelector('[id="health_status2"]').value = member.health_Status?.trim() || '';
-//     document.querySelector('[name="BirthDate"]').value = member.birthdate || '';
-//     // document.querySelector('[name="desc_health_status_member"]').value = member.desc_health_status_member||'';
-//     // console.log(member.health_Status);
-    
-//   } else {
-//         // console.log(relationType);
-//         memberTypeInput.value = 'child';
-//         // console.log('health_Status =', JSON.stringify(member.health_Status));
-//             document.querySelector('[id="health_status2"]').value = member.health_Status?.trim() || '';
-//             document.querySelector('[name="BirthDate"]').value = member.BirthDate || '';
-//             // document.querySelector('[name="desc_health_status_member"]').value = member.desc_health_status_member||'';
-//             // console.log(member.health_Status);
-//         }
-
-// // action + method
-// form.action = "{{ route('updateRowMember') }}";
-
-// let methodInput = form.querySelector('[name="_method"]');
-// if (!methodInput) {
-//         methodInput = document.createElement('input');
-//         methodInput.type = 'hidden';
-//         methodInput.name = '_method';
-//         methodInput.value = 'PUT';
-//         form.appendChild(methodInput);
-//         }
-
-//          overlay2.style.display = 'flex';
-//         });
-//     });
-// }
-// ربط الأزرار لأول مرة
-// bindEditButtons();
-
-// دعم Livewire لإعادة ربط الأزرار بعد أي تحديث
-// if (window.Livewire) {
-//     Livewire.hook('message.processed', () => {
-//      bindEditButtons();
-//     });
-// }
-
-
-@if ($errors->popup_add_member->any())
-    overlay2.style.display = 'flex';
-@endif
 });
 
 </script>
+@if ($errors->popup_add_member->any())
+overlay2.style.display = 'flex';
+@endif
 <script>
     function toggleDropdown() {
                 document.getElementById('dropdownMenu').classList.toggle('show');
@@ -1611,10 +1518,8 @@ openBtnAdd.addEventListener('click', function(e) {
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    //popup of update member class
     const overlayUpdateMember = document.querySelector('.overlay-update-member');
     const closeBtnUM = overlayUpdateMember.querySelector('.close-btn');
-
     if(closeBtnUM) {
     closeBtnUM.addEventListener('click', () => {
     overlayUpdateMember.style.display = 'none';
