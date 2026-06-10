@@ -69,7 +69,7 @@ class HouseholdController extends Controller
                 'residence_status' => 'nullable|string|in:0,1,2|max:255',
                 'international_number_mobile' => [
                     'nullable',
-                    'digits_between:10 ,13',
+                    'digits_between:10,13',
                 ],
                 'missing_persons' => 'nullable|integer|in:0,1,2',
                 'missing_info' => 'nullable|string|max:255',
@@ -88,7 +88,6 @@ class HouseholdController extends Controller
                     'max:5120',
                 ],
 
-
                 'widow_identity' => [
                     Rule::requiredIf(
                         $request->status == '4'
@@ -103,81 +102,108 @@ class HouseholdController extends Controller
             [
 
                 // العنوان
-                'address.string' => 'العنوان يجب أن يكون نصًا',
-                'address.max'    => 'العنوان يجب ألا يزيد عن 255 حرفًا',
+                'address.string' => 'العنوان يجب أن يكون نصاً',
+                'address.max'    => 'العنوان يجب ألا يزيد عن 255 حرفاً',
 
                 // المدينة
-                'city.integer' => 'المدينة المختارة غير صحيحة',
-                'city.exists'  => 'المدينة المختارة غير موجودة',
+                'city_id.integer' => 'المدينة المختارة غير صحيحة',
+                'city_id.exists'  => 'المدينة المختارة غير موجودة',
 
                 // الحالة الاجتماعية
-                'status.string' => 'الحالة الاجتماعية يجب أن تكون نصًا',
+                'status.string' => 'الحالة الاجتماعية يجب أن تكون نصاً',
                 'status.in'     => 'قيمة الحالة الاجتماعية غير صحيحة',
 
                 // الحالة الصحية
-                'health_status.string' => 'الحالة الصحية يجب أن تكون نصًا',
+                'health_status.string' => 'الحالة الصحية يجب أن تكون نصاً',
                 'health_status.in'     => 'قيمة الحالة الصحية غير صحيحة',
 
                 // مصدر الدخل
-                'Sources_income.string' => 'مصدر الدخل يجب أن يكون نصًا',
+                'Sources_income.string' => 'مصدر الدخل يجب أن يكون نصاً',
                 'Sources_income.in'     => 'قيمة مصدر الدخل غير صحيحة',
 
-                // رقم الهاتف   
-                'Phone_Number.numeric' => 'رقم الهاتف يجب أن يكون أرقامًا فقط',
-                'Phone_Number.max'     => 'رقم الهاتف يجب ألا يتجاوز 10 أرقام',
-                'Phone_Number.regex'   => 'رقم الهاتف يجب أن يبدأ ب059 أو 056 ويتبعه 7 أرقام',
+                // الموقع
+                'location_id.integer' => 'الموقع المختار غير صحيح',
+                'location_id.exists'  => 'الموقع المختار غير موجود',
 
+                // رقم الهاتف   
+                'Phone_Number.digits'  => 'رقم الهاتف يجب أن يتكون من 10 أرقام',
+                'Phone_Number.regex'   => 'رقم الهاتف يجب أن يبدأ بـ 059 أو 056 ويتبعه 7 أرقام',
+
+                // المحافظة
+                'governorate_id.integer' => 'المحافظة المختارة غير صحيحة',
+                'governorate_id.exists'  => 'المحافظة المختارة غير موجودة',
 
                 // تاريخ استشهاد الشريك
                 'Date_partner_martyrdom.date' => 'صيغة تاريخ استشهاد الشريك غير صحيحة',
-                'locations.exists' => 'موقعك غير موجود لدينا',
-                'locations.integer' => 'أرجوا الأختيار بالطريقة الصحيحة',
 
-                'governorate_id.exists' => 'محافظتك غير موجود لدينا',
-                'governorate_id.integer' => 'أرجوا الأختيار بالطريقة الصحيحة',
+                // الراتب المتوقع
                 'expected_salary.integer' => 'الراتب المتوقع يجب أن يكون رقمًا',
 
-                'desc_health_status.string' => 'وصف الحالة الصحية يجب أن يكون نصًا',
-                'desc_health_status.max' => 'النص يجب ألا يزيد عن 255 حرفًا',
+                // وصف الحالة الصحية
+                'desc_health_status.string' => 'وصف الحالة الصحية يجب أن يكون نصاً',
+                'desc_health_status.max'    => 'وصف الحالة الصحية يجب ألا يزيد عن 255 حرفاً',
 
-                'alternative_mobile_number.numeric' => 'رقم الهاتف البديل يجب أن يكون أرقامًا فقط',
-                'alternative_mobile_number.max' => 'رقم الهاتف البديل يجب ألا يتجاوز
-                    10 أرقام',
+                // رقم الهاتف البديل
+                'alternative_mobile_number.digits' => 'رقم الهاتف البديل يجب أن يتكون من 10 أرقام',
+                'alternative_mobile_number.regex'  => 'رقم الهاتف البديل يجب أن يبدأ بـ 059 أو 056 ويتبعه 7 أرقام',
 
-                'alternative_mobile_number.regex' => 'رقم الهاتف البديل يجب أن يبدأ ب059 أو 056 ويتبعه 7 أرقام',
-                'residence_location.string' => 'موقع السكن يجب أن يكون نصًا',
-                'residence_location.in' => 'قيمة موقع السكن غير صحيحة',
-                // 'residence_status.string' => 'حالة السكن يجب أن يكون نصًا',
-                'residence_status.in' => 'قيمة حالة السكن غير صحيحة',
+                // موقع السكن
+                'residence_location.required' => 'حقل موقع السكن مطلوب',
+                'residence_location.string'   => 'موقع السكن يجب أن يكون نصاً',
+                'residence_location.in'       => 'قيمة موقع السكن غير صحيحة',
 
-                'international_number_mobile.numeric' => 'رقم الهاتف الدولي يجب أن يكون أرقامًا فقط',
+                // عنوان السكن
+                'residence_address.string' => 'عنوان السكن يجب أن يكون نصاً',
+                'residence_address.max'    => 'عنوان السكن يجب ألا يزيد عن 255 حرفاً',
+                'residence_address.in'     => 'قيمة عنوان السكن غير صحيحة',
+
+                // حالة السكن
+                'residence_status.string' => 'حالة السكن يجب أن تكون نصاً',
+                'residence_status.in'     => 'قيمة حالة السكن غير صحيحة',
+
+                // رقم الهاتف الدولي
                 'international_number_mobile.digits_between' => 'رقم الهاتف الدولي يجب أن يكون بين 10 و 13 رقمًا',
 
+                // الأشخاص المفقودين
                 'missing_persons.integer' => 'عدد الأشخاص المفقودين يجب أن يكون رقمًا',
-                'missing_info.string' => 'معلومات الأشخاص المفقودين يجب أن يكون نص
-                ',
-                'missing_info.max' => 'معلومات الأشخاص المفقودين يجب أن لا يزيد عن 255 حرفًا',
-                'level_of_education.string' => 'مستوى التعليم يجب أن يكون نصًا',
-                'level_of_education.max' => 'مستوى التعليم يجب أن لا يزيد عن 255 حرفًا',
-                'level_of_education.in' => 'قيمة مستوى التعليم غير صحيحة',
+                'missing_persons.in'      => 'قيمة عدد الأشخاص المفقودين غير صحيحة',
 
-                'Type_of_housing.string' => 'نوع السكن يجب أن يكون نصًا',
-                'Type_of_housing.max' => 'نوع السكن يجب أن لا يزيد عن 255 حرفًا',
-                'Type_of_housing.in' => 'قيمة نوع السكن غير صحيحة',
-                // 'nullable',
-                // 'file',
-                // 'mimes:jpg,jpeg,png',
-                // 'max:5120',
-                'status_document.file' => 'يجب أن يكون العنصر من نوع صورة !',
-                'status_document.mimes' => 'الملفات المسموح بإرفاقها jpg,jpeg,png',
-                'status_document.max' => 'حجم الصورة كبير ',
+                // معلومات المفقودين
+                'missing_info.string' => 'معلومات الأشخاص المفقودين يجب أن تكون نصاً',
+                'missing_info.max'    => 'معلومات الأشخاص المفقودين يجب ألا تزيد عن 255 حرفاً',
 
-                'widow_identity.file' => 'يجب أن يكون العنصر من نوع صورة !',
-                'widow_identity.mimes' => 'الملفات المسموح بإرفاقها jpg,jpeg,png',
-                'widow_identity.max' => 'حجم الصورة كبير ',
-                
+                // مستوى التعليم
+                'level_of_education.string' => 'مستوى التعليم يجب أن يكون نصاً',
+                'level_of_education.max'    => 'مستوى التعليم يجب ألا يزيد عن 255 حرفاً',
+                'level_of_education.in'     => 'قيمة مستوى التعليم غير صحيحة',
+
+                // نوع السكن
+                'Type_of_housing.string' => 'نوع السكن يجب أن يكون نصاً',
+                'Type_of_housing.max'    => 'نوع السكن يجب ألا يزيد عن 255 حرفاً',
+                'Type_of_housing.in'     => 'قيمة نوع السكن غير صحيحة',
+
+                // الموقع الحالي
+                'current_location.string' => 'الموقع الحالي يجب أن يكون نصاً',
+                'current_location.max'    => 'الموقع الحالي يجب ألا يزيد عن 255 حرفاً',
+
+                // سبب المغادرة
+                'reason_leaving.string' => 'سبب المغادرة يجب أن يكون نصاً',
+                'reason_leaving.max'    => 'سبب المغادرة يجب ألا يزيد عن 255 حرفاً',
+
+                // وثيقة الحالة
+                'status_document.file'  => 'يجب أن يكون الملف من نوع صورة',
+                'status_document.mimes' => 'الصيغ المسموحة: jpg، jpeg، png',
+                'status_document.max'   => 'حجم الصورة يجب ألا يتجاوز 5 ميجابايت',
+
+                // هوية الأرملة
+                'widow_identity.file'  => 'يجب أن يكون الملف من نوع صورة',
+                'widow_identity.mimes' => 'الصيغ المسموحة: jpg، jpeg، png',
+                'widow_identity.max'   => 'حجم الصورة يجب ألا يتجاوز 5 ميجابايت',
+
+                // حقل التيار المفقود (إن وجد)
+                'current_location.required' => 'الموقع الحالي مطلوب',
+
             ]
-
         );
 
         if ($validator->fails()) {
@@ -337,6 +363,7 @@ class HouseholdController extends Controller
 
         // Validation
         $validator = Validator::make($request->all(), $rules, [
+
             'FName.required' => 'حقل الاسم الأول مطلوب',
             'FName.string'   => 'الاسم الأول يجب أن يكون نصاً',
             'FName.max'      => 'الاسم الأول يجب ألا يتجاوز 20 حرفاً',
@@ -367,24 +394,23 @@ class HouseholdController extends Controller
 
             'BirthDate.required' => 'تاريخ الميلاد مطلوب',
             'BirthDate.date'     => 'صيغة تاريخ الميلاد غير صحيحة',
-            'BirthDate.before'  => 'تاريخ الميلاد يجب أن يكون قبل اليوم',
+            'BirthDate.before'   => 'تاريخ الميلاد يجب أن يكون قبل اليوم',
 
+            'desc_health_status.string' => 'وصف الحالة الصحية يجب أن يكون نصاً',
+            'desc_health_status.max'    => 'النص يجب ألا يزيد عن 255 حرفاً',
 
-            'desc_health_status.string' => 'وصف الحالة الصحية يجب أن يكون نصًا',
-            'desc_health_status.max' => 'النص يجب ألا يزيد عن 255 حرفًا',
-
-            'desc_health_status_member.string' => 'وصف الحالة الصحية يجب أن يكون نصًا',
-            'desc_health_status_member.max' => 'النص يجب ألا يزيد عن 255 حرفًا',
+            'desc_health_status_member.string' => 'وصف الحالة الصحية يجب أن يكون نصاً',
+            'desc_health_status_member.max'    => 'النص يجب ألا يزيد عن 255 حرفاً',
 
             'birth_certificate.required' => 'صورة شهادة الميلاد مطلوبة للأبناء',
-            'birth_certificate.image' => 'صورة شهادة الميلاد يجب أن تكون ملف صورة',
+            'birth_certificate.image'    => 'صورة شهادة الميلاد يجب أن تكون ملف صورة',
 
-            'household_id_image.required' => '',
-            'household_id_image.image' => '',
-
-
+            'household_id_image.required' => 'صورة بطاقة العائلة مطلوبة',
+            'household_id_image.image'    => 'صورة بطاقة العائلة يجب أن تكون ملف صورة',
 
         ]);
+
+
         // dd($validator->messages()->toArray());
         if ($validator->fails()) {
             return back()

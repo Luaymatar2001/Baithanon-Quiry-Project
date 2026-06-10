@@ -11,6 +11,50 @@ use Illuminate\Support\Facades\Auth;
 
 class MemberRequestController extends Controller
 {
+    public function messageError()
+    {
+        $messages = [
+            // الاسم الأول
+            'FName.required' => 'حقل الاسم الأول مطلوب',
+            'FName.string'   => 'الاسم الأول يجب أن يكون نصاً',
+            'FName.max'      => 'الاسم الأول يجب ألا يتجاوز 20 حرفاً',
+
+            // اسم الأب
+            'SName.string' => 'اسم الأب يجب أن يكون نصاً',
+            'SName.max'    => 'اسم الأب يجب ألا يتجاوز 20 حرفاً',
+
+            // اسم الجد
+            'TName.string' => 'اسم الجد يجب أن يكون نصاً',
+            'TName.max'    => 'اسم الجد يجب ألا يتجاوز 20 حرفاً',
+
+            // اسم العائلة
+            'LName.string' => 'اسم العائلة يجب أن يكون نصاً',
+            'LName.max'    => 'اسم العائلة يجب ألا يتجاوز 20 حرفاً',
+
+            // رقم الهوية
+            'PersonId.required' => 'رقم الهوية مطلوب',
+            'PersonId.digits'   => 'رقم الهوية يجب أن يتكون من 9 أرقام',
+            'PersonId.unique'   => 'رقم الهوية مسجل بالفعل في النظام',
+
+            // صلة القرابة
+            'relation.required' => 'يرجى اختيار صلة القرابة',
+            'relation.in'       => 'قيمة صلة القرابة غير صحيحة (مسموح: زوجة، ابن، ابنة)',
+
+            // الحالة الصحية
+            'health_status.required' => 'يرجى اختيار الحالة الصحية',
+            'health_status.in'       => 'قيمة الحالة الصحية غير صحيحة',
+
+            // تاريخ الميلاد
+            'BirthDate.required' => 'تاريخ الميلاد مطلوب',
+            'BirthDate.date'     => 'صيغة تاريخ الميلاد غير صحيحة',
+            'BirthDate.before'   => 'تاريخ الميلاد يجب أن يكون قبل اليوم',
+
+            // وصف الحالة الصحية
+            'desc_health_status_member.string' => 'وصف الحالة الصحية يجب أن يكون نصاً',
+            'desc_health_status_member.max'    => 'وصف الحالة الصحية يجب ألا يزيد عن 255 حرفاً',
+        ];
+        return $messages;
+    }
     public function store(Request $request)
     {
 
@@ -48,7 +92,7 @@ class MemberRequestController extends Controller
             $rules['identity_image'] = 'required|image|max:2048';
         }
         //
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $this->messageError());
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
