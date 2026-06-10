@@ -238,6 +238,7 @@
                 <button class="open-application-popup" wire:ignore><i class="fa-regular fa-pen-to-square"></i> إضافة طلب
                 </button>
             </div>
+     
 
 
             <div class="card-body py-3">
@@ -383,15 +384,25 @@
             </button>
         </div>
 
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        {{-- pop up of application Model --}}
+        <div id="popup-overlay-application" class="overlay-application">
+        
+            <div class="popup-application">
+                <button type="button" class="close-btn">
+                    <i class="fa-solid fa-x"></i>
+                </button>
+        
+                <h2>اختر نوع الطلب</h2>
+        
+                <div class="application-buttons" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                    <button target="_blank" class="open-reg_married">أضف طلب زواج
+                        <i class="fa-solid fa-venus-mars"></i></button>
+                    <button target="_blank" class="open-btn-app open-btn-add">إضافة فرد للعائلة <i
+                            class="fa-regular fa-pen-to-square"></i></button>
+                </div>
+        
+            </div>
         </div>
-        @endif
         {{-- Popup for add new member to the family --}}
         <div id="popup-overlay2" class="overlay2">
             <div class="popup2">

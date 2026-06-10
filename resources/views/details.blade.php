@@ -258,28 +258,7 @@
         });
     </script>
     @endif
-    {{-- pop up of application Model --}}
-    <div id="popup-overlay-application" class="overlay-application">
-
-        <div class="popup-application">
-            <button type="button" class="close-btn">
-                <i class="fa-solid fa-x"></i>
-            </button>
-
-            <h2>اختر نوع الطلب</h2>
-
-            <div class="application-buttons"
-                style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                <button target="_blank" class="open-reg_married">أضف طلب زواج
-                    <i class="fa-solid fa-venus-mars"></i></button>
-                <button target="_blank" class="open-btn-app open-btn-add">إضافة فرد للعائلة <i
-                        class="fa-regular fa-pen-to-square"></i></button>
-            </div>
-
-        </div>
-    </div>
-
-
+   
     <div id="popup-overlay-reg_married" class="overlay-reg_married">
 
         <div class="popup-reg_married">
@@ -1395,10 +1374,10 @@ widowIdentity.required = true;
 
 <script>
     //popup edit 
-    document.addEventListener('DOMContentLoaded', function () {
+ document.addEventListener('DOMContentLoaded', function () {
     
     // استماع لحدث Livewire
-    window.addEventListener('openEditPopup', function (e) {
+ window.addEventListener('openEditPopup', function (e) {
     const member = e.detail.member;
     const overlayUpdateMember = document.querySelector('.overlay-update-member');
     // تعبئة الحقول
@@ -1437,11 +1416,11 @@ widowIdentity.required = true;
     // فتح الـ popup
     overlayUpdateMember.style.display = 'flex';
     });
-    
-    });
+ });
 
 
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
+
     const openBtn = document.querySelector('.open-btn');
     const overlay = document.getElementById('popup-overlay');
     const closeBtn = overlay.querySelector('.close-btn');
@@ -1500,7 +1479,6 @@ openBtnAdd.addEventListener('click', function(e) {
     const methodInput = form.querySelector('[name="_method"]');
     if (methodInput) methodInput.remove(); // ✅ مسح PUT إذا موجود
 });
-
 }
 
 
