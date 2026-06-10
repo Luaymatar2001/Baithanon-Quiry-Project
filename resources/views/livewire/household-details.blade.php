@@ -688,7 +688,7 @@
                                 birth_certificate_input.required = true;
                                 household_id_image_input.required = true;
                                 
-                                } else if (value === 'زوجة') {
+                            } else if (value === 'زوجة') {
                                 
                                 SName.value = "";
                                 TName.value = "";
@@ -705,11 +705,12 @@
                                 childFiles.style.display = 'none';
                                 wifeFiles.style.display = 'block';
                                 }
-                                }
+                            }
 
                     relation.addEventListener('change', function () {
-                                    handleRelationUI(this.value); // لتحديث الواجهة بناءً على القيمة المختارة عند التحميل});
+                                    handleRelationUI(this.value); 
                     });
+                
                  
 </script>
 @if ($errors->any())

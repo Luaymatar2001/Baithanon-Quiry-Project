@@ -617,11 +617,11 @@
 
     const status = document.getElementById('status');
     const popup_overlay = document.querySelector("#popup-overlay");
-    const fileInput = popup_overlay.getElementById('status_document');
-    const preview = popup_overlay.getElementById('preview_status_document');
-    const widowField = popup_overlay.getElementById('widow-id-field');
-    const widowIdentity = popup_overlay.getElementById('widow_identity');
-    const preview_widow =popup_overlay.getElementById('preview_widow_identity');
+    const fileInput = document.getElementById('status_document');
+    const preview = document.getElementById('preview_status_document');
+    const widowField = document.getElementById('widow-id-field');
+    const widowIdentity = document.getElementById('widow_identity');
+    const preview_widow =document.getElementById('preview_widow_identity');
 
        fileInput.addEventListener('change' , function(){
         // 🔥 SweetAlert
