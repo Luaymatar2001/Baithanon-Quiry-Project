@@ -1361,7 +1361,7 @@ widowIdentity.required = true;
     const editButtons  = document.querySelectorAll('.open-btn-edit');
 
     const deleteButtons  = document.querySelectorAll('.delete-member');
-    const saveEditBtn  = document.getElementById('.SaveEditBtn');
+    const saveEditBtn  = document.getElementById('SaveEditBtn');
     const messages = document.querySelectorAll('.legalMessage');
 
     checkbox.addEventListener('change', function () {
@@ -1610,6 +1610,7 @@ openBtnAdd.addEventListener('click', function(e) {
 </script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
     //popup of update member class
     const overlayUpdateMember = document.querySelector('.overlay-update-member');
     const closeBtnUM = overlayUpdateMember.querySelector('.close-btn');
@@ -1619,6 +1620,7 @@ openBtnAdd.addEventListener('click', function(e) {
     overlayUpdateMember.style.display = 'none';
     });
     }
+    });
     
 </script>
 
