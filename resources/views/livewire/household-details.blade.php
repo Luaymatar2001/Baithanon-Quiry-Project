@@ -30,7 +30,7 @@
         <input type="checkbox" id="legalConfirm" wire:model.live="legalConfirm"
             {{ $household->legal_confirmation? 'checked' : '' }} />
         <p for="legalConfirm" class="labelOFLegalConfirm" style="font-weight: 500; line-height: 1.8; font-size: 16px;
-            {{ $household->legal_confirmation ? 'color:green;' : 'color:red;'}} " wire:ignore>
+            {{ $household->legal_confirmation ? 'color:green;' : 'color:red;'}} ">
             أُقِرّ وأتحمّل كامل المسؤولية القانونية عن أي خطأ في البيانات التي قمت بإدخالها،
             وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك.
         </p>
@@ -235,7 +235,7 @@
             <h2 class="text-2xl font-bold"> معلومات أفراد الأسرة </h2>
             {{-- add member button --}}
             {{-- <button class="open-btn-add" wire:ignore><i class="fa-regular fa-pen-to-square"></i> أضف فرد </button> --}}
-            <button class="open-application-popup" wire:ignore><i class="fa-regular fa-pen-to-square"></i> إضافة طلب
+            <button class="open-application-popup" ><i class="fa-regular fa-pen-to-square"></i> إضافة طلب
             </button>
         </div>
 
@@ -385,15 +385,12 @@
     </div>
 
     {{-- pop up of application Model --}}
-    <div id="popup-overlay-application" class="overlay-application ">
-
+    <div id="popup-overlay-application" class="overlay-application" style="display: none;">
         <div class="popup-application">
             <button type="button" class="close-btn close-btn-app">
                 <i class="fa-solid fa-x"></i>
             </button>
-
             <h2>اختر نوع الطلب</h2>
-
             <div class="application-buttons"
                 style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                 <button target="_blank" class="open-reg_married">أضف طلب زواج
@@ -754,7 +751,7 @@
         // }
         // });
         
-        document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
             // popup for application
             const openApplicationPopupBtn = document.querySelector('.open-application-popup');
