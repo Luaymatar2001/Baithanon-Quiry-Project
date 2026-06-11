@@ -41,7 +41,7 @@ class MemberRequestController extends Controller
             'relation.in'       => 'قيمة صلة القرابة غير صحيحة (مسموح: زوجة، ابن، ابنه)',
 
             // الحالة الصحية
-            'health_status.required' => 'يرجى اختيار الحالة الصحية',
+            'health_status.nullable' => 'يرجى اختيار الحالة الصحية',
             'health_status.in'       => 'قيمة الحالة الصحية غير صحيحة',
 
             // تاريخ الميلاد
@@ -80,7 +80,7 @@ class MemberRequestController extends Controller
 
 
             'relation' => 'required|in:زوجة,ابن,ابنه',
-            'health_status' => 'required|in:0,1,2,3,4,5,6,7,8,9,10',
+            'health_status' => 'nullable|in:0,1,2,3,4,5,6,7,8,9,10',
             'BirthDate' => 'required|date|before:today',
             'desc_health_status_member' => 'nullable|string|max:255',
         ];
@@ -124,7 +124,7 @@ class MemberRequestController extends Controller
             'PersonId' => $validated['PersonId'],
             'relation' => $validated['relation'],
             'BirthDate' => $validated['BirthDate'],
-            'health_status' => $validated['health_status'],
+            'health_status' => $validated['health_status'] ?? null,
             'desc_health_status_member' => $validated['desc_health_status_member'] ?? null,
             'identity_image' => $identityPath,
             'birth_certificate' => $birthCertificatePath,

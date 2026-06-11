@@ -160,6 +160,11 @@ box-shadow:
 <script>
     document.addEventListener("DOMContentLoaded", () => {
     if (typeof Swal !== 'undefined') {
+        if (localStorage.getItem('family_update_alert_shown')) {
+            
+            return; // لا تعرضه مرة ثانية
+            
+            }
         Swal.fire({
             title: 'أهلاً وسهلاً بكم 🌷',
             html: `

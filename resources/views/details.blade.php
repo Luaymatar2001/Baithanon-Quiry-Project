@@ -42,34 +42,34 @@
         }
     </style>
 </head>
-
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-    if (typeof Swal !== 'undefined') {
-        Swal.fire({
-            html: `
-        <br><br>
-        
-        <div style="
-            background:#FFF8E1;
-            border-right:4px solid #FFC107;
-            padding:10px 12px;
-            border-radius:8px;
-            font-size:16px;
-            line-height:1.9;
-            color:#6c4f00;
-        ">
-            <strong style="font-size:18px; color:red;">📢 تنبيه مهم:</strong><br>
-            يرجى تحديث بيانات الأسرة بشكل دوري عند حدوث أي تغيير، مثل تغيير مكان النزوح، أو إضافة فرد جديد، أو تسجيل حالة
-            زواج، أو تغيير الحالة الاجتماعية (أرمل/أرملة أو مطلق/مطلقة)، وذلك لضمان دقة البيانات وتمكين الجهات الشريكة من تقديم
-            الخدمات والمساعدات وفق أحدث المعلومات المتوفرة.
-        </div>
-        `,
-            confirmButtonText: 'بدء التحديث',
-            confirmButtonColor: '#1BC5BD',
-            width: 500
-        });
+
+    if (typeof Swal === 'undefined') return;
+
+    const key = 'family_update_alert_shown';
+
+    // إذا تم عرضه سابقًا → لا تعرضه
+    if (localStorage.getItem(key) === '1') {
+        return;
     }
+
+    Swal.fire({
+        html: `<br><br>
+        <div
+            style=" background:#FFF8E1; border-right:4px solid #FFC107; padding:10px 12px; border-radius:8px; font-size:16px; line-height:1.9; color:#6c4f00; ">
+            <strong style="font-size:18px; color:red;">📢 تنبيه مهم:</strong><br> يرجى تحديث بيانات الأسرة بشكل دوري عند حدوث أي
+            تغيير، مثل تغيير مكان النزوح، أو إضافة فرد جديد، أو تسجيل حالة زواج، أو تغيير الحالة الاجتماعية (أرمل/أرملة أو
+            مطلق/مطلقة)، وذلك لضمان دقة البيانات وتمكين الجهات الشريكة من تقديم الخدمات والمساعدات وفق أحدث المعلومات المتوفرة.
+        </div>`,
+        confirmButtonText: 'متابعة عملية التحديث',
+        confirmButtonColor: '#1BC5BD',
+        width: 500
+    }).then(() => {
+        // 🔥 أهم سطر: تسجيل أنه تم العرض
+        localStorage.setItem(key, '1');
+    });
+
 });
 </script>
 
@@ -568,6 +568,8 @@
                             <input type="file" name="widow_identity" id="widow_identity" accept=".jpg,.jpeg,.png">
                         </div>
                     </div>
+
+
                     <script>
                         console.log('{{$household->widow_identity}}');
                         
@@ -631,6 +633,16 @@
     const preview_widow =document.getElementById('preview_widow_identity');
 
        fileInput.addEventListener('change' , function(){
+        const file = e.target.files[0];
+            if (!file) return;
+            
+            const compressed = await compressImage(file, 1200, 0.7);
+            
+            // 🔥 استبدال الملف داخل input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(compressed);
+            fileInput.files = dataTransfer.files;
+
         // 🔥 SweetAlert
                 Swal.fire({
                 title: 'تم إرفاق الصورة بنجاح',
@@ -680,6 +692,15 @@
    if (widowField && preview_widow) {
     widowIdentity.addEventListener('change', function (e) {
     const file = e.target.files[0];
+        if (!file) return;
+        
+        const compressed = await compressImage(file, 1200, 0.7);
+        
+        // 🔥 استبدال الملف داخل input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(compressed);
+        widowIdentity.files = dataTransfer.files;
+
     
     if (file) {
     const reader = new FileReader();
@@ -1112,7 +1133,7 @@ widowIdentity.required = true;
             <p class="field-label">الحالة الصحية <label style="color: red;">*</label></p>
             <div class="custom-select">
 
-                <select name="health_status" id="health_status" required>
+                <select name="health_status" id="health_status">
                     <option value="" disabled
                         {{ (string) old('health_status', $household->health_Status ?? '') === '' ? 'selected' : '' }}>
                         اختر
