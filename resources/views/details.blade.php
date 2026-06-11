@@ -43,9 +43,37 @@
     </style>
 </head>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            html: `
+        <br><br>
+        
+        <div style="
+            background:#FFF8E1;
+            border-right:4px solid #FFC107;
+            padding:10px 12px;
+            border-radius:8px;
+            font-size:16px;
+            line-height:1.9;
+            color:#6c4f00;
+        ">
+            <strong style="font-size:18px; color:red;">📢 تنبيه مهم:</strong><br>
+            يرجى تحديث بيانات الأسرة بشكل دوري عند حدوث أي تغيير، مثل تغيير مكان النزوح، أو إضافة فرد جديد، أو تسجيل حالة
+            زواج، أو تغيير الحالة الاجتماعية (أرمل/أرملة أو مطلق/مطلقة)، وذلك لضمان دقة البيانات وتمكين الجهات الشريكة من تقديم
+            الخدمات والمساعدات وفق أحدث المعلومات المتوفرة.
+        </div>
+        `,
+            confirmButtonText: 'بدء التحديث',
+            confirmButtonColor: '#1BC5BD',
+            width: 500
+        });
+    }
+});
+</script>
 
 <body>
-
     <div id="popup-overlay-update-member" class="overlay-update-member">
         <div class="popup-update-member">
             <button type="button" class="close-btn">
@@ -69,10 +97,10 @@
                     <div class="custom-select">
                         {{-- <input type="text" name="relation" id="relation" value="{{ old('relation', $member->relationship ?? '') }}"
                         required> --}}
-                        {{--زوجة ابن ابنة--}}
+                        {{--زوجة ابن ابنه--}}
                         <select name="relation" id="relationship" class="notallowCurser" disabled>
                             <option value="">اختر العلاقة </option>
-                            @foreach (['زوجة','ابن','ابنة'] as $relation)
+                            @foreach (['زوجة','ابن','ابنه'] as $relation)
                             <option value="{{ $relation }}"
                                 {{ old('relation', $member->relation?? '') == $relation ? 'selected' : '' }}>
                                 {{ $relation }}
@@ -84,7 +112,6 @@
                         @enderror
                     </div>
                 </div>
-
                 {{-- العنوان كامل  --}}
                 <div class="field">
 
@@ -134,9 +161,9 @@
                 <div class="field">
                     <label class="field-label">رقم الهوية <span class="requiredStar">*</span></label>
                     <div class="custom-input">
-                        <input type="number " class="notallowCurser" name="PersonId"
+                        <input type="text" class="notallowCurser" name="PersonId"
                             value="{{ old('PersonId', $member->PersonId ?? '') }}" maxlength="9" required id="Id"
-                            disabled>
+                            disabled placeholder="000000000">
                         @error('PersonId')
                         <small class="error-msg">{{ $message }}</small>
                         @enderror
@@ -258,11 +285,11 @@
         });
     </script>
     @endif
-   
+
     <div id="popup-overlay-reg_married" class="overlay-reg_married">
 
         <div class="popup-reg_married">
-            <h2>أضف بيانات طلب الزواج</h2>
+            <h2>أضف بيانات تسجيل طلب زواج جديد</h2>
             <button type="button" class="close-btn">
                 <i class="fa-solid fa-x"></i>
             </button>
@@ -353,7 +380,8 @@
                             <label style="color: red;">*</label>
                         </p>
                         <div class="custom-input">
-                            <input type="number" name="MobailNumber_h" class="MobailNumber" required maxlength="9">
+                            <input type="text" name="MobailNumber_h" class="MobailNumber" placeholder="0500000000"
+                                required maxlength="10" inputmode="numeric">
                         </div>
                     </div>
 
@@ -1452,7 +1480,7 @@ const openBtnAdd = document.querySelector('.open-btn-add');
 if (closeBtn2) {
     closeBtn2.addEventListener('click', function() {
     overlay2.style.display = 'none';
-    overlay_application.style.display = 'none';
+    overlay_application.style.display = 'flex';
     });
 }
 

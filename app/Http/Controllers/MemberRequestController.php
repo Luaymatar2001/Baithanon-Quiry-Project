@@ -38,7 +38,7 @@ class MemberRequestController extends Controller
 
             // صلة القرابة
             'relation.required' => 'يرجى اختيار صلة القرابة',
-            'relation.in'       => 'قيمة صلة القرابة غير صحيحة (مسموح: زوجة، ابن، ابنة)',
+            'relation.in'       => 'قيمة صلة القرابة غير صحيحة (مسموح: زوجة، ابن، ابنه)',
 
             // الحالة الصحية
             'health_status.required' => 'يرجى اختيار الحالة الصحية',
@@ -79,13 +79,13 @@ class MemberRequestController extends Controller
             ],
 
 
-            'relation' => 'required|in:زوجة,ابن,ابنة',
+            'relation' => 'required|in:زوجة,ابن,ابنه',
             'health_status' => 'required|in:0,1,2,3,4,5,6,7,8,9,10',
             'BirthDate' => 'required|date|before:today',
             'desc_health_status_member' => 'nullable|string|max:255',
         ];
 
-        if ($request->relation === 'ابن' || $request->relation === 'ابنة') {
+        if ($request->relation === 'ابن' || $request->relation === 'ابنه') {
             $rules['birth_certificate'] = 'required|image|max:2048';
             $rules['household_id_image'] = 'required|image|max:2048';
         } elseif ($request->relation === 'زوجة') {

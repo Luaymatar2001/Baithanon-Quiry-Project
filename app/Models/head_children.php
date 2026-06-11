@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class head_children extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'heads_children';
 
     protected $fillable = [
@@ -34,7 +34,7 @@ class head_children extends Model
         if ($this->Gender === 'ذكر') {
             return 'ابن';
         } elseif ($this->Gender === 'أنثى') {
-            return 'ابنة';
+            return 'ابنه';
         } else {
             return '';
         }

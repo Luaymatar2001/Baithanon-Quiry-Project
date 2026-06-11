@@ -42,14 +42,15 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-1">رقم الهوية*</label>
-                    <input type="text" wire:model.defer="PersonId" name="PersonId" class="w-full border rounded px-3 py-2"
-                        required>
+                    <input type="text" wire:model.defer="PersonId" name="PersonId"
+                        class="w-full border rounded px-3 py-2" required>
                     @error('PersonId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium mb-1">تاريخ الميلاد</label>
-                    <input type="date" wire:model.defer="BirthDate" name="BirthDate" class="w-full border rounded px-3 py-2">
+                    <input type="date" wire:model.defer="BirthDate" name="BirthDate"
+                        class="w-full border rounded px-3 py-2">
                     @error('BirthDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
@@ -62,7 +63,7 @@
                         class="w-full border rounded px-3 py-2">
                     @error('householdId') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium mb-1">الجنس *</label>
                     <select wire:model.defer="Gender" name="Gender" class="w-full border rounded px-3 py-2" required>
@@ -81,7 +82,7 @@
                     <select wire:model.defer="relationship" class="w-full border rounded px-3 py-2">
                         <option value="" selected>اختر العلاقة</option>
                         <option value="ابن">ابن</option>
-                        <option value="ابنة">ابنة</option>
+                        <option value="ابنه">ابنه</option>
                     </select>
                     @error('relationship') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>

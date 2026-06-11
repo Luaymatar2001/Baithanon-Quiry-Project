@@ -17,9 +17,8 @@
 
         <div class="title_div">
             <h3 style="margin-bottom: 20px;">
-                المنظومة الإلكترونية لتحديث بيانات أسر مدينة بيت حانون (
-                <span style="color: #ff0000;">أ.محمد عدلي أبو عودة</span>
-                ) <i class="fa-solid fa-feather-pointed" style="font-size:23px;"></i>
+                المنظومة الإلكترونية لتحديث بيانات أسر مدينة بيت حانون <i class="fa-solid fa-feather-pointed"
+                    style="font-size:23px;"></i>
             </h3>
 
         </div>
@@ -393,9 +392,9 @@
             <h2>اختر نوع الطلب</h2>
             <div class="application-buttons"
                 style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                <button target="_blank" class="open-reg_married">أضف طلب زواج
+                <button target="_blank" class="open-reg_married">أضف طلب تسجيل زواج جديد
                     <i class="fa-solid fa-venus-mars"></i></button>
-                <button target="_blank" class="open-btn-app open-btn-add">إضافة فرد للعائلة <i
+                <button target="_blank" class="open-btn-app open-btn-add">إضافة بيانات فرد جديد للعائلة <i
                         class="fa-regular fa-pen-to-square"></i></button>
             </div>
 
@@ -407,7 +406,7 @@
         <div class="popup2">
 
             <div class="close-btn"> <span><i class="fa-solid fa-x"></i> </div>
-            <h2>أضف بيانات الفرد<i class="fa-solid fa-feather-pointed"></i>
+            <h2>أضف بيانات فرد جديد للعائلة<i class="fa-solid fa-feather-pointed"></i>
             </h2>
             <form id="popup-form2" action="{{ route('member-requests.store') }}" method="POST"
                 enctype="multipart/form-data">
@@ -426,10 +425,10 @@
                     <div class="custom-select">
                         {{-- <input type="text" name="relation" id="relation" value="{{ old('relation', $member->relationship ?? '') }}"
                         required> --}}
-                        {{--زوجة ابن ابنة--}}
+                        {{--زوجة ابن ابنه--}}
                         <select name="relation" id="relationship" class="household-relationship" required>
                             <option value="">اختر العلاقة </option>
-                            @foreach (['زوجة','ابن','ابنة'] as $relation)
+                            @foreach (['زوجة','ابن','ابنه'] as $relation)
                             <option value="{{ $relation }}"
                                 {{ old('relation', $member->relation?? '') == $relation ? 'selected' : '' }}>
                                 {{ $relation }}
@@ -568,14 +567,15 @@
                 <div id="child-files" style="display:none;">
                     <div class="field">
                         <div class="custom-input">
-                            <label>شهادة ميلاد الفرد أو الهوية الشخصية للفرد</label>
-                            <input type="file" name="birth_certificate">
+                            <label class="field-label">شهادة ميلاد الفرد أو الهوية الشخصية للفرد <span
+                                    class="requiredStar">*</span></label>
+                            <input type="file" name="birth_certificate" accept="image/*">
                         </div>
                     </div>
 
                     <div class="field">
                         <div class="custom-input">
-                            <label>هوية رب الأسرة</label>
+                            <label class="field-label">هوية رب الأسرة <span class="requiredStar">*</span></label>
                             <input type="file" name="household_id_image" accept="image/*">
                         </div>
                     </div>
@@ -635,7 +635,7 @@
 <script>
     const relation = document.getElementById('relationship');
                     
-                    // const FName = document.getElementById('FName');
+                    const FName = document.getElementById('FName');
                     const SName = document.getElementById('SName');
                     const TName = document.getElementById('TName');
                     const LName = document.getElementById('LName');
@@ -653,6 +653,7 @@
                     // const attachment = document.getElementById('attachment');
                 const householdRelationship = document.querySelector('.household-relationship');
                 
+                const householdFName = document.querySelector('.FNameM');
                 const householdSName = document.querySelector('.SNameM');
                 const householdTName = document.querySelector('.TNameM');
                 const householdLName = document.querySelector('.LNameM');
@@ -663,9 +664,9 @@
                 
                 
                 
-                if (value === 'ابن' || value === 'ابنة') {
-                householdSName.value = "{{ $household->SName }}";
-                householdTName.value = "{{ $household->TName }}";
+                if (value === 'ابن' || value === 'ابنه') {
+                householdSName.value = "{{ $household->FName }}";
+                householdTName.value = "{{ $household->SName }}";
                 householdLName.value = "{{ $household->LName }}";
                 childFiles.style.display = "block";
                 wifeFiles.style.display = "none";
@@ -680,7 +681,7 @@
                 });
                     function handleRelationUI(value) {
                                     
-                                    if (value === 'ابن' || value === 'ابنة') {
+                                    if (value === 'ابن' || value === 'ابنه') {
                                     
                                     
                                     // SName.value = "{{ $household->FName }}";
@@ -726,8 +727,8 @@
 @if ($errors->any())
 <script>
     document.getElementById('popup-overlay2').style.display = 'flex';
-                                    //  إعادة تشغيل الحالة حسب القيمة القديمة
-        handleRelationUI(document.getElementById('relationship').value);
+       //  إعادة تشغيل الحالة حسب القيمة القديمة
+      handleRelationUI(document.getElementById('relationship').value);
       console.log(document.getElementById('relationship').value);
                                     
 </script>
@@ -759,6 +760,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const closeApplicationPopupBtn = document.querySelector('.close-btn-app');
             openApplicationPopupBtn.addEventListener('click', function () {
                 applicationPopup.style.display = 'flex';
+
             });
             closeApplicationPopupBtn.addEventListener('click', function () {
                 applicationPopup.style.display = 'none';

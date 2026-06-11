@@ -34,7 +34,7 @@
 
 ## Step 8: Run migration and manual test
 - `php artisan migrate`
-- Submit popup for relation=ابن/ابنة and relation=زوجة
+- Submit popup for relation=ابن/ابنه and relation=زوجة
 - Verify: only member_requests rows created, never partner/children
 - Verify review transitions from dashboard
 

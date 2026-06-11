@@ -3,8 +3,8 @@
 
         <!-- الشعار (يمين) -->
         <div class="navbar-logo">
-            <img src="{{asset('images/favicon.png')}}" alt="الشعار">
-            <span>جمعية أهالي بيت حانون</span>
+            <img src="{{asset('images/favicon.png')}}" alt="الشعار" style="border-radius: 100px;">
+            <span style="color:rgb(2, 54, 2)">صندوق بيت حانون التكافلي المستدام</span>
         </div>
 
         <div style="display: flex; ">

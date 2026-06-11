@@ -186,7 +186,7 @@ final class MemberRequestTable extends PowerGridComponent
 
             $gender = match ($request->relation) {
                 'ابن' => 'ذكر',
-                'ابنة' => 'أنثى',
+                'ابنه' => 'أنثى',
                 default => null,
             };
 
@@ -205,7 +205,7 @@ final class MemberRequestTable extends PowerGridComponent
                 ]);
             }
 
-            if (in_array($request->relation, ['ابن', 'ابنة'])) {
+            if (in_array($request->relation, ['ابن', 'ابنه'])) {
                 $createdModel = head_children::create([
                     'PersonId' => $request->PersonId,
                     'householdId' => $request->household_id,

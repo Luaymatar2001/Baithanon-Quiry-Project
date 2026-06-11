@@ -344,16 +344,14 @@ class HouseholdController extends Controller
             'TName' => 'sometimes|string|max:20',
             'LName' => 'sometimes|string|max:20',
             'PersonId' => ['required', 'digits:9'],
-            'relation' => 'required|in:زوجة,ابن,ابنة',
+            'relation' => 'required|in:زوجة,ابن,ابنه',
             'health_status' => 'required|in:0,1,2,3,4,5,6,7,8,9,10',
             'BirthDate' => 'required|date|before:today',
             'desc_health_status_member' => 'nullable|string|max:255',
 
 
-
-
         ];
-        if ($request->relation === 'ابن' || $request->relation === 'ابنة') {
+        if ($request->relation === 'ابن' || $request->relation === 'ابنه') {
 
             $rules['birth_certificate'] = 'required|image|max:2048';
             $rules['household_id_image'] = 'required|image|max:2048';
@@ -434,7 +432,7 @@ class HouseholdController extends Controller
 
         if (in_array($validated['relation'], ['زوج', 'ابن'])) {
             $gender = 'ذكر';
-        } elseif (in_array($validated['relation'], ['زوجة', 'ابنة'])) {
+        } elseif (in_array($validated['relation'], ['زوجة', 'ابنه'])) {
             $gender = 'أنثى';
         } else {
             $gender = null;
@@ -458,7 +456,7 @@ class HouseholdController extends Controller
                 'desc_health_status' => $validated['desc_health_status_member']
 
             ]);
-        } elseif (in_array($validated['relation'], ['ابن', 'ابنة'])) {
+        } elseif (in_array($validated['relation'], ['ابن', 'ابنه'])) {
             head_children::create([
                 'PersonId' => $validated['PersonId'],
                 'householdId' => $householdId->PersonId,
@@ -546,7 +544,7 @@ class HouseholdController extends Controller
     //         'TName' => 'sometimes|string|max:20',
     //         'LName' => 'sometimes|string|max:20',
     //         'PersonId' => ['required', 'digits:9'],
-    //         'relation' => 'required|in:زوجة,ابن,ابنة',
+    //         'relation' => 'required|in:زوجة,ابن,ابنه',
     //         'health_status' => 'required',
     //         'BirthDate' => 'required|date|before:today',
     //         'desc_health_status' => 'nullable|string|max:255'
