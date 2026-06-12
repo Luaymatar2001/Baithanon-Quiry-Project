@@ -7,11 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
+
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/details.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous" />
+    <script src="{{ asset('js/image-compress.js') }}"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     @livewireStyles
@@ -474,8 +476,7 @@
 
                     <div class="field">
                         <p class="field-label">
-                            أدخل صورة هوية الزوجة مع السليب
-                            <label style="color: red;">*</label>
+                            أدخل صورة هوية الزوجة مع السليب أو عقد الزواج <label style="color: red;">*</label>
                         </p>
                         <div class="custom-input">
                             <input type="file" name="wife_national_id" id="wife_national_id" accept="image/*">
@@ -635,13 +636,6 @@
        fileInput.addEventListener('change' , function(){
         const file = e.target.files[0];
             if (!file) return;
-            
-            const compressed = await compressImage(file, 1200, 0.7);
-            
-            // 🔥 استبدال الملف داخل input
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(compressed);
-            fileInput.files = dataTransfer.files;
 
         // 🔥 SweetAlert
                 Swal.fire({
@@ -693,13 +687,6 @@
     widowIdentity.addEventListener('change', function (e) {
     const file = e.target.files[0];
         if (!file) return;
-        
-        const compressed = await compressImage(file, 1200, 0.7);
-        
-        // 🔥 استبدال الملف داخل input
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(compressed);
-        widowIdentity.files = dataTransfer.files;
 
     
     if (file) {

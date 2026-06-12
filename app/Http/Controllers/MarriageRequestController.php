@@ -161,6 +161,6 @@ class MarriageRequestController extends Controller
             'wife_national_id_image' => $wifeFileName,
         ]);
 
-        return redirect()->back()->with('message', 'تم إرسال طلب الزواج للمراجعة بنجاح');
+        return redirect()->back()->with('message', 'تم إرسال طلب تسجيل زواج جديد للمراجعة');
     }
 }

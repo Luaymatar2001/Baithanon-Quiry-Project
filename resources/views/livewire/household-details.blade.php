@@ -16,9 +16,10 @@
     <div class="Container_Head">
 
         <div class="title_div">
-            <h3 style="margin-bottom: 20px;">
-                المنظومة الإلكترونية لتحديث بيانات أسر مدينة بيت حانون <i class="fa-solid fa-feather-pointed"
-                    style="font-size:23px;"></i>
+            <h3 style="margin-bottom: 20px; font-weight: 700; line-height: 1.8; font-size: 15px;">
+                المنظومة الالكترونية لتحديث بيانات أسر مدينة بيت حانون بالشراكة مع <label
+                    style="color: rgb(255, 86, 86);">صندوق بيت حانون التكافلي المستدام<label> <i
+                            class="fa-solid fa-feather-pointed" style="font-size:23px;"></i>
             </h3>
 
         </div>
@@ -28,57 +29,53 @@
     <div class="legal-switch">
         <input type="checkbox" id="legalConfirm" wire:model.live="legalConfirm"
             {{ $household->legal_confirmation? 'checked' : '' }} />
-        <p for="legalConfirm" class="labelOFLegalConfirm" style="font-weight: 500; line-height: 1.8; font-size: 16px;
+        <label for="legalConfirm" class="labelOFLegalConfirm" style="font-weight: 400; line-height: 1.5; font-size: 12px;
             {{ $household->legal_confirmation ? 'color:green;' : 'color:red;'}} " wire:ignore>
             أُقِرّ وأتحمّل كامل المسؤولية القانونية عن أي خطأ في البيانات التي قمت بإدخالها،
-            وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك.
-        </p>
-        <span style="color:red; font-weight: 900; font-size: 20px;">*</span>
+            وأعلم أنني أتحمّل كافة العقوبات القانونية المترتبة على ذلك. <label
+                style="color:red; font-weight: 900; font-size: 20px;">*</label>
+        </label>
+
 
     </div>
     <div class="Container_HouseHold bg-white ">
         <div class="title_div">
-            <h3 class=""> معلومات رب الأسرة :</h3>
-            <button class="open-btn"><i class="fa-regular fa-pen-to-square"></i> تحديث البيانات</button>
+            <h3 class="text-2xl font-bold"> بيانات رب الأسرة :</h3>
+            <button class="open-btn open-update-household-popup"><i class="fa-regular fa-pen-to-square"></i> تحديث
+                البيانات</button>
         </div>
 
         <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
             <div class="Grid-cell">
-                <div class="Demo" style="white-space: nowrap;">
-                    <span class="font-bold">رقم الهوية : </span>
-                    <span class="font-medium ">{{ $household->PersonId }}</span>
-                </div>
-            </div>
-            <div class="Grid-cell">
-                <div class="Demo" style="white-space: nowrap;">
+                <div class="Demo" style="white-space: wrap; line-height:1.2rem; ">
                     <span class="font-bold">الإسم رباعي : </span>
                     <span class="font-medium">{{ $household->FName }} {{$household->SName}}
                         {{$household->TName}} {{ $household->LName }}</span>
                 </div>
             </div>
             <div class="Grid-cell">
-                <div class="Demo" style="white-space: nowrap;">
-                    <span class="font-bold">رقم الهاتف الأساسي : </span>
-                    <span class="font-medium">{{ $household->Phone_Number }}</span>
+                <div class="Demo" style="white-space: wrap; line-height:1.2rem;">
+                    <span class="font-bold">رقم الهوية : </span>
+                    <span class="font-medium ">{{ $household->PersonId }}</span>
                 </div>
             </div>
 
             <div class="Grid-cell">
-                <div class="Demo" style="white-space: nowrap;">
+                <div class="Demo" style="white-space: wrap; line-height:1.2rem;">
+                    <span class="font-bold">رقم الهاتف الأساسي : </span>
+                    <span class="font-medium">{{ $household->Phone_Number }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
+            <div class="Grid-cell">
+                <div class="Demo" style="white-space: wrap; line-height:1.2rem;">
                     <span class="font-bold ">تاريخ الميلاد : </span>
                     <span class="font-medium ">{{ $household->BirthDate }}</span>
                 </div>
             </div>
 
-            <div class="Grid-cell">
-                <div class="Demo ">
-                    <span class="font-bold"> عدد الأفراد : </span>
-                    <span class="font-medium">{{ $household->num_Family_Members }}</span>
-                </div>
-            </div>
-        </div>
 
-        <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
             <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> الحالة الصحية : </span>
@@ -107,8 +104,6 @@
 
                 </div>
             </div>
-
-
             <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> مصدر الدخل الحالي : </span>
@@ -116,6 +111,9 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
             <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> الراتب المتوقع: </span>
@@ -126,6 +124,8 @@
                     </span>
                 </div>
             </div>
+
+
 
             <div class="Grid-cell">
                 <div class="Demo ">
@@ -155,6 +155,16 @@
                         @endif</span>
                 </div>
             </div>
+            <div class="Grid-cell">
+                <div class="Demo ">
+                    <span class="font-bold"> عدد الأفراد : </span>
+                    <span class="font-medium">{{ $household->num_Family_Members }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
+
+
             @if ($household->status ==="أرملة بعد حرب 2023")
             <div class="Grid-cell">
                 <div class="Demo">
@@ -213,7 +223,7 @@
             </div>
 
             <div class="Grid-cell">
-                <div class="Demo" style="min-width: 250px; max-width: 500px;">
+                <div class="Demo">
                     <span class="font-bold "> عنوان السكن : </span>
                     <span class="font-medium ">
                         @if( $household->address )
@@ -231,7 +241,7 @@
     {{-- Dev 2 --}}
     <div class="Container_HouseHold bg-white shadow-lg rounded-xl p-6 mb-2" style="margin-top: 20px;">
         <div class="title_div">
-            <h2 class="text-2xl font-bold"> معلومات أفراد الأسرة </h2>
+            <h3 class="text-2xl font-bold"> معلومات أفراد الأسرة </h3>
             {{-- add member button --}}
             {{-- <button class="open-btn-add" wire:ignore><i class="fa-regular fa-pen-to-square"></i> أضف فرد </button> --}}
             <button class="open-application-popup" wire:ignore><i class="fa-regular fa-pen-to-square"></i> إضافة طلب
@@ -649,8 +659,9 @@
                     const birth_certificate_input = document.querySelector('input[name="birth_certificate"]');
                     const household_id_image_input = document.querySelector('input[name="household_id_image"]');
 
+                    
                     const preview = document.getElementById('preview-container');
-                    // const attachment = document.getElementById('attachment');
+                // const attachment = document.getElementById('attachment');
                 const householdRelationship = document.querySelector('.household-relationship');
                 
                 const householdFName = document.querySelector('.FNameM');
@@ -660,9 +671,7 @@
                 
                 householdRelationship.addEventListener('change', function () {
                 
-                let value = householdRelationship.value;
-                
-                
+                let value = householdRelationship.value;     
                 
                 if (value === 'ابن' || value === 'ابنه') {
                 householdSName.value = "{{ $household->FName }}";
@@ -794,24 +803,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         SaveEditBtn.addEventListener('click', function (e) {
             // مراقبة أي إضافة عضو عبر Livewire أو DOM
-                const observer = new MutationObserver(toggleAddButton);
-                observer.observe(document.querySelector('tbody'), { childList: true, subtree: true });
-            const originalCount = {{$household->num_Family_Members ?? 0 }};
-            const currentCount = {{ $household->partner->count() + $household->children->count() + 1 }};
-            if (originalCount > currentCount) {
-                Swal.fire(
-                    'خطأ',
-                    'عدد أفراد الأسرة الحالي لا يتطابق مع العدد المعلن. يرجى التأكد من صحة البيانات قبل الحفظ.',
-                    'error'
-                );
-                return;
-            }
+                // const observer = new MutationObserver(toggleAddButton);
+                // observer.observe(document.querySelector('tbody'), { childList: true, subtree: true });
+            // const originalCount = {{$household->num_Family_Members ?? 0 }};
+            // const currentCount = {{ $household->partner->count() + $household->children->count() + 1 }};
+            // if (originalCount > currentCount) {
+            //     Swal.fire(
+            //         'خطأ',
+            //         '',
+            //         'error'
+            //     );
+            //     return;
+            // }
             
             e.preventDefault(); 
-
             Swal.fire(
-                'تم الحفظ!',
-                'تم حفظ جميع التعديلات بنجاح!',
+                'تم الحفظ بنجاح!',
+                'سيتم مراجعة الطلبات في حال إرسال طلب وأعتمادها بعد المراجعة!',
                 'success'
             );
         });
