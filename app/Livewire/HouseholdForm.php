@@ -120,7 +120,7 @@ class HouseholdForm extends Component
             return;
         }
 
-        $city = City::find($this->cityId);
+        $city = city::find($this->cityId);
 
         if (!$city) {
             $this->locations = [];

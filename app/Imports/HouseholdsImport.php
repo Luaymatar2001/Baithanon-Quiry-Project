@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\City;
+use App\Models\city;
 use App\Models\Governorates;
 use App\Models\Household;
 use App\Models\Location;
@@ -17,7 +17,7 @@ class HouseholdsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $cities = City::pluck('id', 'name');
+        $cities = city::pluck('id', 'name');
         $locations = Location::pluck('id', 'name');
         $governorates = Governorates::pluck('id', 'name');
 
