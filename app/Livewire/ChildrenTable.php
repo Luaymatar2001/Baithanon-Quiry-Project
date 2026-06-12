@@ -151,9 +151,12 @@ final class ChildrenTable extends PowerGridComponent
                 ->dataSource([
                     ['id' => 'ذكر', 'name' => 'ذكر'],
                     ['id' => 'أنثى', 'name' => 'أنثى'],
+                    ['id' => 'انثى', 'name' => 'انثى'],
+                    ['id' => '', 'name' => ''],
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),
+
             Filter::inputText('health_Status'),
             Filter::inputText('householdId')
 
