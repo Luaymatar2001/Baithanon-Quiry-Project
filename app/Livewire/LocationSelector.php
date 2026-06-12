@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Governorate;
-use App\Models\City;
+use App\Models\city;
 use App\Models\governorates;
 use App\Models\location;
 

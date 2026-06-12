@@ -120,11 +120,12 @@ final class ChildrenTable extends PowerGridComponent
                 ->sortable(),
 
             Column::make('العلاقة', 'relationship')
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
 
             Column::make('الحالة الصحية', 'health_Status')
                 ->searchable(),
-                
+
             Column::make('هوية رب الأسرة', 'householdId')
                 ->sortable()
                 ->searchable()
