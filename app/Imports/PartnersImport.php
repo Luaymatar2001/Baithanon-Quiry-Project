@@ -9,28 +9,28 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PartnersImport implements ToModel, WithHeadingRow
 {
-    public function model(array $row)
-    {
-        $personId = isset($row['hoy_alshkhs'])
-            ? (string) trim($row['hoy_alshkhs'])
-            : null;
+public function model(array $row)
+{
+    $personId = isset($row['hoy_alshkhs'])
+        ? (string) trim($row['hoy_alshkhs'])
+        : null;
 
-        return partner::updateOrCreate(
-            [
-                'PersonId' => $personId,
-            ],
-            [
-                'FName'         => $row['alasm_alaol'] ?? null,
-                'SName'         => $row['asm_alab'] ?? null,
-                'TName'         => $row['asm_algd'] ?? null,
-                'LName'         => $row['allkb'] ?? null,
-                'birthdate'     => $this->parseDate($row['tarykh_almylad'] ?? null),
-                'health_Status' => $row['alhal_alshy'] ?? null,
-                'householdId'   => $row['hoy_rb_alasr'] ?? null,
-                'relationship'  => $row['alaalak'] ?? null,
-            ]
-        );
-    }
+    return partner::updateOrCreate(
+        [
+            'PersonId' => $personId,
+        ],
+        [
+            'FName'         => $row['alasm_alaol'] ?? null,
+            'SName'         => $row['asm_alab'] ?? null,
+            'TName'         => $row['asm_algd'] ?? null,
+            'LName'         => $row['allkb'] ?? null,
+            'birthdate'     => $this->parseDate($row['tarykh_almylad'] ?? null),
+            'health_Status' => $row['alhal_alshy'] ?? null,
+            'householdId'   => $row['hoy_rb_alasr'] ?? null,
+            'relationship'  => $row['alaalak'] ?? null,
+        ]
+    );
+}
 
     /**
      * تحويل التاريخ من Excel إلى Date

@@ -139,7 +139,7 @@ class IdQuery extends Component
     private function getStats()
     {
 
-        return Cache::remember('homepage_statistics', 3, function () {
+        return Cache::remember('homepage_statistics', 86400, function () {
 
             return [
                 'familiesCount' => DB::table('heads_households')->count(),
