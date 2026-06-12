@@ -50,7 +50,7 @@ class LocationSelector extends Component
 
     public function updatedGovernorateId($value)
     {
-        $this->cities = City::where('governorateId', $value)->get();
+        $this->cities = city::where('governorateId', $value)->get();
         $this->city_id = null;
         $this->location_id = null;
         $this->locations = [];
