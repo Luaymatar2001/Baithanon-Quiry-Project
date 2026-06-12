@@ -12,7 +12,7 @@
                 </div>
                 <div class="link-text">
                     <p class="title">الانتقال إلى الصندوق</p>
-                    <p class="sub">ادعم أسر بيت حانون</p>
+                    <p class="sub"> بيت حانون التكافلي المستدام </p>
                 </div>
                 <i class="fa-solid fa-chevron-left chevron"></i>
             </a>
