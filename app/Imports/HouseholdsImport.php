@@ -14,7 +14,6 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class HouseholdsImport implements ToModel, WithHeadingRow
 {
-
     public function model(array $row)
     {
         $cities = city::pluck('id', 'name');

@@ -19,19 +19,22 @@ class ChildrensImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-
         return head_children::updateOrCreate(
             [
-                'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
-                'FName' => $row['alasm_alaol'] ?? null,
-                'SName' => $row['asm_alab'] ?? null,
-                'TName' => $row['asm_algd'] ?? null,
-                'LName' => $row['allkb'] ?? null,
-                'BirthDate' => $this->parseDate($row['tarykh_almylad'] ?? null),
-                'Gender' => $row['algns'] ?? null,
+                'PersonId' => isset($row['hoy_alshkhs'])
+                    ? (string) trim($row['hoy_alshkhs'])
+                    : null,
+            ],
+            [
+                'FName'         => $row['alasm_alaol'] ?? null,
+                'SName'         => $row['asm_alab'] ?? null,
+                'TName'         => $row['asm_algd'] ?? null,
+                'LName'         => $row['allkb'] ?? null,
+                'BirthDate'     => $this->parseDate($row['tarykh_almylad'] ?? null),
+                'Gender'        => $row['algns'] ?? null,
                 'health_Status' => $row['alhal_alshy'] ?? null,
-                'householdId' => $row['hoy_rb_alasr'] ?? null,
-                'relationship' => $row['alaalak'] ?? null
+                'householdId'   => $row['hoy_rb_alasr'] ?? null,
+                'relationship'  => $row['alaalak'] ?? null,
             ]
         );
     }
