@@ -34,16 +34,6 @@
     line-height: 1.8;
 }
 
-/* ألوان الأقسام */
-.card-blue {
-    /* background-color: #2182dd; */
-    /* backgound.jpg */
-
-    background-image: url('../images/backgound.jpg');
-    color: white;
-    border-radius: 0.5rem 0.5rem 0 0;
-}
-
 .donation-link {
     display: inline-flex;
     align-items: center;
@@ -115,6 +105,16 @@
     color: #15978c;
     /* border-bottom: 4px solid #1BC5BD; */
     text-transform: capitalize;
+}
+
+/* ألوان الأقسام */
+.card-blue {
+    /* background-color: #2182dd; */
+    /* backgound.jpg */
+
+    background-image: url('../images/backgound.jpg');
+    color: white;
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
 
