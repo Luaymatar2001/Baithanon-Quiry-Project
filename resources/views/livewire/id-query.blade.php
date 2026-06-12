@@ -5,9 +5,21 @@
             <h2 class="main-title"><i class="fa-duotone fa-solid fa-user-check"></i> البوابة الإلكترونية لتحديث بيانات
                 أسر مدينة بيت حانون: <i class="fa-solid fa-feather-pointed" style="font-size:23px;"></i>
             </h2>
+            <!-- 👇 زر التحويل هنا -->
+            <a href="https://bethanon1.onrender.com/" class="donation-link" target="_blank" rel="noopener noreferrer">
+                <div class="icon-box">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                </div>
+                <div class="link-text">
+                    <p class="title">الانتقال إلى الصندوق</p>
+                    <p class="sub">ادعم أسر بيت حانون</p>
+                </div>
+                <i class="fa-solid fa-chevron-left chevron"></i>
+            </a>
         </div>
         <div class="card-section card-blue">
             <h2 class="title2"><i class="fa-duotone fa-solid fa-lock"></i> تسجيل الدخول </h2>
+
             <p> يهدف هذا النظام إلى تحديث وتسجيل بيانات مواطني مدينة بيت حانون – المحافظة الشمالية/قطاع غزة، وذلك لتمكين
                 الجهات المختصة
                 من تقديم المساعدات والخدمات المختلفة بالشراكة مع المؤسسات المحلية والدولية.

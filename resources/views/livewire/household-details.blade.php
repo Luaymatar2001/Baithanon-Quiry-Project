@@ -817,12 +817,57 @@ document.addEventListener('DOMContentLoaded', function () {
             // }
             
             e.preventDefault(); 
-            Swal.fire(
-                'تم الحفظ بنجاح!',
-                'سيتم مراجعة الطلبات في حال إرسال طلب وأعتمادها بعد المراجعة!',
-                'success'
-            );
+
+                Swal.fire({
+                title: `
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+                    <span style="font-size:18px;">تم الحفظ بنجاح</span>
+                </div>
+                `,
+                html: `
+                <div style="text-align:center;">
+
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" style="
+                                    width:28px;
+                                    height:28px;
+                                    position:absolute;
+                                    top:15px;
+                                    right:15px;
+                                    opacity:0.85;
+                                " />
+
+                    <p style="font-size:15px; line-height:1.8; margin-top:10px;">
+                        سيتم مراجعة الطلبات بعد الإرسال واعتمادها بعد المراجعة.
+                    </p>
+
+                    <div style="
+                                margin-top:12px;
+                                padding:10px;
+                                background:#e6f7ff;
+                                border-right:4px solid #1BC5BD;
+                                border-radius:8px;
+                                font-size:13px;
+                                line-height:1.7;
+                                color:#055160;
+                            ">
+                        عند الضغط على <b>موافق</b> سيتم تحويلك إلى صفحتنا على التليجرام.
+                    </div>
+
+                </div>
+                `,
+                confirmButtonText: 'موافق',
+                confirmButtonColor: '#1BC5BD',
+                allowOutsideClick: true,
+                allowEscapeKey: false,
+                width: 450
+                }).then((result) => {
+                if (result.isConfirmed) {
+                window.location.href = "https://bethanon1.onrender.com";
+                }
+                });
         });
+
+        
         document.body.addEventListener('click', function (e) {
             const btn = e.target.closest('.delete-member');
             if (!btn) return;
