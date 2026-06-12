@@ -42,7 +42,7 @@ class HouseholdForm extends Component
     public $level_of_education;
     public $reason_leaving;
     public $current_location;
-    
+
     public $Type_of_housing;
 
 
@@ -130,7 +130,7 @@ class HouseholdForm extends Component
         // لا تمسح القيم
         $this->governorate_id = $city->governorateId;
 
-        $this->locations = Location::where('city_id', $this->cityId)->get();
+        $this->locations = location::where('city_id', $this->cityId)->get();
     }
 
 
