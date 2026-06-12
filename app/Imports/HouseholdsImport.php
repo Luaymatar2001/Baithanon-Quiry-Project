@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\city;
 use App\Models\governorates;
-use App\Models\Household;
+use App\Models\household;
 use App\Models\location;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +21,7 @@ class HouseholdsImport implements ToModel, WithHeadingRow
         $locations = location::pluck('id', 'name');
         $governorates = governorates::pluck('id', 'name');
 
-        return Household::updateOrCreate(
+        return household::updateOrCreate(
             [
                 'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
                 'FName' => $row['alasm_alaol'] ?? null,
