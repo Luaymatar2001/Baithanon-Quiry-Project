@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Models\city;
-use App\Models\Governorates;
+use App\Models\governorates;
 use App\Models\Household;
 use App\Models\location;
 use Carbon\Carbon;
@@ -19,7 +19,7 @@ class HouseholdsImport implements ToModel, WithHeadingRow
     {
         $cities = city::pluck('id', 'name');
         $locations = location::pluck('id', 'name');
-        $governorates = Governorates::pluck('id', 'name');
+        $governorates = governorates::pluck('id', 'name');
 
         return Household::updateOrCreate(
             [
