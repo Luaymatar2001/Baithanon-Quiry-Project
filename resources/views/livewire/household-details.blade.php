@@ -748,18 +748,18 @@
     //legal confirmation toggle
         const legalSwitch = document.querySelector('.legal-switch input');
         const labelOFLegalConfirm = document.querySelector('.labelOFLegalConfirm');
-        // legalSwitch.addEventListener('change', function() {
-        // if (this.checked) {
-        // // labelOFLegalConfirm
-        // labelOFLegalConfirm.style.color = 'green';
+        legalSwitch.addEventListener('change', function() {
+        if (this.checked) {
+        // labelOFLegalConfirm
+        labelOFLegalConfirm.style.color = 'green';
         // if(document.querySelectorAll('tbody tr').length + 1 < {{ $household->num_Family_Members }}){
         // document.querySelector('.open-btn-add').classList.remove('hidden-smooth');
         // }
-        // } else {
-        // labelOFLegalConfirm.style.color = 'red';
+        } else {
+        labelOFLegalConfirm.style.color = 'red';
         // document.querySelector('.open-btn-add').classList.add('hidden-smooth');
-        // }
-        // });
+        }
+        });
         
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 width: 450
                 }).then((result) => {
                 if (result.isConfirmed) {
-                window.location.href = "https://bethanon1.onrender.com";
+                window.location.href = "https://t.me/ebeithanoun";
                 }
                 });
         });

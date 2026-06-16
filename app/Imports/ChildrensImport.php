@@ -8,6 +8,7 @@ use App\Models\head_children;
 use App\Models\household;
 use App\Models\location;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -42,18 +43,35 @@ class ChildrensImport implements ToModel, WithHeadingRow
     /**
      * تحويل التاريخ من Excel إلى Date
      */
-    private function parseDate($value)
-    {
-        if (!$value) {
-            return null;
+   
+private function parseDate($value)
+{
+    if (empty($value)) {
+        return null;
+    }
+
+    try {
+        // 1) Excel numeric date (مثل 44225)
+        if (is_numeric($value)) {
+            return ExcelDate::excelToDateTimeObject($value)
+                ->format('Y-m-d');
         }
 
-        try {
-            return Carbon::parse($value)->format('Y-m-d');
-        } catch (\Exception $e) {
-            return null;
+        $value = trim($value);
+
+        // 2) dd/mm/yyyy مثل 11/03/2022
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $value)) {
+            return Carbon::createFromFormat('d/m/Y', $value)
+                ->format('Y-m-d');
         }
+
+        // 3) fallback
+        return Carbon::parse($value)->format('Y-m-d');
+
+    } catch (\Exception $e) {
+        return null;
     }
+}
 
     /**
      * Validation على مستوى الصف

@@ -33,6 +33,12 @@ final class MemberRequestTable extends PowerGridComponent
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
+                            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
+            Footer::make()
+                ->showPerPage()
+                ->showRecordCount(),
         ];
     }
 
@@ -74,26 +80,31 @@ final class MemberRequestTable extends PowerGridComponent
             Column::make('ID', 'id')->sortable(),
 
             Column::make('رقم الهوية', 'PersonId')
-                ->searchable(),
+                ->searchable()
+                ->editOnClick(),
             Column::make('الاسم الأول', 'FName')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->editOnClick(),
 
             Column::make('اسم الأب', 'SName')
-                ->searchable(),
+                ->searchable()
+                ->editOnClick(),
 
-            Column::make('اسم الجد', 'TName'),
+            Column::make('اسم الجد', 'TName')->editOnClick(),
 
-            Column::make('العائلة', 'LName'),
+            Column::make('العائلة', 'LName')->editOnClick(),
 
-            Column::make('هوية رب الأسرة', 'household_id'),
+            Column::make('هوية رب الأسرة', 'household_id')->editOnClick(),
 
 
 
-            Column::make('العلاقة', 'relation'),
-
+            Column::make('العلاقة', 'relation')
+            ->editOnClick(),
+            
             Column::make('تاريخ الميلاد', 'BirthDate')
-                ->sortable(),
+                ->sortable()
+                ->editOnClick(),
 
             // Column::make('صورة الهوية', 'identity_image')
             //     ->sortable(),
@@ -106,13 +117,13 @@ final class MemberRequestTable extends PowerGridComponent
                 ->sortable(false),
             Column::make('شهادة الميلاد', 'birth_certificate_html')
                 ->searchable(false)
-                ->sortable(false),
+                ->sortable(false)->editOnClick(),
             Column::make('صورة الهوية لرب الأسرة ', 'household_id_image_html')
                 ->searchable(false)
                 ->sortable(false),
 
             Column::make('الحالة', 'status')
-                ->sortable(),
+                ->sortable()->editOnClick(),
             Column::make('تاريخ المراجعة', 'reviewed_at')
                 ->sortable(),
             Column::make('تاريخ الإنشاء', 'created_at'),

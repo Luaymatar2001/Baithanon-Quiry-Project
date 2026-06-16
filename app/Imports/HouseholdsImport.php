@@ -3,8 +3,8 @@
 namespace App\Imports;
 
 use App\Models\city;
-use App\Models\governorates;
-use App\Models\household;
+use App\Models\Governorates;
+use App\Models\Household;
 use App\Models\location;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -14,13 +14,14 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class HouseholdsImport implements ToModel, WithHeadingRow
 {
+
     public function model(array $row)
     {
         $cities = city::pluck('id', 'name');
         $locations = location::pluck('id', 'name');
-        $governorates = governorates::pluck('id', 'name');
+        $governorates = Governorates::pluck('id', 'name');
 
-        return household::updateOrCreate(
+        return Household::updateOrCreate(
             [
                 'PersonId' => isset($row['hoy_alshkhs']) ? (string) trim($row['hoy_alshkhs']) : null,
                 'FName' => $row['alasm_alaol'] ?? null,

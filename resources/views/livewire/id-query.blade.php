@@ -6,7 +6,7 @@
                 أسر مدينة بيت حانون: <i class="fa-solid fa-feather-pointed" style="font-size:23px;"></i>
             </h2>
             <!-- 👇 زر التحويل هنا -->
-            <a href="https://bethanon1.onrender.com/" class="donation-link" target="_blank" rel="noopener noreferrer">
+            <a href="https://beithanoun.com/" class="donation-link" target="_blank" rel="noopener noreferrer">
                 <div class="icon-box">
                     <i class="fa-solid fa-hand-holding-heart"></i>
                 </div>
@@ -173,7 +173,9 @@ box-shadow:
     document.addEventListener("DOMContentLoaded", () => {
     if (typeof Swal !== 'undefined') {
         if (localStorage.getItem('family_update_alert_shown')) {
+            
             return; // لا تعرضه مرة ثانية
+            
             }
         Swal.fire({
             title: 'أهلاً وسهلاً بكم 🌷',
@@ -186,7 +188,8 @@ box-shadow:
                 ، والتي تهدف إلى بناء قاعدة بيانات دقيقة تسهم في تطوير الخدمات وتعزيز التكافل الاجتماعي.
                 يرجى التأكد من إدخال البيانات بشكل صحيح لضمان الاستفادة من الخدمات والبرامج المتاحة.
                <br>
-            </div>`,
+            </div>
+            `,
             confirmButtonText: 'بدء التسجيل',
             confirmButtonColor: '#1BC5BD',
             width: 500

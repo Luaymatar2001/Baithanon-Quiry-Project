@@ -145,7 +145,8 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ->sortable()->editOnClick(),
 
             Column::make('الجنس', 'Gender')
-                ->sortable(),
+                ->sortable()
+                ->editOnClick(),
 
             Column::make('الهاتف', 'Phone_Number')
                 ->searchable()->editOnClick(),
@@ -158,15 +159,17 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
             Column::make('الحالة', 'status')
                 ->sortable()
+                ->editOnClick()
                 ->searchable(),
 
             Column::make('الحالة الصحية', 'health_Status')
-                ->searchable(),
+                ->searchable()
+                ->editOnClick(),
 
             Column::make('مصادر الدخل', 'Sources_income')
                 ->searchable(),
 
-            Column::make('العنوان', 'address'),
+            Column::make('العنوان', 'address')->editOnClick(),
 
             // Column::make('ملاحظات', 'Notes'),
 

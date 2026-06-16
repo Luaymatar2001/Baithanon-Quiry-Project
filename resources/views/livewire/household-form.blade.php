@@ -20,14 +20,19 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">إسم الأب</label>
-                    <input type="text"  wire:model.defer="SName" class="w-full border rounded px-3 py-2">
+                    <input type="text"  wire:model.defer="SName" class="w-full border rounded px-3 py-2" required>
+                    @error('SName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
+                
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-1"> إسم الجد</label>
-                    <input type="text" wire:model.defer="TName" class="w-full border rounded px-3 py-2">
+                    <input type="text" wire:model.defer="TName" class="w-full border rounded px-3 py-2" required>
+                  @error('TName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">الأسم الأخير *</label>
@@ -48,6 +53,7 @@
                     <label class="block text-sm font-medium mb-1">رقم الجوال</label>
                     <input type="text" wire:model.defer="Phone_Number" name="Phone_Number"
                         class="w-full border rounded px-3 py-2">
+                         @error('Phone_Number') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
@@ -55,7 +61,8 @@
                 <div>
                     <label class="block text-sm font-medium mb-1">تاريخ الميلاد</label>
                     <input type="date" wire:model.defer="BirthDate" name="BirthDate"
-                        class="w-full border rounded px-3 py-2">
+                        class="w-full border rounded px-3 py-2required="">
+                           @error('BirthDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">الجنس *</label>
@@ -64,6 +71,43 @@
                         <option value="ذكر">ذكر</option>
                         <option value="أنثى">أنثى</option>
                     </select>
+                   @error('Gender') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+                </div>
+                
+                   <div>
+                    <label class="block text-sm font-medium mb-1">عدد أعضاء الأسرة</label>
+                    <input type="number" name="num_Family_Members" wire:model.defer="num_Family_Members"
+                        class="w-full border rounded px-3 py-2" min="1" required>
+                   @error('num_Family_Members') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">
+                        الحالة الإجتماعية <span class="text-red-500">*</span>
+                    </label>
+                
+                    <select wire:model.defer="status"
+                        class="w-full border rounded px-3 py-2" required>
+                
+                        <option value="">اختر الحالة الإجتماعية</option>
+                
+                        @foreach([
+                            '0' => 'متزوج',
+                            '1' => 'متزوج متعدد',
+                            '2' => 'مطلق / مطلقة',
+                            '3' => 'أرمل / أرملة قبل حرب 2023',
+                            '4' => 'أرمل / أرملة بعد حرب 2023',
+                            '5' => 'أعزب/عزباء تعدى ال 45 عاماً'
+                        ] as $key => $value)
+                
+                            <option value="{{ $key }}">
+                                {{ $value }}
+                            </option>
+                
+                        @endforeach
+                    </select>
+                     @error('status') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
             </div>
@@ -79,6 +123,8 @@
                         <option value="{{ $gov->id }}">{{ $gov->name }}</option>
                         @endforeach
                     </select>
+                      @error('governorate_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">المدينة <label style="color: red;">*</label></label>
@@ -88,6 +134,8 @@
                         <option value="{{ $city->id }}">{{ $city->name }}</option>
                         @endforeach
                     </select>
+               @error('governorate_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">المنطقة <label style="color: red;">*</label></label>
@@ -97,42 +145,60 @@
                         <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                         @endforeach
                     </select>
+                   @error('location_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
             </div>
 
             <div>
                 <label class="block text-sm font-medium mb-1">العنوان <label style="color: red;">*</label></label>
                 <input type="text" wire:model.defer="address" name="address" class="w-full border rounded px-3 py-2">
+               @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
             </div>
 
             <!-- Family & Health -->
             <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">عدد أعضاء الأسرة</label>
-                    <input type="number" name="num_Family_Members" wire:model.defer="num_Family_Members"
-                        class="w-full border rounded px-3 py-2" min="1">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">الحالة الصحية</label>
-                    <select wire:model.defer="health_Status" class="w-full border rounded px-3 py-2">
-                        <option value="" selected>اختر الحالة الصحية</option>
-                        <option value="سليم">سليم</option>
-                        <option value="مريض">مريض</option>
-                        <option value="مصاب">مصاب</option>
-                        <option value="إعاقة سمعية">إعاقة سمعية</option>
-                        <option value="إعاقة جسدية">إعاقة جسدية</option>
-                        <option value="إعاقة عقلية">إعاقة عقلية</option>
-                        <option value="إعاقة بصرية">إعاقة بصرية</option>
-                        <option value="حالات حرجة">حالات حرجة</option>
-                    </select>
-                </div>
+             
+            @php
+            $healthStatusArr = [
+                '0' => 'سليم',
+                '1' => 'مريض',
+                '2' => 'مصاب',
+                '3' => 'أمراض مزمنة',
+                '4' => 'حالات حرجة',
+                '5' => 'إعاقة جسدية',
+                '6' => 'إعاقة سمعية',
+                '7' => 'إعاقة عقلية',
+                '8' => 'إعاقة بصرية',
+                '9' => 'أخرى',
+            ];
+            @endphp
+
+            <div>
+                <label class="block text-sm font-medium mb-1">
+                    الحالة الصحية
+                </label>
+            
+                <select wire:model.defer="health_Status"
+                    class="w-full border rounded px-3 py-2" >
+            
+                    <option value="">اختر الحالة الصحية</option>
+            
+                    @foreach($healthStatusArr as $key => $value)
+                        <option value="{{ $key }}">
+                            {{ $value }}
+                        </option>
+                    @endforeach
+                </select>
+            @error('health_Status') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-1">مصادر الدخل</label>
                     <select name="Sources_income" wire:model.defer="Sources_income"
-                        class="w-full border rounded px-3 py-2" required>
+                        class="w-full border rounded px-3 py-2">
                         <option value="" selected>أختر مصدر الدخل</option>
                         @foreach(['عاطل','موظف حكومي','موظف خاص','موظف عقود','موظف وكالة'] as $source)
                         <option value="{{ $source }}"
@@ -141,34 +207,26 @@
                         </option>
                         @endforeach
                     </select>
+                @error('Sources_income') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
 
-            </div>
-
-            <!-- Status & Confirmation -->
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">الحالة الإجتماعية</label>
-                    <select name="status" wire:model.defer="status" class="w-full border rounded px-3 py-2">
-                        <option value="" selected> أختر الحالة الإجتماعية</option>
-                        @foreach(['متزوج','مطلق','مطلقة','أرمل','أرملة','أرملة بعد حرب 2023','أعزب/عزباء تعدى ال 45
-                        عام'] as $status)
-                        <option value="{{ $status }}"
-                            {{ old('status', $household->status ?? '') == $status ? 'selected' : '' }}>
-                            {{ $status }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
+      
+                
+                
                 <div>
                     <label class="block text-sm font-medium mb-1">تاريخ أستشهاد الزوج</label>
                     <input type="date" name="Date_partner_martyrdom" wire:model.defer="Date_partner_martyrdom"
                         class="w-full border rounded px-3 py-2">
+              @error('Date_partner_martyrdom') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
                 <div class="flex items-center mt-6">
                     <input type="checkbox" name="legal_confirmation" wire:model.defer="legal_confirmation"
                         class="rounded" id="legal">
                     <label for="legal" class="ml-2 text-sm">Legal Confirmation</label>
+                     @error('legal_confirmation') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                 </div>
             </div>
 
@@ -177,6 +235,8 @@
                 <label class="block text-sm font-medium mb-1">Notes</label>
                 <textarea wire:model.defer="Notes" name="Notes" class="w-full border rounded px-3 py-2"
                     rows="3"></textarea>
+                 @error('Notes') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+    
             </div>
 
             <!-- Buttons -->

@@ -49,6 +49,7 @@ class HouseholdController extends Controller
                         'أخرى',
                     ]),
                 ],
+                'expected_salary' => 'nullable|integer',
                 'location_id' => 'nullable|integer|exists:locations,id',
                 'Phone_Number' => [
                     'nullable',
@@ -57,7 +58,6 @@ class HouseholdController extends Controller
                 ],
                 'governorate_id' => 'nullable|integer|exists:governorates,id',
                 'Date_partner_martyrdom' => 'nullable|Date',
-                'expected_salary' => 'nullable',
                 'desc_health_status' => 'nullable|string|max:255',
                 'alternative_mobile_number' => [
                     'nullable',
@@ -481,7 +481,7 @@ class HouseholdController extends Controller
     {
 
         $householdId = household::findOrFail(session('household_verified'));
-
+        
         // 1️⃣ Validation
         $validator = Validator::make($request->all(), [
             'member_id' => 'required|integer',
@@ -495,7 +495,9 @@ class HouseholdController extends Controller
             'desc_health_status_member.string' => 'يجب أن يكون المدخل نصا',
             'desc_health_status_member.max' => 'يجب أن لا يزيد حجم النص عن ال 255 حرف '
         ]);
+        
 
+         
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator, 'popup_member')
@@ -503,6 +505,7 @@ class HouseholdController extends Controller
         }
 
         $data =  $validator->validated();
+
 
         // 3️⃣ تحديد النوع القديم من قاعدة البيانات
         if ($partner = partner::find($data['member_id'])) {

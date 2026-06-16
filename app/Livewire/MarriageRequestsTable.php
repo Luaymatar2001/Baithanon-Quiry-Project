@@ -17,6 +17,8 @@ use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Facades\Filter;
+
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 
 final class MarriageRequestsTable extends PowerGridComponent
@@ -28,6 +30,16 @@ final class MarriageRequestsTable extends PowerGridComponent
         return [
             Header::make()->showSearchInput(),
             Footer::make()->showPerPage()->showRecordCount(),
+            // Header::make()->showSearchInput(),
+            // Footer::make()
+            //     ->showPerPage()
+            //     ->showRecordCount(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
+            Footer::make()
+                ->showPerPage()
+                ->showRecordCount(),
         ];
     }
 
@@ -52,28 +64,49 @@ final class MarriageRequestsTable extends PowerGridComponent
         return [
             Column::make('ID', 'id')->sortable(),
 
-            Column::make('بيانات الزوج', 'husband_full_name')
+            Column::make('هوية الزوج', 'IdNumHouseHold_h')->searchable()->editOnClick(),
+            
+            Column::make('أسم الزوج الأول', 'FName_h')
                 ->searchable(false)
-                ->sortable(false),
-
-            Column::make('هوية الزوج', 'IdNumHouseHold_h')->searchable(),
-            Column::make('تاريخ ميلاد الزوج', 'BirthDate_h')->sortable(),
-            Column::make('رقم جوال الزوج', 'MobailNumber_h')->searchable(),
-
-            Column::make('بيانات الزوجة', 'wife_full_name')
+                ->sortable(false)->editOnClick(),
+            Column::make('أسم الأب', 'SName_h')
                 ->searchable(false)
-                ->sortable(false),
-
-            Column::make('هوية الزوجة', 'IdNumWifeId')->searchable(),
-            Column::make('تاريخ ميلاد الزوجة', 'BirthDate_w')->sortable(),
-
-            Column::make('صورة هوية الزوج', 'husband_image_html')
+                ->sortable(false)->editOnClick(),
+            Column::make('أسم الجد', 'TName_h')
                 ->searchable(false)
-                ->sortable(false),
-
-            Column::make('صورة هوية الزوجة', 'wife_image_html')
+                ->sortable(false)->editOnClick(),
+            Column::make('أسم العائلة', 'LName_h')
                 ->searchable(false)
-                ->sortable(false),
+                ->sortable(false)->editOnClick(),
+            Column::make('تاريخ ميلاد الزوج', 'BirthDate_h')->sortable()->editOnClick(),
+            Column::make('رقم جوال الزوج', 'MobailNumber_h')->searchable()->editOnClick(),
+            
+            Column::make('أسم الزوجة الأول', 'FName_w')
+                ->searchable(false)
+                ->sortable(false)
+                ->editOnClick(),
+            
+            Column::make('أسم الأب', 'SName_w')
+                ->searchable(false)
+                ->sortable(false)
+                ->editOnClick(),
+            
+            Column::make('أسم الجد', 'TName_w')
+                ->searchable(false)
+                ->sortable(false)
+                ->editOnClick(),
+            
+            Column::make('أسم العائلة', 'LName_w')
+                ->searchable(false)
+                ->sortable(false)
+                ->editOnClick(),
+
+            Column::make('هوية الزوجة', 'IdNumWifeId')->searchable()->editOnClick(),
+            Column::make('تاريخ ميلاد الزوجة', 'BirthDate_w')->sortable()->editOnClick(),
+
+            Column::make('صورة هوية الزوج', 'husband_image_html'),
+
+            Column::make('صورة هوية الزوجة', 'wife_image_html'),
 
             Column::action('Action'),
         ];
@@ -140,6 +173,28 @@ final class MarriageRequestsTable extends PowerGridComponent
             $row->LName_w,
         ])->filter()->implode(' '));
     }
+    
+    
+    
+        public function filters(): array
+    {
+        return [
+            Filter::inputText('FName_h'),
+            Filter::inputText('LName_h'),
+            Filter::inputText('IdNumHouseHold_h'),
+          
+            Filter::inputText('FName_w'),
+            Filter::inputText('LName_w'),
+            Filter::inputText('IdNumWifeId'),
+             Filter::inputText('MobailNumber_h'),
+            
+            Filter::inputText('status'),
+            Filter::inputText('num_Family_Members'),
+            Filter::inputText('health_Status'),
+
+        ];
+    }
+
 
     private function deleteImagesIfExist(MarriageRequest $request): void
     {
@@ -168,7 +223,7 @@ final class MarriageRequestsTable extends PowerGridComponent
             // منع التكرار (اختياري/خفيف)
             // إذا كان PersonId الزوج موجوداً في heads_households مسبقاً سيحدث خطأ حسب unique/قيود.
 
-            $householdCreated = household::create([
+            $householdCreated = household::updateOrCreate([
                 'PersonId' => $req->IdNumHouseHold_h,
                 'FName' => $req->FName_h,
                 'SName' => $req->SName_h,
@@ -184,7 +239,7 @@ final class MarriageRequestsTable extends PowerGridComponent
             ]);
 
             // إنشاء الزوجة في partners
-            $wife = partner::create([
+            $wife = partner::updateOrCreate([
                 'PersonId' => $req->IdNumWifeId,
                 'householdId' => $req->IdNumHouseHold_h,
                 'FName' => $req->FName_w,

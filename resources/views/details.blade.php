@@ -1201,7 +1201,8 @@ widowIdentity.required = true;
             <p class="field-label"> أسير / مفقود </p>
             <div class="custom-select">
                 <select name="missing_persons" id="missing_persons">
-                    @foreach(['0'=>'أختر','1' => 'أسير', '2'=>'مفقود'] as $key => $value)
+                   @foreach(['0'=>'لا يوجد','1' => 'أسير', '2'=>'مفقود'] as $key => $value)
+                    
                     <option value="{{ $key }}"
                         {{ old('missing_persons', $household->missing_persons ?? '') == $key ? 'selected' : '' }}>
                         {{ $value }}

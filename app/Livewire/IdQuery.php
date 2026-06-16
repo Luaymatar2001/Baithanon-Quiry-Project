@@ -29,8 +29,11 @@ class IdQuery extends Component
     public $childrenCount;
 
 
+
     public function submit()
     {
+                // Cache::forget('homepage_statistics');
+
         $this->validate([
             'id' => 'required|digits:9',
             'mobileNum' => 'required|digits:10',
@@ -139,7 +142,7 @@ class IdQuery extends Component
     private function getStats()
     {
 
-        return Cache::remember('homepage_statistics', 86400, function () {
+        return Cache::remember('homepage_statistics', 5, function () {
 
             return [
                 'familiesCount' => DB::table('heads_households')->count(),

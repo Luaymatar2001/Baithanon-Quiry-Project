@@ -154,8 +154,6 @@
 
 <body>
     @livewire('id-query')
-
-    
 </body>
 @livewireScripts
 
