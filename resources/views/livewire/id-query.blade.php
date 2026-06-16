@@ -24,6 +24,13 @@
                 الجهات المختصة
                 من تقديم المساعدات والخدمات المختلفة بالشراكة مع المؤسسات المحلية والدولية.
             </p>
+            {{-- <small>
+                تم تصميم هذه البوابة لتكون منصة موحدة تجمع البيانات الموثوقة، وتسهّل مشاركتها مع المؤسسات الشريكة بما
+                يضمن
+                سرعة الوصول
+                إلى المعلومات، وتحسين جودة الخدمات المقدمة للأهالي، وتعزيز فعالية برامج الدعم الإنساني والتنمية
+                المجتمعية.
+            </small> --}}
             <div class="stats-container" wire:ignore>
                 <div class="stat-box" style="height:70px;">
                     <div class=" stat-info">
@@ -83,6 +90,8 @@
             <div class="spinner"></div>
             <p>جاري التحقق من بياناتك...</p>
         </div>
+
+
         @endif
 
 
@@ -110,15 +119,20 @@
         </div>
         @endif
     </div>
- 
-
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+                Livewire.on('goToQuestions', () => {
+                   @this.call('goToQuestions');
+                });
+            });
+    </script>
     <div class="card-section" style="
     border: 4px solid #1BC5BD;
     background-color: #F0FDFA;
     border-radius: 10px;
     padding: 1rem;
     margin: 1rem;
-    box-shadow:
+box-shadow:
     0 8px 20px rgba(15, 118, 110, 0.18),
     0 2px 6px rgba(0, 0, 0, 0.06);">
         <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #cc4343ff;
@@ -150,27 +164,17 @@
                 قطاع غزة.</li>
 
             <li>تشمل قاعدة البيانات الأسر المسجلة حتى تاريخ 25/10/2025، وسيتم استكمال تحديث وإضافة البيانات بشكل دوري.
-
             </li>
         </ol>
     </div>
-
 </div>
-
-
-<script>
-    document.addEventListener('livewire:initialized', () => {
-                Livewire.on('goToQuestions', () => {
-                   @this.call('goToQuestions');
-                });
-            });
-</script>
-
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
     if (typeof Swal !== 'undefined') {
-        if (localStorage.getItem('family_update_alert_shown')) { return;}
+        if (localStorage.getItem('family_update_alert_shown')) {
+            return; // لا تعرضه مرة ثانية
+            }
         Swal.fire({
             title: 'أهلاً وسهلاً بكم 🌷',
             html: `
@@ -182,8 +186,7 @@
                 ، والتي تهدف إلى بناء قاعدة بيانات دقيقة تسهم في تطوير الخدمات وتعزيز التكافل الاجتماعي.
                 يرجى التأكد من إدخال البيانات بشكل صحيح لضمان الاستفادة من الخدمات والبرامج المتاحة.
                <br>
-            </div>
-            `,
+            </div>`,
             confirmButtonText: 'بدء التسجيل',
             confirmButtonColor: '#1BC5BD',
             width: 500

@@ -42,6 +42,7 @@ class HouseholdForm extends Component
     public $level_of_education;
     public $reason_leaving;
     public $current_location;
+    public $expected_salary;
 
     public $Type_of_housing;
 
@@ -88,6 +89,7 @@ class HouseholdForm extends Component
         $this->health_Status = $household->health_Status;
         $this->Sources_income = $household->Sources_income;
         $this->address = $household->address;
+        $this->expected_salary = $household->expected_salary;
         $this->desc_health_status = $household->desc_health_status;
         $this->alternative_mobile_number = $household->alternative_mobile_number;
         $this->international_number_mobile = $household->international_number_mobile;
@@ -98,6 +100,7 @@ class HouseholdForm extends Component
         $this->level_of_education = $household->level_of_education;
         $this->Type_of_housing = $household->Type_of_housing;
         $this->current_location = $household->current_location;
+
         $this->Notes = $household->Notes;
     }
 
