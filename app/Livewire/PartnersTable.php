@@ -120,16 +120,15 @@ final class PartnersTable extends PowerGridComponent
                 ->sortable()->editOnClick(),
 
             Column::make('العلاقة', 'relationship')
-                ->sortable(),
+                ->sortable()->editOnClick(),
 
             Column::make('الحالة الصحية', 'health_Status')
-                ->searchable(),
+                ->searchable()->editOnClick(),
 
             Column::make('هوية رب الأسرة', 'householdId')
                 ->sortable()
-                ->searchable()
-                ->editOnClick(),
-                
+                ->searchable(),
+
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
             Column::action('Action')

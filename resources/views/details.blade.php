@@ -956,35 +956,35 @@
     const statusDocument = document.getElementById('status_document');
     const widowIdentity = document.getElementById('widow_identity');
 
- function toggleDocuments() {
+       function toggleDocuments() {
 
-wrapper.style.display = 'none';
-widowField.style.display = 'none';
+        wrapper.style.display = 'none';
+        widowField.style.display = 'none';
 
-statusDocument.required = false;
-widowIdentity.required = false;
+        statusDocument.required = false;
+        widowIdentity.required = false;
 
-if (status.value === '2') {
-wrapper.style.display = 'block';
-statusDocument.required = true;
-}
+        if (status.value === '2') {
+        wrapper.style.display = 'block';
+        statusDocument.required = true;
+        }
 
-if (status.value === '3') {
-wrapper.style.display = 'block';
-statusDocument.required = true;
-}
+        if (status.value === '3') {
+        wrapper.style.display = 'block';
+        statusDocument.required = true;
+        }
 
-if (status.value === '4') {
-wrapper.style.display = 'block';
-widowField.style.display = 'block';
+        if (status.value === '4') {
+        wrapper.style.display = 'block';
+        widowField.style.display = 'block';
 
-statusDocument.required = true;
-widowIdentity.required = true;
-}
-}
-    // toggleDocuments();
-    status.addEventListener('change', toggleDocuments);
-});
+        statusDocument.required = true;
+        widowIdentity.required = true;
+        }
+        }
+            // toggleDocuments();
+            status.addEventListener('change', toggleDocuments);
+        });
                 </script>
 
                 {{-- مصادر الدخل تعديل  --}}

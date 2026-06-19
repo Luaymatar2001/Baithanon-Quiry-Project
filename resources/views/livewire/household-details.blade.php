@@ -76,6 +76,20 @@
             </div>
 
 
+            @php
+            $healthStatusArr = [
+            '0' => 'سليم',
+            '1' => 'مريض',
+            '2' => 'مصاب',
+            '3' => 'أمراض مزمنة',
+            '4' => 'حالات حرجة',
+            '5' => 'إعاقة جسدية',
+            '6' => 'إعاقة سمعية',
+            '7' => 'إعاقة عقلية',
+            '8' => 'إعاقة بصرية',
+            '9' => 'أخرى',
+            ];
+            @endphp
             <div class="Grid-cell">
                 <div class="Demo ">
                     <span class="font-bold"> الحالة الصحية : </span>
@@ -87,17 +101,22 @@
                         @elseif($household->health_Status == "2")
                         مصاب
                         @elseif($household->health_Status == "3")
-                        إعاقة سمعية
-                        @elseif($household->health_Status == "4")
-                        إعاقة جسدية
-                        @elseif($household->health_Status == "5")
-                        إعاقة عقلية
-                        @elseif($household->health_Status == "6")
-                        إعاقة بصرية
-                        @elseif($household->health_Status == "7")
-                        حالات حرجة
-                        @elseif($household->health_Status == "8")
                         أمراض مزمنة
+
+                        @elseif($household->health_Status == "4")
+                        حالات حرجة
+
+                        @elseif($household->health_Status == "5")
+                        إعاقة جسدية
+
+                        @elseif($household->health_Status == "6")
+                        إعاقة سمعية
+
+                        @elseif($household->health_Status == "7")
+                        إعاقة عقلية
+
+                        @elseif($household->health_Status == "8")
+                        إعاقة بصرية
                         @elseif($household->health_Status == "9")
                         أخرى
                         @endif
@@ -546,8 +565,7 @@
                             <option value="6" {{ old('health_status') == '6' ? 'selected' : '' }}>إعاقة سمعية</option>
                             <option value="7" {{ old('health_status') == '7' ? 'selected' : '' }}>إعاقة عقلية</option>
                             <option value="8" {{ old('health_status') == '8' ? 'selected' : '' }}>إعاقة بصرية</option>
-                            <option value="9" {{ old('health_status') == '9' ? 'selected' : '' }}>إعاقة بصرية</option>
-                            <option value="10" {{ old('health_status') == '10' ? 'selected' : '' }}>أخرى</option>
+                            <option value="9" {{ old('health_status') == '10' ? 'selected' : '' }}>أخرى</option>
                         </select>
 
                         @error('health_status')

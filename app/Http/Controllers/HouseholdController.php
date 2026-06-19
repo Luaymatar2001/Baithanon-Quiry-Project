@@ -20,6 +20,7 @@ class HouseholdController extends Controller
     // for details page
     public function updateDetails(Request $request)
     {
+        
         $householdId = session('household_verified');
         if (!$householdId) {
             abort(403, 'Unauthorized');
@@ -46,7 +47,10 @@ class HouseholdController extends Controller
                         'موظف خاص',
                         'موظف عقود',
                         'موظف وكالة',
-                        'أخرى',
+                        'مساعدات مؤسسات',
+                        'مؤسسات شؤون إجتماعية',
+                        'مساعدات من الأهل',
+                        'أخرى'
                     ]),
                 ],
                 'expected_salary' => 'nullable|integer',
@@ -481,7 +485,7 @@ class HouseholdController extends Controller
     {
 
         $householdId = household::findOrFail(session('household_verified'));
-        
+
         // 1️⃣ Validation
         $validator = Validator::make($request->all(), [
             'member_id' => 'required|integer',
@@ -495,9 +499,9 @@ class HouseholdController extends Controller
             'desc_health_status_member.string' => 'يجب أن يكون المدخل نصا',
             'desc_health_status_member.max' => 'يجب أن لا يزيد حجم النص عن ال 255 حرف '
         ]);
-        
 
-         
+
+
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator, 'popup_member')

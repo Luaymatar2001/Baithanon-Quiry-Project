@@ -64,7 +64,6 @@ class HouseholdForm extends Component
         if ($this->householdId) {
             $household = household::findOrFail($this->householdId);
             $this->fillFromModel($household);
-          
         }
     }
 
@@ -139,9 +138,6 @@ class HouseholdForm extends Component
 
     public function save()
     {
-    
-    
-//   dd($this->all());
 
         $validatedData = $this->validate([
 
@@ -181,7 +177,6 @@ class HouseholdForm extends Component
             'desc_health_status' => 'nullable|string|max:255',
             'international_number_mobile' => [
                 'nullable',
-                'regex:/^\+?963(59|56)\d{7}$/',
             ],
             // 'residence_location' => 'required|string|in:0,1',
             // 'residence_status' => 'required|string|in:0,1',
@@ -191,88 +186,85 @@ class HouseholdForm extends Component
             'Type_of_housing' => 'nullable|string|max:255',
             'reason_leaving' => 'nullable|integer|in:0,1,2,3,',
             'current_location' => 'nullable|string|max:255',
-                ], [
+        ], [
             'PersonId.required' => 'رقم الهوية مطلوب',
             'PersonId.unique' => 'رقم الهوية موجود مسبقاً',
-        
+
             'FName.string' => 'الاسم الأول يجب أن يكون نصاً',
             'FName.max' => 'الاسم الأول لا يجب أن يزيد عن 255 حرفاً',
-        
+
             'SName.string' => 'اسم الأب يجب أن يكون نصاً',
             'SName.max' => 'اسم الأب لا يجب أن يزيد عن 255 حرفاً',
-        
+
             'TName.string' => 'اسم الجد يجب أن يكون نصاً',
             'TName.max' => 'اسم الجد لا يجب أن يزيد عن 255 حرفاً',
-        
+
             'LName.string' => 'اسم العائلة يجب أن يكون نصاً',
             'LName.max' => 'اسم العائلة لا يجب أن يزيد عن 255 حرفاً',
-        
+
             'BirthDate.date' => 'تاريخ الميلاد غير صحيح',
-        
+
             'Gender.in' => 'يجب اختيار الجنس بشكل صحيح',
-        
+
             'Phone_Number.numeric' => 'رقم الجوال يجب أن يحتوي على أرقام فقط',
             'Phone_Number.regex' => 'رقم الجوال يجب أن يبدأ بـ 059 أو 056 ويتكون من 10 أرقام',
-        
+
             'alternative_mobile_number.numeric' => 'رقم الجوال البديل يجب أن يحتوي على أرقام فقط',
             'alternative_mobile_number.regex' => 'رقم الجوال البديل غير صحيح',
             'alternative_mobile_number.different' => 'رقم الجوال البديل يجب أن يكون مختلفاً عن رقم الجوال الأساسي',
-        
+
             'num_Family_Members.integer' => 'عدد أفراد الأسرة يجب أن يكون رقماً صحيحاً',
             'num_Family_Members.min' => 'عدد أفراد الأسرة يجب أن يكون أكبر من صفر',
-        
+
             'expected_salary.numeric' => 'الراتب المتوقع يجب أن يكون رقماً',
             'expected_salary.integer' => 'الراتب المتوقع يجب أن يكون رقماً صحيحاً',
             'expected_salary.min' => 'الراتب المتوقع لا يمكن أن يكون أقل من صفر',
-        
+
             'status.max' => 'الحالة الاجتماعية طويلة جداً',
-        
+
             'cityId.exists' => 'المدينة المختارة غير موجودة',
-        
+
             'location_id.exists' => 'المنطقة المختارة غير موجودة',
-        
+
             'governorate_id.exists' => 'المحافظة المختارة غير موجودة',
-        
+
             'Date_partner_martyrdom.date' => 'تاريخ الاستشهاد غير صحيح',
-        
+
             'health_Status.max' => 'الحالة الصحية طويلة جداً',
-        
+
             'Sources_income.max' => 'مصدر الدخل طويل جداً',
-        
+
             'address.max' => 'العنوان طويل جداً',
-        
+
             'desc_health_status.max' => 'وصف الحالة الصحية طويل جداً',
-        
+
             'international_number_mobile.numeric' => 'رقم التواصل الدولي يجب أن يحتوي على أرقام فقط',
             'international_number_mobile.regex' => 'رقم التواصل الدولي غير صحيح',
-        
+
             'residence_location.required' => 'مكان الإقامة مطلوب',
             'residence_location.in' => 'القيمة المدخلة خاطئة',
-        
+
             // 'residence_status.required' => 'حالة الإقامة مطلوبة',
             // 'residence_status.in' => 'القيمة المدخلة خاطئة',
-        
+
             'missing_persons.integer' => 'عدد المفقودين يجب أن يكون رقماً',
             'missing_persons.in' => 'القيمة المدخلة خاطئة',
-        
+
             'missing_info.max' => 'بيانات المفقودين طويلة جداً',
-        
+
             'level_of_education.max' => 'مستوى التعليم طويل جداً',
-        
+
             'Type_of_housing.max' => 'نوع السكن طويل جداً',
-        
+
             'reason_leaving.integer' => 'سبب الخروج غير صحيح',
             'reason_leaving.in' => 'سبب الخروج غير صحيح',
-        
+
             'current_location.max' => 'العنوان الحالي طويل جداً',
         ]);
 
-
-
-
+        $validatedData['missing_persons'] = $validatedData['missing_persons'] ?? 0;
 
         if ($this->householdId) {
-
             $household = household::findOrFail($this->householdId);
             $household->update($validatedData);
             session()->flash('message', 'Household updated successfully.');

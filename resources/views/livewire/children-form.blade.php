@@ -86,7 +86,7 @@
                     </select>
                     @error('relationship') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium mb-1">الحالة الصحية</label>
                     <select wire:model.defer="health_Status" class="w-full border rounded px-3 py-2">
                         <option value="" selected>اختر الحالة الصحية</option>
@@ -100,7 +100,7 @@
                         <option value="حالات حرجة">حالات حرجة</option>
                     </select>
                     @error('health_Status') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
+                </div> --}}
             </div>
 
             <!-- Buttons -->

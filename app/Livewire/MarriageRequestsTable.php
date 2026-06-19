@@ -7,6 +7,7 @@ use App\Models\head_children;
 use App\Models\household;
 use App\Models\partner;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -65,7 +66,7 @@ final class MarriageRequestsTable extends PowerGridComponent
             Column::make('ID', 'id')->sortable(),
 
             Column::make('هوية الزوج', 'IdNumHouseHold_h')->searchable()->editOnClick(),
-            
+
             Column::make('أسم الزوج الأول', 'FName_h')
                 ->searchable(false)
                 ->sortable(false)->editOnClick(),
@@ -80,22 +81,22 @@ final class MarriageRequestsTable extends PowerGridComponent
                 ->sortable(false)->editOnClick(),
             Column::make('تاريخ ميلاد الزوج', 'BirthDate_h')->sortable()->editOnClick(),
             Column::make('رقم جوال الزوج', 'MobailNumber_h')->searchable()->editOnClick(),
-            
+
             Column::make('أسم الزوجة الأول', 'FName_w')
                 ->searchable(false)
                 ->sortable(false)
                 ->editOnClick(),
-            
+
             Column::make('أسم الأب', 'SName_w')
                 ->searchable(false)
                 ->sortable(false)
                 ->editOnClick(),
-            
+
             Column::make('أسم الجد', 'TName_w')
                 ->searchable(false)
                 ->sortable(false)
                 ->editOnClick(),
-            
+
             Column::make('أسم العائلة', 'LName_w')
                 ->searchable(false)
                 ->sortable(false)
@@ -130,6 +131,19 @@ final class MarriageRequestsTable extends PowerGridComponent
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
+            ->add('IdNumHouseHold_h')
+            ->add('BirthDate_h')
+            ->add('MobailNumber_h')
+            ->add('FName_h')
+            ->add('SName_h')
+            ->add('TName_h')
+            ->add('LName_h')
+            ->add('IdNumWifeId')
+            ->add('BirthDate_w')
+            ->add('FName_w')
+            ->add('SName_w')
+            ->add('TName_w')
+            ->add('LName_w')
             ->add('husband_image_html', function ($row) {
                 if (!$row->husband_national_id_image) {
                     return '-';
@@ -153,6 +167,19 @@ final class MarriageRequestsTable extends PowerGridComponent
                     . '</a>';
             });
     }
+    public function onUpdatedEditable(
+        mixed $id,
+        string $field,
+        mixed $value
+    ): void {
+        validator(
+            [$field => $value],
+            [$field => 'nullable|string|max:255']
+        )->validate();
+
+        MarriageRequest::where('id', $id)->update([$field => $value]);
+    }
+
 
     private function husbandFullName($row): string
     {
@@ -173,21 +200,21 @@ final class MarriageRequestsTable extends PowerGridComponent
             $row->LName_w,
         ])->filter()->implode(' '));
     }
-    
-    
-    
-        public function filters(): array
+
+
+
+    public function filters(): array
     {
         return [
             Filter::inputText('FName_h'),
             Filter::inputText('LName_h'),
             Filter::inputText('IdNumHouseHold_h'),
-          
+
             Filter::inputText('FName_w'),
             Filter::inputText('LName_w'),
             Filter::inputText('IdNumWifeId'),
-             Filter::inputText('MobailNumber_h'),
-            
+            Filter::inputText('MobailNumber_h'),
+
             Filter::inputText('status'),
             Filter::inputText('num_Family_Members'),
             Filter::inputText('health_Status'),
@@ -216,6 +243,7 @@ final class MarriageRequestsTable extends PowerGridComponent
     #[On('acceptMarriageRequest')]
     public function accept($id): void
     {
+        try {
         DB::transaction(function () use ($id) {
             /** @var MarriageRequest $req */
             $req = MarriageRequest::query()->findOrFail($id);
@@ -264,8 +292,21 @@ final class MarriageRequestsTable extends PowerGridComponent
         });
 
         $this->dispatch('pg:eventRefresh');
+        } catch (UniqueConstraintViolationException $e) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'title' => 'خطأ - تكرار في البيانات',
+                'message' => 'رقم الهوية هذا مسجّل مسبقاً، لا يمكن إضافته مرة أخرى.',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'title' => 'خطأ',
+                'message' => 'حدث خطأ أثناء معالجة الطلب، يرجى المحاولة مجدداً.',
+            ]);
+        }
     }
-
+    
     #[On('rejectMarriageRequest')]
     public function reject($id): void
     {

@@ -12,8 +12,10 @@
 إضافة
 @endsection
 
+
 @section('content')
 
 @livewire('childrenTable')
+
 
 @endsection

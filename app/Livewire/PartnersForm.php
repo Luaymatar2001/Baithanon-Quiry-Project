@@ -55,6 +55,18 @@ class partnersForm extends Component
                 'required',
                 'digits:9',
                 Rule::unique('partners', 'PersonId')->ignore($this->partnerId),
+                function ($attribute, $value, $fail) {
+
+                    $existsInHousehold = \App\Models\household::where('PersonId', $value)->exists();
+
+                    $existsInChildren = \App\Models\head_children::where('PersonId', $value)->exists();
+
+                    $existsInPartner = \App\Models\partner::where('PersonId', $value)->exists();
+
+                    if ($existsInHousehold || $existsInChildren || $existsInPartner) {
+                        $fail('رقم الهوية موجود مسبقاً في النظام (أب أو زوجات أو أبناء)');
+                    }
+                },
             ],
             'FName' => 'required|string|max:255',
             'SName' => 'nullable|string|max:255',
@@ -64,20 +76,29 @@ class partnersForm extends Component
             'health_Status' => 'nullable|string|max:255',
             'relationship' => 'nullable|string',
             'householdId' => 'required|digits:9|exists:heads_households,PersonId',
-            'desc_health_status' => 'sometimes|string|max:255',
+            'desc_health_status_member' => 'nullable|string|max:255',
         ]);
         // dd($validatedData);
 
 
         if ($this->partnerId) {
+
             $partner = partner::findOrFail($this->partnerId);
             $partner->update($validatedData);
+
             session()->flash('message', 'partner updated successfully.');
         } else {
-            partner::create($validatedData);
-            session()->flash('message', 'partner created successfully.');
-        }
 
+            $partner = partner::create($validatedData);
+
+            session()->flash('message', 'partner created successfully.');
+
+            $household = $partner->household;
+
+            if ($household && $household->getcurrentMembersCount() > $household->num_Family_Members) {
+                $household->addMemberAndCheckLimit();
+            }
+        }
         return redirect()->route('partner.index');
     }
 

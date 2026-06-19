@@ -20,6 +20,8 @@ use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use Illuminate\Database\UniqueConstraintViolationException;
+
 use Livewire\Attributes\On;
 
 final class MemberRequestTable extends PowerGridComponent
@@ -33,7 +35,7 @@ final class MemberRequestTable extends PowerGridComponent
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
-                            Header::make()
+            Header::make()
                 ->showSearchInput()
                 ->showToggleColumns(),
             Footer::make()
@@ -100,8 +102,8 @@ final class MemberRequestTable extends PowerGridComponent
 
 
             Column::make('العلاقة', 'relation')
-            ->editOnClick(),
-            
+                ->editOnClick(),
+
             Column::make('تاريخ الميلاد', 'BirthDate')
                 ->sortable()
                 ->editOnClick(),
@@ -150,6 +152,13 @@ final class MemberRequestTable extends PowerGridComponent
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
+            ->add('PersonId')
+            ->add('FName')
+            ->add('SName')
+            ->add('TName')
+            ->add('LName')
+            ->add('household_id')
+            ->add('status')
             ->add(
                 'identity_image_html',
                 fn($row) =>
@@ -187,69 +196,97 @@ final class MemberRequestTable extends PowerGridComponent
             );
     }
 
+    public function onUpdatedEditable(
+        mixed $id,
+        string $field,
+        mixed $value
+    ): void {
+        validator(
+            [$field => $value],
+            [$field => 'nullable|string|max:255']
+        )->validate();
+
+        MemberRequest::where('id', $id)->update([$field => $value]);
+    }
+
+
+
     #[On('acceptRequest')]
     public function accept($id)
     {
-        DB::transaction(function () use ($id) {
+        try {
+            DB::transaction(function () use ($id) {
 
-            $request = MemberRequest::findOrFail($id);
-            $createdModel = null;
+                $request = MemberRequest::findOrFail($id);
+                $createdModel = null;
 
-            $gender = match ($request->relation) {
-                'ابن' => 'ذكر',
-                'ابنه' => 'أنثى',
-                default => null,
-            };
+                $gender = match ($request->relation) {
+                    'ابن' => 'ذكر',
+                    'ابنه' => 'أنثى',
+                    default => null,
+                };
 
-            if ($request->relation === 'زوجة') {
-                $createdModel = partner::create([
-                    'PersonId' => $request->PersonId,
-                    'householdId' => $request->household_id,
-                    'FName' => $request->FName,
-                    'SName' => $request->SName,
-                    'TName' => $request->TName,
-                    'LName' => $request->LName,
-                    'relationship' => $request->relation,
-                    'health_Status' => $request->health_status,
-                    'birthdate' => $request->BirthDate,
-                    'desc_health_status' => $request->desc_health_status_member,
-                ]);
-            }
+                if ($request->relation === 'زوجة') {
+                    $createdModel = partner::create([
+                        'PersonId' => $request->PersonId,
+                        'householdId' => $request->household_id,
+                        'FName' => $request->FName,
+                        'SName' => $request->SName,
+                        'TName' => $request->TName,
+                        'LName' => $request->LName,
+                        'relationship' => $request->relation,
+                        'health_Status' => $request->health_status,
+                        'birthdate' => $request->BirthDate,
+                        'desc_health_status' => $request->desc_health_status_member,
+                    ]);
+                }
 
-            if (in_array($request->relation, ['ابن', 'ابنه'])) {
-                $createdModel = head_children::create([
-                    'PersonId' => $request->PersonId,
-                    'householdId' => $request->household_id,
-                    'FName' => $request->FName,
-                    'SName' => $request->SName,
-                    'TName' => $request->TName,
-                    'LName' => $request->LName,
-                    'relationship' => $request->relation,
-                    'health_Status' => $request->health_status,
-                    'BirthDate' => $request->BirthDate,
-                    'Gender' => $gender,
-                    'desc_health_status' => $request->desc_health_status_member,
-                ]);
-            }
+                if (in_array($request->relation, ['ابن', 'ابنه'])) {
+                    $createdModel = head_children::create([
+                        'PersonId' => $request->PersonId,
+                        'householdId' => $request->household_id,
+                        'FName' => $request->FName,
+                        'SName' => $request->SName,
+                        'TName' => $request->TName,
+                        'LName' => $request->LName,
+                        'relationship' => $request->relation,
+                        'health_Status' => $request->health_status,
+                        'BirthDate' => $request->BirthDate,
+                        'Gender' => $gender,
+                        'desc_health_status' => $request->desc_health_status_member,
+                    ]);
+                }
 
-            if (!$createdModel) {
-                throw new \Exception('Creation failed');
-            }
+                if (!$createdModel) {
+                    throw new \Exception('Creation failed');
+                }
 
-            $this->deleteMemberRequestFiles($request);
+                $this->deleteMemberRequestFiles($request);
+                $request->delete();
 
-            $request->delete();
+                $household = household::select('id', 'PersonId', 'num_Family_Members')
+                    ->where('PersonId', $request->household_id)
+                    ->firstOrFail();
 
-            $household = household::select('id', 'PersonId', 'num_Family_Members')
-                ->where('PersonId', $request->household_id)
-                ->firstOrFail();
+                if ($household->getcurrentMembersCount() > $household->num_Family_Members) {
+                    $household->addMemberAndCheckLimit();
+                }
+            });
 
-            if ($household->getcurrentMembersCount() > $household->num_Family_Members) {
-                $household->addMemberAndCheckLimit();
-            }
-        });
-
-        $this->dispatch('pg:eventRefresh');
+            $this->dispatch('pg:eventRefresh');
+        } catch (UniqueConstraintViolationException $e) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'title' => 'خطأ - تكرار في البيانات',
+                'message' => 'رقم الهوية هذا مسجّل مسبقاً، لا يمكن إضافته مرة أخرى.',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'title' => 'خطأ',
+                'message' => 'حدث خطأ أثناء معالجة الطلب، يرجى المحاولة مجدداً.',
+            ]);
+        }
     }
 
     private function deleteMemberRequestFiles(MemberRequest $request): void

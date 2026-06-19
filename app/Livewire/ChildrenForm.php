@@ -56,9 +56,23 @@ class childrenForm extends Component
 
             'PersonId' => [
                 'required',
-                'numeric',
-                Rule::unique('heads_children', 'PersonId')->ignore($this->childrenId),
                 'digits:9',
+                'numeric',
+
+                Rule::unique('heads_children', 'PersonId')->ignore($this->childrenId),
+
+                function ($attribute, $value, $fail) {
+
+                    $existsInHousehold = \App\Models\household::where('PersonId', $value)->exists();
+
+                    $existsInChildren = \App\Models\head_children::where('PersonId', $value)->exists();
+
+                    $existsInPartner = \App\Models\partner::where('PersonId', $value)->exists();
+
+                    if ($existsInHousehold || $existsInChildren|| $existsInPartner) {
+                        $fail('رقم الهوية موجود مسبقاً في النظام (أب أو أبناء)');
+                    }
+                },
             ],
             'FName' => 'required|string|max:255',
             'SName' => 'nullable|string|max:255',
@@ -69,6 +83,8 @@ class childrenForm extends Component
             'householdId' => 'required|digits:9|exists:heads_households,PersonId',
             'health_Status' => 'nullable|string|max:255',
             'relationship' => 'nullable|string',
+        ] ,[
+
         ]);
 
 

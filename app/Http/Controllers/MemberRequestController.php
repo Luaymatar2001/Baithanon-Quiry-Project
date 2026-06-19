@@ -91,7 +91,7 @@ class MemberRequestController extends Controller
         } elseif ($request->relation === 'زوجة') {
             $rules['identity_image'] = 'required|image|max:2048';
         }
-        //
+        
         $validator = Validator::make($request->all(), $rules, $this->messageError());
         if ($validator->fails()) {
             return back()

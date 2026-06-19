@@ -62,7 +62,7 @@
                         <option value="زوجة">زوجة</option>
                     </select>
                 </div>
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium mb-1">الحالة الصحية</label>
                     <select wire:model.defer="health_Status" class="w-full border rounded px-3 py-2">
                         <option value="" selected>اختر الحالة الصحية</option>
@@ -75,7 +75,7 @@
                         <option value="إعاقة بصرية">إعاقة بصرية</option>
                         <option value="حالات حرجة">حالات حرجة</option>
                     </select>
-                </div>
+                </div> --}}
                 <div>
                     <label class="block text-sm font-medium mb-1">رقم هوية رب الأسرة</label>
                     <input type="text" wire:model="householdId" name="householdId"
