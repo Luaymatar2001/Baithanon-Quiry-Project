@@ -119,7 +119,8 @@ final class MemberRequestTable extends PowerGridComponent
                 ->sortable(false),
             Column::make('شهادة الميلاد', 'birth_certificate_html')
                 ->searchable(false)
-                ->sortable(false),
+                ->sortable(false)
+                ,
             Column::make('صورة الهوية لرب الأسرة ', 'household_id_image_html')
                 ->searchable(false)
                 ->sortable(false),
