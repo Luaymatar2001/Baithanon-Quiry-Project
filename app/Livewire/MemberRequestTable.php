@@ -119,7 +119,7 @@ final class MemberRequestTable extends PowerGridComponent
                 ->sortable(false),
             Column::make('شهادة الميلاد', 'birth_certificate_html')
                 ->searchable(false)
-                ->sortable(false)->editOnClick(),
+                ->sortable(false),
             Column::make('صورة الهوية لرب الأسرة ', 'household_id_image_html')
                 ->searchable(false)
                 ->sortable(false),
@@ -151,6 +151,7 @@ final class MemberRequestTable extends PowerGridComponent
 
     public function fields(): PowerGridFields
     {
+
         return PowerGrid::fields()
             ->add('PersonId')
             ->add('FName')
@@ -174,13 +175,14 @@ final class MemberRequestTable extends PowerGridComponent
             ->add(
                 'birth_certificate_html',
                 fn($row) =>
+
                 $row->birth_certificate
                     ? '<a href="' . asset('uploads/' . $row->birth_certificate) . '" target="_blank">
                     <img src="' . asset('uploads/' . $row->birth_certificate) . '"
                          width="130"
                          style="border-radius:8px;cursor:pointer;">
                </a>'
-                    : '-'
+                    : ' - '
             )
 
             ->add(
