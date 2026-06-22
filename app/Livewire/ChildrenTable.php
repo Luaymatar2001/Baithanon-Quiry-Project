@@ -32,7 +32,17 @@ final class ChildrenTable extends PowerGridComponent
     public function setUp(): array
     {
         $this->showCheckBox();
+        if (auth()->user()->role === 'admin') {
 
+            return [
+                Header::make()
+                    ->showSearchInput()
+                    ->showToggleColumns(),
+                Footer::make()
+                    ->showPerPage()
+                    ->showRecordCount(),
+            ];
+        }
         return [
             Exportable::make('export')
                 ->striped()
@@ -170,6 +180,19 @@ final class ChildrenTable extends PowerGridComponent
 
     public function header(): array
     {
+        if (auth()->user()->role === 'admin') {
+
+            return [
+                Button::add('refresh')
+                    ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
+                    ->dispatch('pg:eventRefresh-default', []),
+                Button::add('add')
+                    ->slot('
+                <a href="' . route('children.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+                    <i class="fa-solid fa-plus"></i> 
+                </a>'),
+            ];
+        }
         return [
             Button::add('refresh')
                 ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
@@ -196,6 +219,7 @@ final class ChildrenTable extends PowerGridComponent
 
     public function actions(head_children $row): array
     {
+
         return [
             Button::add('edit')
                 ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
@@ -222,7 +246,6 @@ final class ChildrenTable extends PowerGridComponent
     public function actionRules(head_children $row): array
     {
         return [
-            // Hide button edit for ID 1
             Rule::button('edit')
                 ->when(fn($row) => $row->id === 1)
                 ->hide(),

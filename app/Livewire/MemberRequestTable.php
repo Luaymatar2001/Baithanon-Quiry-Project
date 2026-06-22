@@ -56,24 +56,23 @@ final class MemberRequestTable extends PowerGridComponent
 
     public function header(): array
     {
-        return [
+        if (auth()->user()->role === 'admin') {
+            return [
+                Button::add('refresh')
+                    ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
+                    ->dispatch('pg:eventRefresh-default', []),
+            ];
+        } else {
+            return [
+                Button::add('refresh')
+                    ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
+                    ->dispatch('pg:eventRefresh-default', []),
+                Button::add('bulk-delete')
+                    ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-trash-can" style=""></i> </div>')
+                    ->dispatch('confirmBulkDelete', []),
 
-            Button::add('export')
-                ->slot('
-            <label class="cursor-pointer bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
-                <i class="fa-solid fa-file-export"></i>
-                <input 
-                    type="file"
-                    wire:model="excelFile"
-                    accept=".xlsx,.xls,.csv"
-                    class="hidden"></label>'),
-            Button::add('refresh')
-                ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
-                ->dispatch('pg:eventRefresh-default', []),
-            Button::add('bulk-delete')
-                ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-trash-can" style=""></i> </div>')
-                ->dispatch('confirmBulkDelete', []),
-        ];
+            ];
+        }
     }
 
     public function columns(): array
@@ -98,8 +97,6 @@ final class MemberRequestTable extends PowerGridComponent
             Column::make('العائلة', 'LName')->editOnClick(),
 
             Column::make('هوية رب الأسرة', 'household_id')->editOnClick(),
-
-
 
             Column::make('العلاقة', 'relation')
                 ->editOnClick(),
