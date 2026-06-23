@@ -12,8 +12,8 @@
                     d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745" />
             </svg>
             <div>
-                <span class="text-xl font-bold block">المنظومة الإلكترونية</span>
-                <span class="text-xs text-gray-400">لتحديث بيانات أهالي بيت حانون</span>
+                <span class="text-l font-bold block">المنظومة الإلكترونية</span>
+                <span class="text-xs text-gray-400">لتحديث بيانات أسر مدينة بيت حانون</span>
             </div>
         </a>
     </header>
