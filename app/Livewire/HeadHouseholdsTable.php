@@ -28,24 +28,28 @@ final class HeadHouseholdsTable extends PowerGridComponent
     use WithExport, WithFileUploads;
     public $excelFile;
 
+
     public function setUp(): array
     {
-
         $this->showCheckBox();
-        if (auth()->user()->role === 'supervisor') {
+        if (auth()->user()->role === 'admin') {
             return [
-                Exportable::make('export')
-                    ->striped()
-                    ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-                // Header::make()->showSearchInput(),
-                // Footer::make()
-                //     ->showPerPage()
-                //     ->showRecordCount(),
-
-
+                Header::make()
+                    ->showSearchInput()
+                    ->showToggleColumns(),
+                Footer::make()
+                    ->showPerPage()
+                    ->showRecordCount(),
             ];
         }
         return [
+            Exportable::make('export')
+                ->striped()
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            // Header::make()->showSearchInput(),
+            // Footer::make()
+            //     ->showPerPage()
+            //     ->showRecordCount(),
             Header::make()
                 ->showSearchInput()
                 ->showToggleColumns(),
@@ -54,6 +58,8 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ->showRecordCount(),
         ];
     }
+
+
     public function onUpdatedEditable(
         mixed $id,
         string $field,
@@ -66,6 +72,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
         household::where('id', $id)->update([$field => $value]);
     }
+
 
 
     public function datasource(): Builder
@@ -118,9 +125,9 @@ final class HeadHouseholdsTable extends PowerGridComponent
             );
     }
 
+
     public function columns(): array
     {
-
         return [
             Column::make('ID', 'id')
                 ->sortable()
@@ -148,12 +155,10 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ->sortable()
                 ->searchable()->editOnClick(),
 
-            Column::make('تاريخ الميلاد', 'BirthDate')
-                ->sortable()->editOnClick(),
+            Column::make('تاريخ الميلاد', 'BirthDate')->sortable()->editOnClick(),
 
             Column::make('الجنس', 'Gender')
-                ->sortable()
-                ->editOnClick(),
+                ->sortable()->editOnClick(),
 
             Column::make('الهاتف', 'Phone_Number')
                 ->searchable()->editOnClick(),
@@ -166,15 +171,13 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
             Column::make('الحالة', 'status')
                 ->sortable()
-                ->editOnClick()
-                ->searchable(),
+                ->searchable()->editOnClick(),
 
             Column::make('الحالة الصحية', 'health_Status')
-                ->searchable()
-                ->editOnClick(),
+                ->searchable()->editOnClick(),
 
             Column::make('مصادر الدخل', 'Sources_income')
-                ->searchable(),
+                ->searchable()->editOnClick(),
 
             Column::make('العنوان', 'address')->editOnClick(),
 
@@ -222,6 +225,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
 
 
+
     public function filters(): array
     {
         return [
@@ -238,9 +242,9 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Filter::inputText('status'),
             Filter::inputText('num_Family_Members'),
             Filter::inputText('health_Status'),
-
         ];
     }
+
 
 
 
@@ -254,21 +258,33 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
     public function header(): array
     {
-        if (auth()->user()->role === 'supervisor') {
+        if (auth()->user()->role === 'admin') {
             return [
                 Button::add('refresh')
                     ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
                     ->dispatch('pg:eventRefresh-default', []),
-                Button::add('bulk-delete')
-                    ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-trash-can" style=""></i> </div>')
-                    ->dispatch('confirmBulkDelete', []),
                 Button::add('add')
                     ->slot('
                 <a href="' . route('headhousehold.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
                     <i class="fa-solid fa-plus"></i> 
                 </a>'),
-                Button::add('import')
-                    ->slot('
+
+            ];
+        }
+        return [
+            Button::add('refresh')
+                ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
+                ->dispatch('pg:eventRefresh-default', []),
+            Button::add('bulk-delete')
+                ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-trash-can" style=""></i> </div>')
+                ->dispatch('confirmBulkDelete', []),
+            Button::add('add')
+                ->slot('
+                <a href="' . route('headhousehold.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
+                    <i class="fa-solid fa-plus"></i> 
+                </a>'),
+            Button::add('import')
+                ->slot('
             <label class="cursor-pointer bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
                 <i class="fa-solid fa-file-import"></i>
                 <input 
@@ -276,38 +292,22 @@ final class HeadHouseholdsTable extends PowerGridComponent
                     wire:model="excelFile"
                     accept=".xlsx,.xls,.csv"
                     class="hidden"></label>'),
-            ];
-        }
-        return [
-            Button::add('refresh')
-            ->slot('<div class="bg-transparent dark:bg-pg-primary-800 font-semibold py-1.5 px-3 border border-gray-300 hover:border-transparent rounded" style="border-radius:5px; background-color:white;"> <i class="fa-solid fa-rotate"></i> </div>')
-            ->dispatch('pg:eventRefresh-default', []),
-            Button::add('add')
-                ->slot('
-                <a href="' . route('headhousehold.create') . '" class="bg-white font-semibold py-1.5 px-3 border border-gray-300 hover:border-gray-400 rounded inline-block">
-                    <i class="fa-solid fa-plus"></i> 
-                </a>'),
-                
-
-            ];
+        ];
     }
+
 
     public function actions(household $row): array
     {
-        if (auth()->user()->role === 'supervisor') {
+        return [
+            Button::add('edit')
+                ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
+                ->route('headhousehold.edit', ['headhousehold' => $row->id]),
 
-            return [
-                Button::add('edit')
-                    ->slot('<i class="fa-regular fa-pen-to-square" style="font-size:20px; margin:2px"></i>')
-                    ->route('headhousehold.edit', ['headhousehold' => $row->id]),
+            Button::add('delete')
+                ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')
+                ->dispatch('confirmDelete', ['rowId' => $row->id]),
 
-                Button::add('delete')
-                    ->slot('<i class="fa-regular fa-trash-can" style="font-size:20px; margin:2px;"></i>')
-                    ->dispatch('confirmDelete', ['rowId' => $row->id]),
-
-            ];
-        }
-        return [];
+        ];
     }
 
 
@@ -363,6 +363,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
         $this->reset('checkboxValues');
         $this->dispatch('pg:eventRefresh-default');
     }
+
 
     public function updatedExcelFile()
     {

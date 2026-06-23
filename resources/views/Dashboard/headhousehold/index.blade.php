@@ -15,6 +15,5 @@
 @section('content')
 
 <livewire:head-households-table />
-{{-- </div> --}}
 
 @endsection
