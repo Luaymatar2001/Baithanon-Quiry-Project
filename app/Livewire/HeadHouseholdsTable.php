@@ -240,6 +240,12 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ->optionLabel('name')
                 ->optionValue('id'),
             Filter::inputText('status'),
+            Filter::inputText('Sources_income'),
+            Filter::inputText('address'),
+            Filter::inputText('city_name'),
+            Filter::inputText('location_name'),
+            Filter::inputText('governorate_name'),
+            
             Filter::inputText('num_Family_Members'),
             Filter::inputText('health_Status'),
         ];
