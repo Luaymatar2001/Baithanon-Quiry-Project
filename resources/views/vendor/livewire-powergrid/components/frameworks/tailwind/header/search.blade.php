@@ -2,17 +2,21 @@
     <div class="flex flex-row mt-3 md:mt-0 w-full rounded-full flex justify-start sm:justify-center md:justify-end">
         <div class="group relative rounded-full w-full md:w-4/12 float-end float-right md:w-full lg:w-1/2">
             <span class="absolute inset-y-0 left-0 flex items-center pl-1">
-                <span class="p-1 focus:outline-none focus:shadow-outline">
+                <button
+                    type="button"
+                    wire:click="$refresh"
+                    class="p-1 focus:outline-none focus:shadow-outline"
+                >
                     <x-livewire-powergrid::icons.search
                         class="{{ data_get($theme, 'searchBox.iconSearchClass') }}"
                         style="{{ data_get($theme, 'searchBox.iconSearchStyle') }}"
                     />
-                </span>
+                </button>
             </span>
             <input
-                wire:model.live.enter="search"
-                wire:keydown.enter.prevent
-                type="text"
+                wire:model="search"
+                wire:keydown.enter.prevent="$refresh"
+                type="search"
                 class="{{ data_get($theme, 'searchBox.inputClass') }}"
                 style="{{ data_get($theme, 'searchBox.inputStyle') }}"
                 placeholder="{{ trans('livewire-powergrid::datatable.placeholders.search') }}"
