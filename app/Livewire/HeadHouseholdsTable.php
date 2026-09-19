@@ -102,6 +102,14 @@ final class HeadHouseholdsTable extends PowerGridComponent
             ->add('Phone_Number')
             ->add('legal_confirmation')
             ->add('num_Family_Members')
+            ->add('governorate_name')
+            ->add('location_name')
+            ->add('city_name')
+            ->add('address')
+            ->add('status')
+            ->add('health_Status')
+            ->add('Sources_income')
+            ->add('Date_partner_martyrdom')
             ->add(
                 'status_document',
                 fn($row) =>
@@ -245,7 +253,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Filter::inputText('city_name'),
             Filter::inputText('location_name'),
             Filter::inputText('governorate_name'),
-            
+
             Filter::inputText('num_Family_Members'),
             Filter::inputText('health_Status'),
         ];
