@@ -195,17 +195,11 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
             // Column::make('تاريخ التعديل', 'updated_at'),
 
-            Column::make('المدينة', 'city_name')
-                ->searchable()
-                ->sortable(),
+         Column::make('المدينة', 'city_name', 'city.name')->searchable()->sortable(),
 
-            Column::make('الموقع', 'location_name')
-                ->searchable()
-                ->sortable(),
+        Column::make('الموقع', 'location_name', 'locations.name')->searchable()->sortable(),
 
-            Column::make('المحافظة', 'governorate_name')
-                ->searchable()
-                ->sortable(),
+        Column::make('المحافظة', 'governorate_name', 'governorates.name')->searchable()->sortable(),
 
             Column::make('تاريخ استشهاد الزوج/الشريك', 'Date_partner_martyrdom')
                 ->sortable(),
@@ -250,9 +244,9 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Filter::inputText('status'),
             Filter::inputText('Sources_income'),
             Filter::inputText('address'),
-            Filter::inputText('city_name'),
-            Filter::inputText('location_name'),
-            Filter::inputText('governorate_name'),
+            Filter::inputText('city_name', 'city.name'),
+            Filter::inputText('location_name', 'locations.name'),
+            Filter::inputText('governorate_name', 'governorates.name'),
 
             Filter::inputText('num_Family_Members'),
             Filter::inputText('health_Status'),
