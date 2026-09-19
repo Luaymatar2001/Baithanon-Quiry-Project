@@ -195,11 +195,11 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
             // Column::make('تاريخ التعديل', 'updated_at'),
 
-         Column::make('المدينة', 'city_name', 'city.name')->searchable()->sortable(),
+         Column::make('المدينة', 'city_name')->searchable()->sortable(),
 
-        Column::make('الموقع', 'location_name', 'locations.name')->searchable()->sortable(),
+        Column::make('الموقع', 'location_name')->searchable()->sortable(),
 
-        Column::make('المحافظة', 'governorate_name', 'governorates.name')->searchable()->sortable(),
+        Column::make('المحافظة', 'governorate_name')->searchable()->sortable(),
 
             Column::make('تاريخ استشهاد الزوج/الشريك', 'Date_partner_martyrdom')
                 ->sortable(),
