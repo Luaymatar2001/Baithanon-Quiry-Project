@@ -110,8 +110,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
             ->add('health_Status')
             ->add('Sources_income')
             ->add('Date_partner_martyrdom')
-            ->add(
-                'status_document',
+            ->add('status_document',
                 fn($row) =>
                 $row->status_document
                     ? '<a href="' . asset('uploads/' . $row->status_document) . '" target="_blank">
@@ -184,35 +183,29 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Column::make('الحالة الصحية', 'health_Status')
                 ->searchable()->editOnClick(),
 
-            Column::make('مصادر الدخل', 'Sources_income')
-                ->searchable()->editOnClick(),
+        Column::make('مصادر الدخل', 'Sources_income')
+         ->searchable()->editOnClick(),
 
-            Column::make('العنوان', 'address')->editOnClick(),
+        Column::make('العنوان', 'address')->editOnClick(),
 
-            // Column::make('ملاحظات', 'Notes'),
-
-            // Column::make('تاريخ الإنشاء', 'created_at'),
-
-            // Column::make('تاريخ التعديل', 'updated_at'),
-
-         Column::make('المدينة', 'city_name')->searchable()->sortable(),
+        Column::make('المدينة', 'city_name')->searchable()->sortable(),
 
         Column::make('الموقع', 'location_name')->searchable()->sortable(),
 
         Column::make('المحافظة', 'governorate_name')->searchable()->sortable(),
 
-            Column::make('تاريخ استشهاد الزوج/الشريك', 'Date_partner_martyrdom')
-                ->sortable(),
+        Column::make('تاريخ استشهاد الزوج/الشريك', 'Date_partner_martyrdom')
+            ->sortable(),
 
-            Column::make('صورة الهوية', 'status_document')
-                ->searchable(false)
-                ->sortable(false),
+        Column::make('صورة الهوية', 'status_document')
+            ->searchable(false)
+            ->sortable(false),
 
-            Column::make('صورة لشهادة الوفاة', 'widow_identity')
-                ->searchable(false)
-                ->sortable(false),
+        Column::make('صورة لشهادة الوفاة', 'widow_identity')
+           ->searchable(false)
+           ->sortable(false),
 
-            Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
+        Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
             // Column::make('تاريخ الإنشاء', 'created_at')
             //     ->sortable()
@@ -220,8 +213,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
             // Column::make('Created at', 'created_at_formatted', 'created_at')
             //     ->searchable(),
 
-            Column::action('Action')
-
+        Column::action('Action')
         ];
     }
 
@@ -233,6 +225,8 @@ final class HeadHouseholdsTable extends PowerGridComponent
         return [
             Filter::inputText('FName'),
             Filter::inputText('LName'),
+            Filter::inputText('SName'),
+            Filter::inputText('TName'),
             Filter::inputText('PersonId'),
             Filter::select('Gender')
                 ->dataSource([
@@ -247,9 +241,22 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Filter::inputText('city_name', 'city.name'),
             Filter::inputText('location_name', 'locations.name'),
             Filter::inputText('governorate_name', 'governorates.name'),
-
+            Filter::select('health_Status')
+                ->dataSource([
+                    ['id' => 'موجود', 'name' => 'موجود'],
+                    ['id' => 'مفقود', 'name' => 'مفقود'],
+                ])
+                ->optionLabel('name')
+                ->optionValue('id'),
+            
+            Filter::inputText('Phone_Number'),
             Filter::inputText('num_Family_Members'),
-            Filter::inputText('health_Status'),
+            Filter::inputText('legal_confirmation'),
+            Filter::inputText('Date_partner_martyrdom'),
+            Filter::inputText('status_document'),
+            Filter::inputText('widow_identity'),
+            Filter::inputText('updated_at'),
+            Filter::inputText('created_at'),
         ];
     }
 
