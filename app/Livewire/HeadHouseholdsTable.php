@@ -253,6 +253,8 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Filter::inputText('num_Family_Members'),
             Filter::inputText('legal_confirmation'),
             Filter::inputText('Date_partner_martyrdom'),
+            //Filter Date of birth
+            Filter::inputText('Date_birth')->dateTimeFormat('Y-m-d'),
             Filter::inputText('status_document'),
             Filter::inputText('widow_identity'),
             Filter::inputText('updated_at'),
