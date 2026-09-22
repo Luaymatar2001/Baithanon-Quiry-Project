@@ -177,9 +177,6 @@ final class PartnersTable extends PowerGridComponent
             Filter::inputText('health_Status'),
             Filter::inputText('updated_at'),
             Filter::datepicker('birthdate'),
-            
-            
-            
         ];
     }
 

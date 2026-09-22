@@ -139,6 +139,8 @@ final class ChildrenTable extends PowerGridComponent
             Column::make('هوية رب الأسرة', 'householdId')
                 ->sortable()
                 ->searchable(),
+            
+            
 
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
@@ -154,7 +156,15 @@ final class ChildrenTable extends PowerGridComponent
     {
         return [
             Filter::inputText('FName'),
+             Filter::inputText('SName'),
+             Filter::inputText('TName'),
             Filter::inputText('LName'),
+            Filter::inputText('PersonId'),
+            Filter::datePicker('BirthDate'),
+            Filter::inputText('relationship'),
+            Filter::inputText('householdId'),
+            Filter::inputText('updated_at'),
+            Filter::inputText('created_at'),    
             Filter::inputText('PersonId'),
             Filter::select('Gender')
                 ->dataSource([
