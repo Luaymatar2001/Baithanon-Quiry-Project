@@ -116,25 +116,29 @@ final class PartnersTable extends PowerGridComponent
                 ->searchable()
                 ->editOnClick(),
 
-
-
             Column::make('اسم الأب', 'SName')
                 ->sortable()
                 ->searchable()->editOnClick(),
 
             Column::make('اسم الجد', 'TName')
                 ->sortable()
-                ->searchable()->editOnClick(),
+                ->searchable()
+                ->editOnClick(),
 
             Column::make('اللقب', 'LName')
                 ->sortable()
-                ->searchable()->editOnClick(),
+                ->searchable()
+                ->editOnClick(),
 
             Column::make('تاريخ الميلاد', 'birthdate')
-                ->sortable()->editOnClick(),
+                ->sortable()
+                ->searchable()
+                ->editOnClick(),
 
             Column::make('العلاقة', 'relationship')
-                ->sortable()->editOnClick(),
+                ->sortable()
+                ->searchable()
+                ->editOnClick(),
 
             Column::make('الحالة الصحية', 'health_Status')
                 ->searchable()->editOnClick(),
@@ -156,6 +160,8 @@ final class PartnersTable extends PowerGridComponent
     {
         return [
             Filter::inputText('FName'),
+            Filter::inputText('SName'),
+            Filter::inputText('TName'),
             Filter::inputText('LName'),
             Filter::inputText('PersonId'),
             Filter::select('relationship')
@@ -165,9 +171,15 @@ final class PartnersTable extends PowerGridComponent
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),
-            Filter::inputText('health_Status'),
+            Filter::datePicker('BirthDate'),
+            Filter::inputText('relationship'),
             Filter::inputText('householdId'),
-
+            Filter::inputText('health_Status'),
+            Filter::inputText('updated_at'),
+            Filter::datepicker('birthdate'),
+            
+            
+            
         ];
     }
 
