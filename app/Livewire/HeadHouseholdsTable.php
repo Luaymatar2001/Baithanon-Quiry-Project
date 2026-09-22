@@ -160,9 +160,13 @@ final class HeadHouseholdsTable extends PowerGridComponent
 
             Column::make('اللقب', 'LName')
                 ->sortable()
-                ->searchable()->editOnClick(),
+                ->searchable()
+                ->editOnClick(),
 
-            Column::make('تاريخ الميلاد', 'BirthDate')->sortable()->editOnClick(),
+            Column::make('تاريخ الميلاد', 'BirthDate')
+            ->sortable()
+            ->searchable()
+            ->editOnClick(),
 
             Column::make('الجنس', 'Gender')
                 ->sortable()->editOnClick(),
@@ -248,17 +252,17 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),
-            
+
             Filter::inputText('Phone_Number'),
             Filter::inputText('num_Family_Members'),
             Filter::inputText('legal_confirmation'),
             Filter::inputText('Date_partner_martyrdom'),
-            //Filter Date of birth
-            Filter::datepicker('Date_birth')->params(['format' => 'YYYY-MM-DD' , 'placeholder' => 'تاريخ الميلاد']),
+            Filter::datePicker('BirthDate'),
             Filter::inputText('status_document'),
             Filter::inputText('widow_identity'),
             Filter::inputText('updated_at'),
             Filter::inputText('created_at'),
+
         ];
     }
 
