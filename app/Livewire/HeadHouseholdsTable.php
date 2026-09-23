@@ -28,7 +28,6 @@ final class HeadHouseholdsTable extends PowerGridComponent
     use WithExport, WithFileUploads;
     public $excelFile;
 
-
     public function setUp(): array
     {
         $this->showCheckBox();
@@ -73,8 +72,6 @@ final class HeadHouseholdsTable extends PowerGridComponent
         household::where('id', $id)->update([$field => $value]);
     }
 
-
-
     public function datasource(): Builder
     {
         return household::query()
@@ -88,8 +85,6 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 'city.name as city_name',
                 'locations.name as location_name',
                 'governorates.name as governorate_name',
-                
-              
             ]);
     }
 
@@ -270,11 +265,6 @@ final class HeadHouseholdsTable extends PowerGridComponent
         ];
     }
 
-
-
-
-
-
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
@@ -347,7 +337,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
     ");
     }
 
-
+    
     public function actionRules(household $row): array
     {
         return [

@@ -20,6 +20,7 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 use App\Imports\ChildrensImport;
 use App\Models\head_children;
+use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
 // use PowerComponents\LivewirePowerGrid\Editable;
@@ -75,16 +76,43 @@ final class ChildrenTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return head_children::query()
-        ->leftJoin('users', 'head_children.user_id', '=', 'users.id')
-        ->leftJoin('households', 'head_children.householdId', '=', 'households.id')
-        ->leftJoin('partners', 'head_children.partnerId', '=', 'partners.id')
-        ->leftJoin('cities', 'head_children.cityId', '=', 'cities.id')
-        ->leftJoin('locations', 'head_children.locationId', '=', 'locations.id')
-        ->leftJoin('governorates', 'head_children.governorateId', '=', 'governorates.id')
+        $head_children_data = head_children::query()
+            ->leftJoin('heads_households', 'heads_children.householdId', '=', 'heads_households.personId')
+            ->leftJoin('partners', 'partners.householdId', '=', 'heads_households.personId')
+            ->leftJoin('city', 'heads_households.cityId', '=', 'city.id')
+            ->leftJoin('locations', 'heads_households.location_id', '=', 'locations.id')
+            ->leftJoin('governorates', 'heads_households.governorate_id', '=', 'governorates.id')
+           ->select([
+            'heads_children.*',
 
-        ->select('head_children.*', 'users.name as user_name', 'households.name as household_name' ,'household.phone_number as household_phone_number',   'partners.name as partner_name', 'cities.name as city_name', 'locations.name as location_name', 'governorates.name as governorate_name');
-    }
+            'heads_households.FName as household_Fname',
+            'heads_households.SName as household_Sname',
+            'heads_households.TName as household_Tname',
+            'heads_households.LName as household_Lname',
+            'heads_households.phone_number as household_phone_number',
+
+            'partners.FName as partner_Fname',
+            'partners.SName as partner_Sname',
+            'partners.TName as partner_Tname',
+            'partners.LName as partner_Lname',
+
+            'city.name as city_name',
+            'locations.name as location_name',
+            'governorates.name as governorate_name',
+            DB::raw("
+                CONCAT_WS(' ',
+                    heads_households.FName,
+                    heads_households.SName,
+                    heads_households.TName,
+                    heads_households.LName
+                ) AS household_full_name
+            "),
+        ] );
+
+      
+
+            return $head_children_data;   
+             }
 
     public function fields(): PowerGridFields
     {
@@ -100,11 +128,13 @@ final class ChildrenTable extends PowerGridComponent
             ->add('relationship')
             ->add('householdId')
             ->add('user_name')
-            ->add('household_name')
+            ->add('household_Fname')
+            ->add('household_Sname')
+            ->add('household_Tname')
+            ->add('household_Lname')
             ->add('city_name')
             ->add('location_name')
             ->add('governorate_name')
-
             ->add('partner_name')
             ->add('updated_at');
     }
@@ -155,6 +185,15 @@ final class ChildrenTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
             
+            Column::make('أسم الوالد' , 'household_full_name')
+            ->sortable()
+            ->searchable(),
+
+            Column::make('رقم الهاتف', 'household_phone_number')
+            ->sortable()
+            ->searchable(),
+
+            // Column::make('', ''),
             
 
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
@@ -196,6 +235,7 @@ final class ChildrenTable extends PowerGridComponent
             Filter::inputText('governorate_name'),
             Filter::inputText('household_name'),
             Filter::inputText('household_phone_number'),
+          Filter::inputText('household_full_name'),
             Filter::inputText('partner_name'),
             Filter::inputText('householdId')
 
