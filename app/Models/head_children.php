@@ -40,6 +40,31 @@ class head_children extends Model
         }
     }
 
+    public function household()
+    {
+        return $this->belongsTo(household::class, 'householdId', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(city::class, 'cityId', 'id');
+    }
+    public function location()
+    {
+        return $this->belongsTo(location::class, 'locationId', 'id');
+    }
+    public function governorate()
+    {
+        return $this->belongsTo(governorates::class, 'governorateId', 'id');
+    }
+    public function partner(){
+        return $this->belongsTo(partner::class, 'partnerId', 'id');
+    }
+
     // Define relationships if needed
     public function father()
     {

@@ -75,7 +75,15 @@ final class ChildrenTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return head_children::query();
+        return head_children::query()
+        ->leftJoin('users', 'head_children.user_id', '=', 'users.id')
+        ->leftJoin('households', 'head_children.householdId', '=', 'households.id')
+        ->leftJoin('partners', 'head_children.partnerId', '=', 'partners.id')
+        ->leftJoin('cities', 'head_children.cityId', '=', 'cities.id')
+        ->leftJoin('locations', 'head_children.locationId', '=', 'locations.id')
+        ->leftJoin('governorates', 'head_children.governorateId', '=', 'governorates.id')
+
+        ->select('head_children.*', 'users.name as user_name', 'households.name as household_name' ,'household.phone_number as household_phone_number',   'partners.name as partner_name', 'cities.name as city_name', 'locations.name as location_name', 'governorates.name as governorate_name');
     }
 
     public function fields(): PowerGridFields
@@ -91,6 +99,13 @@ final class ChildrenTable extends PowerGridComponent
             ->add('Gender')
             ->add('relationship')
             ->add('householdId')
+            ->add('user_name')
+            ->add('household_name')
+            ->add('city_name')
+            ->add('location_name')
+            ->add('governorate_name')
+
+            ->add('partner_name')
             ->add('updated_at');
     }
 
@@ -165,7 +180,6 @@ final class ChildrenTable extends PowerGridComponent
             Filter::inputText('householdId'),
             Filter::inputText('updated_at'),
             Filter::inputText('created_at'),    
-            Filter::inputText('PersonId'),
             Filter::select('Gender')
                 ->dataSource([
                     ['id' => 'ذكر', 'name' => 'ذكر'],
@@ -177,6 +191,12 @@ final class ChildrenTable extends PowerGridComponent
                 ->optionValue('id'),
 
             Filter::inputText('health_Status'),
+            Filter::inputText('city_name'),
+            Filter::inputText('location_name'),
+            Filter::inputText('governorate_name'),
+            Filter::inputText('household_name'),
+            Filter::inputText('household_phone_number'),
+            Filter::inputText('partner_name'),
             Filter::inputText('householdId')
 
         ];

@@ -81,11 +81,15 @@ final class HeadHouseholdsTable extends PowerGridComponent
             ->leftJoin('city', 'heads_households.cityId', '=', 'city.id')
             ->leftJoin('locations', 'heads_households.location_id', '=', 'locations.id')
             ->leftJoin('governorates', 'heads_households.governorate_id', '=', 'governorates.id')
+            ->leftJoin('users', 'heads_households.user_id', '=', 'users.id')
+
             ->select([
                 'heads_households.*',
                 'city.name as city_name',
                 'locations.name as location_name',
                 'governorates.name as governorate_name',
+                
+              
             ]);
     }
 
