@@ -209,66 +209,159 @@ public function columns(): array
 
 
 
-    public function filters(): array
-    {
-        return [
-            Filter::inputText('FName'),
-            Filter::inputText('SName'),
-            Filter::inputText('TName'),
-            Filter::inputText('LName'),
-            Filter::inputText('PersonId'),
-            Filter::select('relationship')
-                ->dataSource([
-                    ['id' => 'زوج', 'name' => 'زوج'],
-                    ['id' => 'زوجة', 'name' => 'زوجة'],
-                ])
-                ->optionLabel('name')
-                ->optionValue('id'),
-            Filter::datePicker('BirthDate'),
-            Filter::inputText('relationship'),
-            Filter::inputText('householdId'),
-            Filter::inputText('health_Status'),
-            
-               // فلاتر مخصصة للأعمدة اللي هي aliases (مش أعمدة حقيقية بجدول partners)
-                Filter::inputText('Phone_Number')
-                ->builder(function (Builder $query, mixed $value) {
-                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
-                    $query->where('heads_households.Phone_Number', 'like', "%{$value}%");
-                }),
+  public function filters(): array
+{
+    return [
+        Filter::inputText('FName')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('partners.FName', 'like', "%{$value}%");
+            }),
 
-            Filter::inputText('household_full_name')
-                ->builder(function (Builder $query, mixed $value) {
-                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
-                    $query->where(function ($q) use ($value) {
-                        $q->where('heads_households.FName', 'like', "%{$value}%")
-                            ->orWhere('heads_households.SName', 'like', "%{$value}%")
-                            ->orWhere('heads_households.TName', 'like', "%{$value}%")
-                            ->orWhere('heads_households.LName', 'like', "%{$value}%")
-                            ->orWhereRaw("CONCAT_WS(' ', heads_households.FName, heads_households.SName, heads_households.TName, heads_households.LName) LIKE ?", ["%{$value}%"]);
-                    });
-                }),
+        Filter::inputText('SName')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('partners.SName', 'like', "%{$value}%");
+            }),
 
-            Filter::inputText('city_name')
-                ->builder(function (Builder $query, mixed $value) {
-                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
-                    $query->where('city.name', 'like', "%{$value}%");
-                }),
+        Filter::inputText('TName')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('partners.TName', 'like', "%{$value}%");
+            }),
 
-            Filter::inputText('location_name')
-                ->builder(function (Builder $query, mixed $value) {
-                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
-                    $query->where('locations.name', 'like', "%{$value}%");
-                }),
+        Filter::inputText('LName')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('partners.LName', 'like', "%{$value}%");
+            }),
 
-            Filter::inputText('governorate_name')
-                ->builder(function (Builder $query, mixed $value) {
-                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
-                    $query->where('governorates.name', 'like', "%{$value}%");
-                }),
-            Filter::inputText('updated_at'),
-            Filter::datepicker('birthdate'),
-        ];
-    }
+        Filter::inputText('PersonId')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('partners.PersonId', 'like', "%{$value}%");
+            }),
+
+        Filter::select('relationship')
+            ->dataSource([
+                ['id' => 'زوج', 'name' => 'زوج'],
+                ['id' => 'زوجة', 'name' => 'زوجة'],
+            ])
+            ->optionLabel('name')
+            ->optionValue('id')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                if (filled($value)) {
+                    $query->where('partners.relationship', $value);
+                }
+            }),
+
+        Filter::datePicker('birthdate')
+            ->builder(function (Builder $query, mixed $value) {
+                if (is_array($value)) {
+                    $start = $value['start'] ?? null;
+                    $end   = $value['end'] ?? null;
+
+                    if ($start && $end) {
+                        $query->whereBetween('partners.BirthDate', [
+                            Carbon::parse($start)->startOfDay(),
+                            Carbon::parse($end)->endOfDay(),
+                        ]);
+                    } elseif ($start) {
+                        $query->whereDate('partners.BirthDate', Carbon::parse($start));
+                    }
+                } else {
+                    $query->whereDate('partners.BirthDate', Carbon::parse($value));
+                }
+            }),
+
+        Filter::inputText('householdId')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('partners.householdId', 'like', "%{$value}%");
+            }),
+
+
+         Filter::select('health_Status')
+    ->dataSource([
+        ['id' => '0', 'name' => 'سليم'],
+        ['id' => '1', 'name' => 'مريض'],
+        ['id' => '2', 'name' => 'مصاب'],
+        ['id' => '3', 'name' => 'إعاقة سمعية'],
+        ['id' => '4', 'name' => 'إعاقة جسدية'],
+        ['id' => '5', 'name' => 'إعاقة عقلية'],
+        ['id' => '6', 'name' => 'إعاقة بصرية'],
+        ['id' => '7', 'name' => 'إعاقة حرجة'],
+        ['id' => '8', 'name' => 'أمراض مزمنة'],
+        ['id' => '9', 'name' => 'أخرى'],
+    ])
+    ->builder(function (Builder $query, mixed $value) {
+        $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+
+        if (filled($value)) {
+            $query->where('partners.health_Status', $value);
+        }
+    })
+    ->optionLabel('name')
+    ->optionValue('id'),
+
+        // فلاتر مخصصة للأعمدة اللي هي aliases (مش أعمدة حقيقية بجدول partners)
+        Filter::inputText('Phone_Number')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('heads_households.Phone_Number', 'like', "%{$value}%");
+            }),
+
+        Filter::inputText('household_full_name')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where(function ($q) use ($value) {
+                    $q->where('heads_households.FName', 'like', "%{$value}%")
+                        ->orWhere('heads_households.SName', 'like', "%{$value}%")
+                        ->orWhere('heads_households.TName', 'like', "%{$value}%")
+                        ->orWhere('heads_households.LName', 'like', "%{$value}%")
+                        ->orWhereRaw("CONCAT_WS(' ', heads_households.FName, heads_households.SName, heads_households.TName, heads_households.LName) LIKE ?", ["%{$value}%"]);
+                });
+            }),
+
+        Filter::inputText('city_name')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('city.name', 'like', "%{$value}%");
+            }),
+
+        Filter::inputText('location_name')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('locations.name', 'like', "%{$value}%");
+            }),
+
+        Filter::inputText('governorate_name')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('governorates.name', 'like', "%{$value}%");
+            }),
+
+        Filter::datePicker('updated_at')
+            ->builder(function (Builder $query, mixed $value) {
+                if (is_array($value)) {
+                    $start = $value['start'] ?? null;
+                    $end   = $value['end'] ?? null;
+
+                    if ($start && $end) {
+                        $query->whereBetween('partners.updated_at', [
+                            Carbon::parse($start)->startOfDay(),
+                            Carbon::parse($end)->endOfDay(),
+                        ]);
+                    } elseif ($start) {
+                        $query->whereDate('partners.updated_at', Carbon::parse($start));
+                    }
+                } else {
+                    $query->whereDate('partners.updated_at', Carbon::parse($value));
+                }
+            }),
+    ];
+}
 
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void

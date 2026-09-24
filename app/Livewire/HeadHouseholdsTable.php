@@ -246,8 +246,16 @@ final class HeadHouseholdsTable extends PowerGridComponent
             Filter::inputText('governorate_name', 'governorates.name'),
             Filter::select('health_Status')
                 ->dataSource([
-                    ['id' => 'موجود', 'name' => 'موجود'],
-                    ['id' => 'مفقود', 'name' => 'مفقود'],
+                    ['id' => '0', 'name' => 'سليم'],
+                    ['id' => '1', 'name' => 'مريض'],
+                    ['id' => '2', 'name' => 'مصاب'],
+                    ['id' => '3', 'name' => 'إعاقة سمعية'],
+                    ['id' => '4', 'name' => 'إعاقة جسدية'],
+                    ['id' => '5', 'name' => 'إعاقة عقلية'],
+                    ['id' => '6', 'name' => 'إعاقة بصرية'],
+                    ['id' => '7', 'name' => 'إعاقة حرجة'],
+                    ['id' => '8', 'name' => 'أمراض مزمنة'],
+                    ['id' => '9', 'name' => 'أخرى'],
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),

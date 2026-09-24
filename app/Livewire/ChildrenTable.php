@@ -78,7 +78,7 @@ final class ChildrenTable extends PowerGridComponent
     {
         $head_children_data = head_children::query()
             ->leftJoin('heads_households', 'heads_children.householdId', '=', 'heads_households.personId')
-            ->leftJoin('partners', 'partners.householdId', '=', 'heads_households.personId')
+            // ->leftJoin('partners', 'partners.householdId', '=', 'heads_households.personId')
             ->leftJoin('city', 'heads_households.cityId', '=', 'city.id')
             ->leftJoin('locations', 'heads_households.location_id', '=', 'locations.id')
             ->leftJoin('governorates', 'heads_households.governorate_id', '=', 'governorates.id')
@@ -91,10 +91,10 @@ final class ChildrenTable extends PowerGridComponent
             'heads_households.LName as household_Lname',
             'heads_households.phone_number as household_phone_number',
 
-            'partners.FName as partner_Fname',
-            'partners.SName as partner_Sname',
-            'partners.TName as partner_Tname',
-            'partners.LName as partner_Lname',
+            // 'partners.FName as partner_Fname',
+            // 'partners.SName as partner_Sname',
+            // 'partners.TName as partner_Tname',
+            // 'partners.LName as partner_Lname',
 
             'city.name as city_name',
             'locations.name as location_name',
@@ -119,6 +119,7 @@ final class ChildrenTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('PersonId')
+            
             ->add('FName')
             ->add('SName')
             ->add('TName')
@@ -135,7 +136,6 @@ final class ChildrenTable extends PowerGridComponent
             ->add('city_name')
             ->add('location_name')
             ->add('governorate_name')
-            ->add('partner_name')
             ->add('updated_at');
     }
 
@@ -209,27 +209,94 @@ final class ChildrenTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('FName'),
-             Filter::inputText('SName'),
-             Filter::inputText('TName'),
-            Filter::inputText('LName'),
-            Filter::inputText('PersonId'),
-            Filter::datePicker('BirthDate'),
+            Filter::inputText('FName')
+              ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('heads_children.FName', 'like', "%{$value}%");
+            }),
+             Filter::inputText('SName')
+              ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('heads_children.SName', 'like', "%{$value}%");
+            }),
+             Filter::inputText('TName')
+                ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('heads_children.TName', 'like', "%{$value}%");
+            }),
+            Filter::inputText('LName')
+                  ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('heads_children.LName', 'like', "%{$value}%");
+            }),
+           Filter::inputText('PersonId')
+            ->builder(function (Builder $query, mixed $value) {
+                $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                $query->where('heads_children.PersonId', 'like', "%{$value}%");
+            }),
+            
+         Filter::datePicker('BirthDate')
+    ->builder(function (Builder $query, mixed $value) {
+        if (is_array($value)) {
+            $start = $value['start'] ?? null;
+            $end   = $value['end'] ?? null;
+
+            if ($start && $end) {
+                $query->whereBetween('heads_children.BirthDate', [
+                    Carbon::parse($start)->startOfDay(),
+                    Carbon::parse($end)->endOfDay(),
+                ]);
+            } elseif ($start) {
+                $query->whereDate('heads_children.BirthDate', Carbon::parse($start));
+            }
+        } else {
+            $query->whereDate('heads_children.BirthDate', Carbon::parse($value));
+        }
+    }),
+    
             Filter::inputText('relationship'),
             Filter::inputText('householdId'),
-            Filter::inputText('updated_at'),
-            Filter::inputText('created_at'),    
-            Filter::select('Gender')
-                ->dataSource([
-                    ['id' => 'ذكر', 'name' => 'ذكر'],
-                    ['id' => 'أنثى', 'name' => 'أنثى'],
-                    ['id' => 'انثى', 'name' => 'انثى'],
-                    ['id' => '', 'name' => ''],
-                ])
-                ->optionLabel('name')
-                ->optionValue('id'),
+              
 
-            Filter::inputText('health_Status'),
+            Filter::inputText('created_at'),   
+
+       Filter::select('Gender')
+    ->dataSource([
+        ['id' => 'ذكر', 'name' => 'ذكر'],
+        ['id' => 'أنثى', 'name' => 'أنثى'],
+    ])
+    ->builder(function (Builder $query, mixed $value) {
+        $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+
+        if (filled($value)) {
+            $query->where('heads_children.Gender', $value);
+        }
+    })->optionLabel('name')
+    ->optionValue('id'),
+
+     Filter::select('health_Status')
+    ->dataSource([
+        ['id' => '0', 'name' => 'سليم'],
+        ['id' => '1', 'name' => 'مريض'],
+        ['id' => '2', 'name' => 'مصاب'],
+        ['id' => '3', 'name' => 'إعاقة سمعية'],
+        ['id' => '4', 'name' => 'إعاقة جسدية'],
+        ['id' => '5', 'name' => 'إعاقة عقلية'],
+        ['id' => '6', 'name' => 'إعاقة بصرية'],
+        ['id' => '7', 'name' => 'إعاقة حرجة'],
+        ['id' => '8', 'name' => 'أمراض مزمنة'],
+        ['id' => '9', 'name' => 'أخرى'],
+    ])
+    ->builder(function (Builder $query, mixed $value) {
+        $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+
+        if (filled($value)) {
+            $query->where('heads_children.health_Status', $value);
+        }
+    })
+    ->optionLabel('name')
+    ->optionValue('id'),
+            
             Filter::inputText('city_name')
              ->builder(function (Builder $query, mixed $value) {
                     $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
@@ -268,6 +335,25 @@ final class ChildrenTable extends PowerGridComponent
 
 
             // Filter::inputText('partner_name'),
+
+              Filter::datePicker('updated_at')
+    ->builder(function (Builder $query, mixed $value) {
+        if (is_array($value)) {
+            $start = $value['start'] ?? null;
+            $end   = $value['end'] ?? null;
+
+            if ($start && $end) {
+                $query->whereBetween('heads_children.updated_at', [
+                    Carbon::parse($start)->startOfDay(),
+                    Carbon::parse($end)->endOfDay(),
+                ]);
+            } elseif ($start) {
+                $query->whereDate('heads_children.updated_at', Carbon::parse($start));
+            }
+        } else {
+            $query->whereDate('heads_children.updated_at', Carbon::parse($value));
+        }
+    }),
             Filter::inputText('householdId')
 
         ];
