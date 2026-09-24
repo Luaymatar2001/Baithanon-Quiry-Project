@@ -78,7 +78,7 @@ final class HeadHouseholdsTable extends PowerGridComponent
             ->leftJoin('city', 'heads_households.cityId', '=', 'city.id')
             ->leftJoin('locations', 'heads_households.location_id', '=', 'locations.id')
             ->leftJoin('governorates', 'heads_households.governorate_id', '=', 'governorates.id')
-            ->leftJoin('users', 'heads_households.user_id', '=', 'users.id')
+            // ->leftJoin('users', 'heads_households.user_id', '=', 'users.id')
 
             ->select([
                 'heads_households.*',
@@ -251,7 +251,6 @@ final class HeadHouseholdsTable extends PowerGridComponent
                 ])
                 ->optionLabel('name')
                 ->optionValue('id'),
-
             Filter::inputText('Phone_Number'),
             Filter::inputText('num_Family_Members'),
             Filter::inputText('legal_confirmation'),
