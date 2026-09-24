@@ -186,14 +186,14 @@ final class ChildrenTable extends PowerGridComponent
                 ->searchable(),
             
             Column::make('أسم الوالد' , 'household_full_name')
-            ->sortable()
-            ->searchable(),
+            ->sortable(),
 
             Column::make('رقم الهاتف', 'household_phone_number')
-            ->sortable()
-            ->searchable(),
+            ->sortable(),
 
-            // Column::make('', ''),
+            Column::make('المكان ','location_name') ->sortable(),
+            Column::make('المدينة','city_name') ->sortable(),
+            Column::make('المحافظة','governorate_name') ->sortable(),
             
 
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
@@ -230,13 +230,44 @@ final class ChildrenTable extends PowerGridComponent
                 ->optionValue('id'),
 
             Filter::inputText('health_Status'),
-            Filter::inputText('city_name'),
-            Filter::inputText('location_name'),
-            Filter::inputText('governorate_name'),
+            Filter::inputText('city_name')
+             ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('city.name', 'like', "%{$value}%");
+                }),
+            Filter::inputText('location_name')
+              ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('locations.name', 'like', "%{$value}%");
+                }),
+
+            Filter::inputText('governorate_name')
+             ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('governorates.name', 'like', "%{$value}%");
+                }),
+                
             Filter::inputText('household_name'),
-            Filter::inputText('household_phone_number'),
-          Filter::inputText('household_full_name'),
-            Filter::inputText('partner_name'),
+                Filter::inputText('household_phone_number')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('heads_households.Phone_Number', 'like', "%{$value}%");
+                }),
+             Filter::inputText('household_full_name')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where(function ($q) use ($value) {
+                        $q->where('heads_households.FName', 'like', "%{$value}%")
+                            ->orWhere('heads_households.SName', 'like', "%{$value}%")
+                            ->orWhere('heads_households.TName', 'like', "%{$value}%")
+                            ->orWhere('heads_households.LName', 'like', "%{$value}%")
+                            ->orWhereRaw("CONCAT_WS(' ', heads_households.FName, heads_households.SName, heads_households.TName, heads_households.LName) LIKE ?", ["%{$value}%"]);
+                    });
+                }),
+
+
+
+            // Filter::inputText('partner_name'),
             Filter::inputText('householdId')
 
         ];

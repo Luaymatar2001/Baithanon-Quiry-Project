@@ -25,4 +25,17 @@ class partner extends Model
     {
         return $this->belongsTo(household::class, 'householdId', 'PersonId');
     }
+
+    public function city()
+    {
+        return $this->belongsTo(city::class, 'cityId', 'id');
+    }
+    public function location()
+    {
+        return $this->belongsTo(location::class, 'locationId', 'id');
+    }
+    public function governorate()
+    {
+        return $this->belongsTo(governorates::class, 'governorateId', 'id');
+    }
 }

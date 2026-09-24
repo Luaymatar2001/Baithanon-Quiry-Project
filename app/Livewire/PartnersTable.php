@@ -22,6 +22,7 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 // use App\Imports\ChildrensImport;
 use App\Models\partner;
+use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
 // use PowerComponents\LivewirePowerGrid\Editable;
@@ -81,25 +82,56 @@ final class PartnersTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return partner::query();
+        //مراجعة 
+        return partner::query()
+        ->leftJoin('heads_households' , 'partners.householdId', '=', 'heads_households.personId')
+           ->leftJoin('city', 'heads_households.cityId', '=', 'city.id')
+            ->leftJoin('locations', 'heads_households.location_id', '=', 'locations.id')
+            ->leftJoin('governorates', 'heads_households.governorate_id', '=', 'governorates.id')
+                ->select([
+            'partners.*',
+            'partners.id as partner_id',
+            'heads_households.FName as household_Fname',
+            'heads_households.SName as household_Sname',
+            'heads_households.TName as household_Tname',
+            'heads_households.LName as household_Lname',
+            'heads_households.Phone_Number as Phone_Number' ,
+            'city.name as city_name',
+            'locations.name as location_name',
+            'governorates.name as governorate_name',
+            DB::raw("
+                CONCAT_WS(' ',
+                    heads_households.FName,
+                    heads_households.SName,
+                    heads_households.TName,
+                    heads_households.LName
+                ) AS household_full_name
+            "),
+        ]);
     }
 
-    public function fields(): PowerGridFields
-    {
-        return PowerGrid::fields()
-            ->add('id')
-            ->add('PersonId')
-            ->add('FName')
-            ->add('SName')
-            ->add('TName')
-            ->add('LName')
-            ->add('BirthDate')
-            ->add('relationship')
-            ->add('householdId')
-            ->add('updated_at');
-    }
+  public function fields(): PowerGridFields
+{
+    return PowerGrid::fields()
+        ->add('id')
+        ->add('PersonId')
+        ->add('FName')
+        ->add('SName')
+        ->add('TName')
+        ->add('LName')
+        ->add('birthdate')        
+        ->add('relationship')
+        ->add('householdId')
+        ->add('household_full_name')
+        ->add('location_name')
+        ->add('city_name')
+        ->add('governorate_name')
+        ->add('Phone_Number')
+       ->add('health_Status')      
+        ->add('updated_at');
+}
 
-    public function columns(): array
+public function columns(): array
     {
         return [
             Column::make('ID', 'id')
@@ -147,6 +179,27 @@ final class PartnersTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
+            Column::make('أسم رب الأسرة رباعي ', 'household_full_name')
+             ->sortable(),
+
+            Column::make('رقم الهاتف', 'Phone_Number')
+             ->sortable()
+                ->searchable(),
+
+            Column::make('أسم المكان','location_name')
+             ->sortable(),
+              
+
+            Column::make('أسم المدينة','city_name')
+             ->sortable(),
+               
+
+      
+            Column::make('أسم المحافظة','governorate_name')
+             ->sortable(),
+             
+
+
             Column::make('أخر تحديث', 'updated_at')->sortable()->searchable(),
 
             Column::action('Action')
@@ -175,6 +228,43 @@ final class PartnersTable extends PowerGridComponent
             Filter::inputText('relationship'),
             Filter::inputText('householdId'),
             Filter::inputText('health_Status'),
+            
+               // فلاتر مخصصة للأعمدة اللي هي aliases (مش أعمدة حقيقية بجدول partners)
+                Filter::inputText('Phone_Number')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('heads_households.Phone_Number', 'like', "%{$value}%");
+                }),
+
+            Filter::inputText('household_full_name')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where(function ($q) use ($value) {
+                        $q->where('heads_households.FName', 'like', "%{$value}%")
+                            ->orWhere('heads_households.SName', 'like', "%{$value}%")
+                            ->orWhere('heads_households.TName', 'like', "%{$value}%")
+                            ->orWhere('heads_households.LName', 'like', "%{$value}%")
+                            ->orWhereRaw("CONCAT_WS(' ', heads_households.FName, heads_households.SName, heads_households.TName, heads_households.LName) LIKE ?", ["%{$value}%"]);
+                    });
+                }),
+
+            Filter::inputText('city_name')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('city.name', 'like', "%{$value}%");
+                }),
+
+            Filter::inputText('location_name')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('locations.name', 'like', "%{$value}%");
+                }),
+
+            Filter::inputText('governorate_name')
+                ->builder(function (Builder $query, mixed $value) {
+                    $value = is_array($value) ? ($value['value'] ?? reset($value)) : $value;
+                    $query->where('governorates.name', 'like', "%{$value}%");
+                }),
             Filter::inputText('updated_at'),
             Filter::datepicker('birthdate'),
         ];
