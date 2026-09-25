@@ -447,7 +447,16 @@ public function columns(): array
     #[\Livewire\Attributes\On('deleteRow')]
     public function deleteRow($rowId): void
     {
-        partner::findOrFail($rowId)->delete();
+       $partner =  partner::findOrFail($rowId);
+       
+      
+      $household = $partner->household;
+      if ($household) {
+          $household->num_Family_Members = max(0 , $household->num_Family_Members - 1);
+          $household->save();
+      }
+      
+       $partner->delete();
 
         $this->dispatch('pg:eventRefresh-default');
     }

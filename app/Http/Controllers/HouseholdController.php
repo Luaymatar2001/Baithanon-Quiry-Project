@@ -673,21 +673,58 @@ class HouseholdController extends Controller
 
 
 
-    public function destroy(Request $request, $id)
-    {
-        $id = Crypt::decrypt($id);
+public function destroy(Request $request, $id)
+ {
+    $id = Crypt::decrypt($id);
 
-        if ($request->type === 'partner') {
-            partner::findOrFail($id)->delete();
-        } elseif ($request->type === 'child') {
-            head_children::findOrFail($id)->delete();
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'نوع غير معروف'
-            ], 400);
+    if ($request->type === 'partner') {
+
+        $partner = partner::findOrFail($id);
+
+        $household = household::where(
+            'PersonId',
+            $partner->householdId
+        )->first();
+         
+        $partner->delete();
+
+        if ($household) {
+            $household->num_Family_Members = max(
+                0,
+                $household->num_Family_Members - 1
+            );
+            $household->save();
         }
 
-        return response()->json(['success' => true]);
+    } elseif ($request->type === 'child') {
+
+        $head_children = head_children::findOrFail($id);
+        $household = household::where(
+            'PersonId',
+            $head_children->householdId
+        )->first();
+
+        $head_children->delete();
+
+        if ($household) {
+            $household->num_Family_Members = max(
+                0,
+                $household->num_Family_Members - 1
+            );
+
+            $household->save();
+        }
+
+    } else {
+
+        return response()->json([
+            'success' => false,
+            'message' => 'نوع غير معروف'
+        ], 400);
     }
-}
+
+    return response()->json([
+        'success' => true
+    ]);
+    }
+    }

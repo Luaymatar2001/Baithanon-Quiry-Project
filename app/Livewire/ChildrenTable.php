@@ -20,6 +20,7 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 use App\Imports\ChildrensImport;
 use App\Models\head_children;
+use App\Models\household;
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -442,9 +443,17 @@ final class ChildrenTable extends PowerGridComponent
     #[\Livewire\Attributes\On('deleteRow')]
     public function deleteRow($rowId): void
     {
-        head_children::findOrFail($rowId)->delete();
+       $head_children =  head_children::findOrFail($rowId);
 
-        $this->dispatch('pg:eventRefresh-default');
+              $household = $head_children->household;
+      if ($household) {
+          $household->num_Family_Members = max(0 , $household->num_Family_Members - 1);
+          $household->save();
+      }
+
+      $head_children->delete();
+
+     $this->dispatch('pg:eventRefresh-default');
     }
 
     #[\Livewire\Attributes\On('confirmBulkDelete')]
@@ -463,12 +472,45 @@ final class ChildrenTable extends PowerGridComponent
     }
 
     #[\Livewire\Attributes\On('bulkDelete')]
-    public function bulkDelete(): void
-    {
-        head_children::whereIn('id', $this->checkboxValues)->delete();
-        $this->reset('checkboxValues');
-        $this->dispatch('pg:eventRefresh-default');
-    }
+public function bulkDelete(): void
+{
+    \Illuminate\Support\Facades\DB::transaction(function () {
+
+        // جلب الأبناء المحددين
+        $children = head_children::whereIn(
+            'id',
+            $this->checkboxValues
+        )->get();
+        
+        // تجميع عدد الأبناء حسب الأسرة
+        $counts = $children->groupBy('householdId')
+            ->map(fn($group) => $group->count());
+        // تحديث عدد أفراد كل أسرة
+        foreach ($counts as $householdId => $count) {
+            $household = household::where('PersonId' ,$householdId  )->first();
+            if ($household) {
+                $household->num_Family_Members = max(
+                    0,
+                    $household->num_Family_Members - $count
+                );
+
+                $household->save();
+            }
+        }
+
+        // حذف الأبناء المحددين
+        head_children::whereIn(
+            'id',
+            $this->checkboxValues
+        )->delete();
+    });
+
+    // إعادة ضبط التحديد
+    $this->reset('checkboxValues');
+
+    // تحديث الجدول
+    $this->dispatch('pg:eventRefresh-default');
+}
 
     public function updatedExcelFile()
     {
