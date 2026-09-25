@@ -57,15 +57,14 @@ class MemberRequestController extends Controller
     }
     public function store(Request $request)
     {
-         
-            
+
         $householdId = session('household_verified');
         if (!$householdId) {
             abort(403, 'Unauthorized');
         }
         $household = household::where('id', session('household_verified'))
             ->firstOrFail();
-        
+
         $rules = [
             'FName' => 'required|string|max:20',
             'SName' => 'sometimes|nullable|string|max:20',
@@ -86,12 +85,10 @@ class MemberRequestController extends Controller
             'desc_health_status_member' => 'nullable|string|max:255',
         ];
 
-        
         if ($request->relation === 'ابن' || $request->relation === 'ابنه') {
             $rules['birth_certificate'] = 'required|image|max:2048';
             $rules['household_id_image'] = 'required|image|max:2048';
         } elseif ($request->relation === 'زوجة') {
-            
             $rules['identity_image'] = 'required|image|max:2048';
         }
         
