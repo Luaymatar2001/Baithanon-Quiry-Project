@@ -125,7 +125,7 @@ final class MemberRequestTable extends PowerGridComponent
                 ->sortable()->editOnClick(),
             Column::make('تاريخ المراجعة', 'reviewed_at')
                 ->sortable(),
-            Column::make('تاريخ الإنشاء', 'created_at'),
+            Column::make('تاريخ الإنشاء', 'created_at')->sortable(),
             Column::action('Action'),
         ];
     }
