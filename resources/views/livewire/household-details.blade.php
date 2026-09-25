@@ -423,6 +423,7 @@
                 style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                 <button target="_blank" class="open-reg_married">أضف طلب تسجيل زواج جديد
                     <i class="fa-solid fa-venus-mars"></i></button>
+                    
                 <button target="_blank" class="open-btn-app open-btn-add">إضافة بيانات فرد جديد للعائلة <i
                         class="fa-regular fa-pen-to-square"></i></button>
             </div>

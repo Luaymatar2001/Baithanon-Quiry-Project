@@ -505,10 +505,26 @@
           const overlay_reg_married = document.querySelector(".overlay-reg_married");
           const overlay_application = document.querySelector('.overlay-application');
           const close_married_btn = overlay_reg_married.querySelector('.close-btn');
+    
+
+        
+
           open_reg_married.addEventListener('click', () => {
-            overlay_reg_married.style.display = 'flex';
-            overlay_application.style.display = 'none';
+               Swal.fire({
+                 title: 'ملاحظة مهمة لقبول طلب الإضافة!',
+                text: 'يجب حذف بيانان الزوج والزوجة من ملفات أرباب الأسر وأخراجهم من جدول الأبناء !',
+                icon:'warning',
+                confirmButtonText: 'متابعة طلب إضافة ملف زواج',
+                confirmButtonColor: '#1BC5BD',
+                width: 500
+            }).then(() => {
+                overlay_reg_married.style.display = 'flex';
+                    overlay_application.style.display = 'none';
             });
+       
+            });
+
+
           close_married_btn.addEventListener('click' , ()=>{
             overlay_reg_married.style.display = 'none';
             overlay_application.style.display = 'flex';
