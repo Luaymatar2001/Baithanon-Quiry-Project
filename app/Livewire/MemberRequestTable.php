@@ -120,7 +120,6 @@ final class MemberRequestTable extends PowerGridComponent
             Column::make('صورة الهوية لرب الأسرة ', 'household_id_image_html')
                 ->searchable(false)
                 ->sortable(false),
-
             Column::make('الحالة', 'status')
                 ->sortable()->editOnClick(),
             Column::make('تاريخ المراجعة', 'reviewed_at')
